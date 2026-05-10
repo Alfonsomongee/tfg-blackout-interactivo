@@ -4,6 +4,7 @@ import { Hero } from './components/Hero/Hero';
 import { TimelineNarrative } from './components/TimelineNarrative';
 import { DivergenceMatrix } from './components/DivergenceMatrix';
 import { ContingencySimulator } from './components/ContingencySimulator';
+import ChapterDossier from './components/ChapterDossier';
 import { useStore } from './hooks/useStore';
 
 // Page wrapper for smooth layout fade-in transition on route change
@@ -96,6 +97,9 @@ const Layout: React.FC = () => {
           <NavLink to="/simulator" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>⚡ Simulador Físico</span>
           </NavLink>
+          <NavLink to="/dossier" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📚 Dossier TFG</span>
+          </NavLink>
         </div>
       )}
 
@@ -146,6 +150,13 @@ const Layout: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>Simulador Físico</span>
+            </NavLink>
+
+            <NavLink to="/dossier" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              <span>Dossier TFG</span>
             </NavLink>
           </nav>
         </div>
@@ -226,6 +237,7 @@ const Layout: React.FC = () => {
             <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
             <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
             <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
+            <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
           </Routes>
         </main>
 
