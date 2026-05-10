@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../../hooks/useStore';
 import type { TimelinePhase } from '../../types/blackout';
+import TechnicalImage from '../TechnicalImage';
 
 // High-fidelity narrative interpretations based on the TFG documentation
 const INSTITUTIONAL_INTERPRETATIONS: {
@@ -102,38 +103,30 @@ export const TimelineNarrative: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-[#0f1729] border border-[#1e3a5f] rounded-lg p-10 flex flex-col justify-center items-center gap-4 font-mono text-xs text-[#06b6d4]">
-        <div className="w-8 h-8 border-2 border-[#0ea5e9] border-t-transparent rounded-full animate-spin"></div>
-        INICIALIZANDO TELEMETRÍA DEL SISTEMA...
+      <div className="bg-secondary border border-main rounded-lg p-10 flex flex-col justify-center items-center gap-4 font-mono text-xs text-text-secondary shadow-sm">
+        <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+        INICIALIZANDO TELEMETRÍA SECUENCIAL DEL SISTEMA...
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0f1729] border border-[#1e3a5f] rounded-lg p-6 select-none relative overflow-hidden">
+    <div className="flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full">
       
-      {/* Component Title */}
-      <div className="flex items-center justify-between border-b border-[#1e3a5f] pb-4 mb-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-2.5 w-2.5 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ef4444] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#ef4444]"></span>
-          </span>
-          <h2 className="text-sm font-bold text-[#e2e8f0] uppercase tracking-widest font-mono m-0">
-            LÍNEA TEMPORAL FORENSE DEL COLAPSO
-          </h2>
-        </div>
-        <span className="text-[10px] text-[#94a3b8] bg-[#141e35] px-2.5 py-1 rounded border border-[#1e3a5f] font-mono uppercase tracking-wider">
-          SEC: 28 ABRIL 2025
-        </span>
+      {/* Title block */}
+      <div className="border-b border-main pb-4 mb-2">
+        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+          Registro de Eventos (Sequence of Events Recorder)
+        </h2>
+        <p className="text-xs text-text-secondary font-mono mt-1">
+          Capítulo II · Cronología y Sucesión de Transitorios de Tensión y Frecuencia Zonal
+        </p>
       </div>
 
-      {/* HORIZONTAL MISSION TIMELINE NAVIGATION */}
-      <div className="mb-8 relative py-4 px-2 bg-[#0a0e1a]/80 border border-[#1e3a5f] rounded-lg">
-        {/* Horizontal thin track line with gradient */}
-        <div className="absolute top-1/2 left-8 right-8 h-[2px] bg-gradient-to-r from-[#1e3a5f] via-[#0ea5e9]/40 to-[#1e3a5f] -translate-y-1/2 z-0"></div>
-
-        {/* Nodes */}
+      {/* HORIZONTAL TIME SWITCHER */}
+      <div className="bg-secondary border border-main rounded-lg p-4 shadow-sm relative">
+        <div className="absolute top-1/2 left-8 right-8 h-[1px] bg-main -translate-y-1/2 z-0 hidden sm:block"></div>
+        
         <div className="relative z-10 flex justify-between items-center overflow-x-auto gap-4 scrollbar-none">
           {phases.map((phase) => {
             const isActive = phase.id === activePhaseId;
@@ -142,28 +135,29 @@ export const TimelineNarrative: React.FC = () => {
               <button
                 key={phase.id}
                 onClick={() => setActivePhaseId(phase.id)}
-                className="flex flex-col items-center gap-1.5 focus:outline-none min-w-[70px] cursor-pointer"
+                className="flex flex-col items-center gap-2 focus:outline-none min-w-[75px] cursor-pointer"
               >
                 <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center font-mono text-[13px] font-bold border-2 transition-all duration-300 ${
+                  className={`w-9 h-9 rounded-full flex items-center justify-center font-mono text-xs font-bold border-2 transition-all duration-300 ${
                     isActive
-                      ? 'bg-[#0a0e1a] text-[#06b6d4] border-[#0ea5e9] pulse-active'
+                      ? 'bg-accent text-white border-accent'
                       : isPast
-                      ? 'bg-[#1e3a5f]/40 text-[#94a3b8] border-[#1e3a5f]'
-                      : 'bg-[#0a0e1a] text-[#374151] border-[#1e3a5f]'
+                      ? 'bg-tertiary text-text-secondary border-main'
+                      : 'bg-secondary text-text-secondary/50 border-main/50'
                   }`}
                 >
-                  {phase.id}
+                  §{phase.id}
                 </div>
                 <span
-                  className={`text-[9px] font-mono uppercase font-bold tracking-wider ${
-                    isActive ? 'text-[#06b6d4]' : 'text-[#374151]'
+                  className={`text-[9px] font-mono uppercase tracking-wider font-bold ${
+                    isActive ? 'text-accent' : 'text-text-secondary/60'
                   }`}
                 >
                   {new Date(phase.timestamp).toLocaleTimeString('es-ES', {
                     hour: '2-digit',
                     minute: '2-digit',
-                    second: '2-digit'
+                    second: '2-digit',
+                    timeZone: 'UTC'
                   })}
                 </span>
               </button>
@@ -172,84 +166,82 @@ export const TimelineNarrative: React.FC = () => {
         </div>
       </div>
 
-      {/* PHASE HEADER LABEL */}
-      <div className="mb-6 bg-[#141e35] border-l-4 border-[#0ea5e9] p-4 rounded-r">
-        <span className="text-[10px] font-mono text-[#06b6d4] block uppercase tracking-widest font-bold mb-1">
-          FASE {currentPhase.id} // SEC_STATUS: {currentPhase.id === 6 ? "FALLO TOTAL" : currentPhase.id === 0 ? "ESTABLE" : "SITUACIÓN INESTABLE"}
+      {/* DETAILED SECTION HEADING */}
+      <div className="bg-tertiary border-l-4 border-accent p-5 rounded-r">
+        <span className="text-[10px] font-mono text-text-mono block uppercase tracking-widest font-bold mb-1">
+          Apartado 2.{currentPhase.id} // SEC_STATUS: {currentPhase.id === 6 ? "FALLO GLOBAL" : currentPhase.id === 0 ? "REGISTRO NOMINAL" : "FALLO SECUENCIAL"}
         </span>
-        <h3 className="font-sans text-base font-bold text-[#e2e8f0] uppercase tracking-wide">
+        <h3 className="font-serif text-lg font-bold text-text-primary tracking-tight">
           {currentPhase.label}
         </h3>
-        <p className="font-sans text-xs text-[#94a3b8] leading-relaxed mt-2 select-text">
+        <p className="font-sans text-xs md:text-sm text-text-secondary leading-relaxed mt-2.5 select-text">
           {currentPhase.description}
         </p>
       </div>
 
-      {/* DETAIL TWO-COLUMN PANEL */}
+      {/* TELEMETRY TABLE vs FORENSIC PERSPECTIVES */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         
-        {/* Left Column: Technical Data */}
-        <div className="lg:col-span-5 bg-[#141e35]/40 border border-[#1e3a5f] p-5 rounded-lg flex flex-col justify-between">
+        {/* Left Column: Technical Data as a LaTeX booktabs style summary table */}
+        <div className="lg:col-span-5 bg-secondary border border-main p-5 rounded-lg flex flex-col justify-between shadow-sm">
           <div>
-            <h4 className="text-xs font-mono font-bold uppercase text-[#06b6d4] tracking-widest border-b border-[#1e3a5f] pb-2 mb-4">
-              // TELEMETRÍA DINÁMICA
+            <h4 className="text-[10px] font-mono font-bold uppercase text-text-primary tracking-widest border-b border-main/50 pb-3 mb-4">
+              TELEMETRÍA FORENSE DE LA FASE
             </h4>
 
-            <div className="space-y-4 mb-6">
-              {/* Stat 1: Frecuencia */}
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-[#94a3b8] font-mono">Frecuencia (f):</span>
-                <span className="text-sm font-mono font-extrabold text-[#67e8f9]">
-                  {currentPhase.frequency_hz.toFixed(3)} Hz
-                </span>
-              </div>
-
-              {/* Stat 2: Inercia global */}
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-[#94a3b8] font-mono">Inercia Global (H):</span>
-                <span className="text-sm font-mono font-extrabold text-[#22c55e]">
-                  {currentPhase.inertia_seconds.toFixed(2)} s
-                </span>
-              </div>
-
-              {/* Stat 3: Derivada de Frecuencia */}
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-[#94a3b8] font-mono">Gradiente RoCoF (df/dt):</span>
-                <span
-                  className={`text-sm font-mono font-extrabold ${
-                    currentPhase.frequency_derivative_hz_per_s < -0.5
-                      ? 'text-[#ef4444] alert-blink'
-                      : 'text-[#e2e8f0]'
-                  }`}
-                >
-                  {currentPhase.frequency_derivative_hz_per_s > 0 ? '+' : ''}
-                  {currentPhase.frequency_derivative_hz_per_s.toFixed(2)} Hz/s
-                </span>
-              </div>
-
-              {/* Stat 4: Desvío de Potencia */}
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-[#94a3b8] font-mono">Desvío de Potencia (ΔP):</span>
-                <span className="text-sm font-mono font-extrabold text-[#f97316]">
-                  {currentPhase.events.reduce((acc, evt) => acc + evt.magnitude, 0) > 0
-                    ? `-${currentPhase.events.reduce((acc, evt) => acc + evt.magnitude, 0)} MW`
-                    : '0 MW'}
-                </span>
-              </div>
-            </div>
+            {/* LaTeX booktabs table representation */}
+            <table className="table-academic">
+              <thead>
+                <tr>
+                  <th className="w-1/2">Magnitud Física</th>
+                  <th className="text-right">Registro de Red</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Frecuencia del Sistema (f)</td>
+                  <td className="text-right font-mono font-bold text-text-mono">
+                    {currentPhase.frequency_hz.toFixed(3)} Hz
+                  </td>
+                </tr>
+                <tr>
+                  <td>Constante de Inercia (H)</td>
+                  <td className="text-right font-mono font-bold text-alert-green">
+                    {currentPhase.inertia_seconds.toFixed(2)} s
+                  </td>
+                </tr>
+                <tr>
+                  <td>Gradiente de Derivada (df/dt)</td>
+                  <td className={`text-right font-mono font-bold ${
+                    currentPhase.frequency_derivative_hz_per_s < -0.5 ? 'text-alert-red' : 'text-text-primary'
+                  }`}>
+                    {currentPhase.frequency_derivative_hz_per_s > 0 ? '+' : ''}
+                    {currentPhase.frequency_derivative_hz_per_s.toFixed(2)} Hz/s
+                  </td>
+                </tr>
+                <tr>
+                  <td>Desvío de Potencia Estático (&Delta;P)</td>
+                  <td className="text-right font-mono font-bold text-alert-orange">
+                    {currentPhase.events.reduce((acc, evt) => acc + evt.magnitude, 0) > 0
+                      ? `-${currentPhase.events.reduce((acc, evt) => acc + evt.magnitude, 0)} MW`
+                      : '0 MW'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          {/* Regional Volts */}
+          {/* Controls areas voltage (p.u.) */}
           {currentPhase.voltage_zones.length > 0 && (
-            <div className="border-t border-[#1e3a5f] pt-4">
-              <span className="text-[10px] font-mono text-[#94a3b8] uppercase tracking-wider block mb-2.5">
-                Tensión por Áreas de Control
+            <div className="border-t border-main/40 pt-4 mt-6">
+              <span className="text-[9px] font-mono text-text-secondary uppercase tracking-widest block mb-3 font-bold">
+                Módulos de Tensión por Áreas de Control (p.u.)
               </span>
               <div className="grid grid-cols-2 gap-2">
                 {currentPhase.voltage_zones.map((vz) => (
-                  <div key={vz.zone} className="bg-[#0a0e1a]/60 border border-[#1e3a5f] p-2 rounded">
-                    <span className="text-[9px] text-[#94a3b8] font-mono uppercase block">{vz.zone}</span>
-                    <span className="text-xs font-mono font-bold text-[#67e8f9]">
+                  <div key={vz.zone} className="bg-tertiary border border-main p-2.5 rounded">
+                    <span className="text-[9px] text-text-secondary font-mono uppercase block">{vz.zone}</span>
+                    <span className="text-xs font-mono font-bold text-text-mono">
                       {vz.voltage_pu.toFixed(2)} p.u.
                     </span>
                   </div>
@@ -259,63 +251,89 @@ export const TimelineNarrative: React.FC = () => {
           )}
         </div>
 
-        {/* Right Column: Institutional Narrative */}
-        <div className="lg:col-span-7 bg-[#141e35]/20 border border-[#1e3a5f] p-5 rounded-lg flex flex-col justify-between">
+        {/* Right Column: Institutional Interpretations */}
+        <div className="lg:col-span-7 bg-secondary border border-main p-5 rounded-lg flex flex-col justify-between shadow-sm">
           <div>
-            <h4 className="text-xs font-mono font-bold uppercase text-[#06b6d4] tracking-widest border-b border-[#1e3a5f] pb-2 mb-4">
-              // POSICIONAMIENTO FORENSE E INFORME OFICIAL
+            <h4 className="text-[10px] font-mono font-bold uppercase text-text-primary tracking-widest border-b border-main/50 pb-3 mb-4">
+              POSICIONAMIENTO FORENSE E INFORME OFICIAL
             </h4>
 
-            {/* Narratives row */}
+            {/* Entity blocks */}
             <div className="space-y-4">
               {/* REE */}
-              <div>
-                <span className="text-[10px] font-mono font-bold text-white uppercase bg-[#1e3a5f] px-1.5 py-0.5 rounded mr-2">
-                  REE
-                </span>
-                <p className="text-xs text-[#94a3b8] inline select-text leading-relaxed font-sans">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center">
+                  <span className="text-[9px] font-mono font-bold text-text-primary bg-tertiary border border-main px-2 py-0.5 rounded uppercase tracking-wider">
+                    Red Eléctrica de España (REE)
+                  </span>
+                </div>
+                <p className="text-xs text-text-secondary select-text leading-relaxed font-sans">
                   {narrative.ree}
                 </p>
               </div>
 
               {/* ICAI */}
-              <div className="pt-2 border-t border-[#1e3a5f]/30">
-                <span className="text-[10px] font-mono font-bold text-[#0a0e1a] uppercase bg-[#06b6d4] px-1.5 py-0.5 rounded mr-2">
-                  ICAI
-                </span>
-                <p className="text-xs text-[#94a3b8] inline select-text leading-relaxed font-sans">
+              <div className="flex flex-col gap-1 pt-3.5 border-t border-main/30">
+                <div className="flex items-center">
+                  <span className="text-[9px] font-mono font-bold text-accent bg-accent/10 border border-accent/30 px-2 py-0.5 rounded uppercase tracking-wider">
+                    Informe Técnico ICAI
+                  </span>
+                </div>
+                <p className="text-xs text-text-secondary select-text leading-relaxed font-sans">
                   {narrative.icai}
                 </p>
               </div>
 
               {/* ENTSO-E */}
-              <div className="pt-2 border-t border-[#1e3a5f]/30">
-                <span className="text-[10px] font-mono font-bold text-white uppercase bg-[#f97316] px-1.5 py-0.5 rounded mr-2">
-                  ENTSO-E
-                </span>
-                <p className="text-xs text-[#94a3b8] inline select-text leading-relaxed font-sans">
+              <div className="flex flex-col gap-1 pt-3.5 border-t border-main/30">
+                <div className="flex items-center">
+                  <span className="text-[9px] font-mono font-bold text-alert-orange bg-alert-orange/10 border border-alert-orange/30 px-2 py-0.5 rounded uppercase tracking-wider">
+                    Panel Técnico ENTSO-E
+                  </span>
+                </div>
+                <p className="text-xs text-text-secondary select-text leading-relaxed font-sans">
                   {narrative.entso_e}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Divergencia highlighted badge */}
-          <div className="mt-6 bg-[#422006] border border-[#f97316]/30 p-3.5 rounded flex items-start gap-2.5">
-            <span className="text-lg">⚠</span>
-            <div>
-              <span className="text-[10px] font-mono font-bold text-[#f97316] block uppercase tracking-wider mb-0.5">
-                FOCO DE DIVERGENCIA FORENSE
-              </span>
-              <p className="text-xs text-[#94a3b8] leading-relaxed select-text font-sans">
-                {narrative.divergence}
-              </p>
+          {/* Divergencia Box styled as formal engineering warning note */}
+          <div className="mt-6 bg-tertiary border-l-4 border-alert-orange p-4 rounded-r">
+            <div className="flex items-start gap-2.5">
+              <span className="text-alert-orange text-sm font-bold">⚠</span>
+              <div>
+                <span className="text-[9px] font-mono font-bold text-alert-orange block uppercase tracking-wider mb-1">
+                  DICTAMEN DE DISCREPANCIA FORENSE
+                </span>
+                <p className="text-xs text-text-secondary leading-relaxed select-text font-sans">
+                  {narrative.divergence}
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
       </div>
 
+      {/* Evidence Graph row */}
+      <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-secondary border border-main p-5 rounded-lg flex flex-col justify-center shadow-sm text-xs leading-relaxed font-serif text-text-secondary">
+          <p>
+            <strong className="text-text-primary not-italic font-mono uppercase tracking-wider text-[10px] block mb-1">Nota de calibración forense:</strong> 
+            La curva de frecuencia transitoria obtenida mediante la simulación matemática interactiva de inercia y amortiguamiento (df/dt) se contrasta con los registros de oscilografía real capturados por los PMU (Phasor Measurement Units) distribuidos por el sistema peninsular. Las desviaciones observadas entre el modelo síncrono equivalente y los datos reales sirven para validar la presencia de amortiguamientos no lineales inducidos por la microgeneración distribuida y los lazos rápidos de control BESS (Battery Energy Storage Systems) en el nudo de interconexión transpirenaica.
+          </p>
+        </div>
+        <TechnicalImage
+          src="/images/curva-frecuencia.png"
+          alt="Gráfica de Frecuencia Real al Nadir"
+          caption="Figura II.3: Telemetría real de oscilación y caída de frecuencia al Nadir (49,00 Hz) capturada por la red PMU peninsular."
+          source="Fuente: Comité de Investigación ENTSO-E"
+        />
+      </div>
+
     </div>
   );
 };
+
+export default TimelineNarrative;

@@ -63,17 +63,25 @@ function buildFrequencyTrajectory(
 
 // ── Helpers UI ──────────────────────────────────────
 const UFLS = [
-  { hz: 49.5, mw: 2000, label: '49,5 Hz — UFLS 1 (2.000 MW bombeo)' },
-  { hz: 49.3, mw: 588,  label: '49,3 Hz — UFLS 2 (588 MW bombeo)'   },
-  { hz: 49.0, mw: 1402, label: '49,0 Hz — UFLS 3 (1.402 MW)'        },
+  { hz: 49.5, mw: 2000, label: '49,5 Hz — UFLS I (2.000 MW bombeo)' },
+  { hz: 49.3, mw: 588,  label: '49,3 Hz — UFLS II (588 MW bombeo)'   },
+  { hz: 49.0, mw: 1402, label: '49,0 Hz — UFLS III (1.402 MW)'        },
 ];
 
-function riskLevel(nadir: number): { label: string; color: string; bg: string } {
-  if (nadir < 49.0) return { label: 'BLACKOUT',  color: '#ef4444', bg: '#450a0a' };
-  if (nadir < 49.3) return { label: 'CRÍTICO',   color: '#f97316', bg: '#431407' };
-  if (nadir < 49.5) return { label: 'ALTO',      color: '#eab308', bg: '#422006' };
-  if (nadir < 49.8) return { label: 'MODERADO',  color: '#06b6d4', bg: '#083344' };
-  return               { label: 'ESTABLE',    color: '#22c55e', bg: '#052e16' };
+function riskLevel(nadir: number): { label: string; color: string; badgeClass: string } {
+  if (nadir < 49.0) return { label: '[COLAPSO TOTAL]',  color: 'var(--alarm)', badgeClass: 'badge-alarm' };
+  if (nadir < 49.3) return { label: '[ALARMA CRÍTICA]', color: 'var(--alarm)', badgeClass: 'badge-alarm' };
+  if (nadir < 49.5) return { label: '[NIVEL ALTO]',      color: 'var(--warning)', badgeClass: 'badge-warning' };
+  if (nadir < 49.8) return { label: '[NIVEL MODERADO]',  color: 'var(--info)', badgeClass: 'badge-info' };
+  return               { label: '[NOMINAL]',    color: 'var(--nominal)', badgeClass: 'badge-nominal' };
+}
+
+function getUFLSLabelInfo(f: number): { label: string; color: string } {
+  if (f < 49.0) return { label: '[COLAPSO]', color: 'var(--alarm)' };
+  if (f < 49.3) return { label: '[UFLS 3]', color: 'var(--alarm)' };
+  if (f < 49.5) return { label: '[UFLS 2]', color: 'var(--warning)' };
+  if (f < 49.8) return { label: '[UFLS 1]', color: 'var(--info)' };
+  return { label: '[NOMINAL]', color: 'var(--nominal)' };
 }
 
 // ── Componente principal ────────────────────────────
@@ -83,8 +91,6 @@ export function ContingencySimulator() {
   const [gridFormingPct, setGridFormingPct] = useState<number>(0);
   const [batteryMWh,     setBatteryMWh]     = useState<number>(0);
 
-  // CRÍTICO: powerLoss, inertia, gridFormingPct, batteryMWh
-  // deben estar TODOS en el array de dependencias
   const sim = useMemo(() => {
     const trajectory = buildFrequencyTrajectory(
       -powerLoss,   // negativo = déficit
@@ -97,7 +103,7 @@ export function ContingencySimulator() {
     const rocof    = calculateROCOF(-powerLoss, inertia);
     const uflsHit  = UFLS.filter(s => nadir <= s.hz);
     return { trajectory, nadir, tNadir, rocof, uflsHit };
-  }, [powerLoss, inertia, gridFormingPct, batteryMWh]); // ← todas las deps
+  }, [powerLoss, inertia, gridFormingPct, batteryMWh]);
 
   const risk = riskLevel(sim.nadir);
 
@@ -105,44 +111,72 @@ export function ContingencySimulator() {
   const CustomTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.length) return null;
     const d = payload[0].payload;
+    const uflsInfo = getUFLSLabelInfo(d.f);
     return (
-      <div style={{
-        background: '#141e35', border: '1px solid #0ea5e9',
-        padding: '8px 12px', fontFamily: 'JetBrains Mono, monospace', fontSize: 12
-      }}>
-        <div style={{ color: '#94a3b8' }}>t = {d.t} s</div>
-        <div style={{ color: '#67e8f9' }}>f = {d.f.toFixed(4)} Hz</div>
+      <div className="bg-secondary border border-main p-3 font-mono text-[11px] shadow-md rounded">
+        <div className="text-text-secondary">Instante t = {d.t} s</div>
+        <div className="text-accent font-bold">
+          Frecuencia f = {d.f.toFixed(4)} Hz <span className="text-[10px] px-1.5 py-0.5 rounded ml-1.5 border font-bold" style={{ color: uflsInfo.color, borderColor: uflsInfo.color, background: `${uflsInfo.color}10` }}>{uflsInfo.label}</span>
+        </div>
       </div>
     );
   };
 
   return (
-    <div style={{
-      background: '#0a0e1a', minHeight: '100vh',
-      padding: '24px', fontFamily: 'Inter, sans-serif', color: '#e2e8f0'
-    }}>
-      <h2 style={{
-        fontFamily: 'JetBrains Mono, monospace',
-        color: '#67e8f9', fontSize: 18, marginBottom: 24, letterSpacing: '0.1em'
-      }}>
-        ⚡ SIMULADOR DE CONTINGENCIAS — SISTEMA IBÉRICO
-      </h2>
+    <div className="flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full">
+      
+      {/* Title area */}
+      <div className="border-b border-main pb-4 mb-2">
+        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+          Simulador Dinámico de Contingencias (Balance de Frecuencia)
+        </h2>
+        <p className="text-xs text-text-secondary font-mono mt-1">
+          Capítulo III · Herramienta Interactiva de Integración Dinámica de la Inercia Peninsular
+        </p>
+      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 24 }}>
+      {/* D1. Cuadrícula de Métricas principales */}
+      <div className="metric-cards grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+        <div className="metric-card flex flex-col justify-between">
+          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">ROCOF Inicial (df/dt)</span>
+          <span className="value font-mono text-xl font-bold mt-2" style={{ fontFamily: 'var(--font-mono)' }}>
+            {sim.rocof.toFixed(4)} <span className="text-xs text-text-secondary">Hz/s</span>
+          </span>
+        </div>
+        
+        <div className="metric-card flex flex-col justify-between">
+          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">Nadir de Frecuencia</span>
+          <span className="value font-mono text-xl font-bold mt-2" style={{ color: risk.color, fontFamily: 'var(--font-mono)' }}>
+            {sim.nadir.toFixed(4)} <span className="text-xs text-text-secondary">Hz</span>
+          </span>
+        </div>
+
+        <div className="metric-card flex flex-col justify-between">
+          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">Tiempo al Nadir</span>
+          <span className="value font-mono text-xl font-bold mt-2" style={{ fontFamily: 'var(--font-mono)' }}>
+            {sim.tNadir.toFixed(2)} <span className="text-xs text-text-secondary">s</span>
+          </span>
+        </div>
+
+        <div className="metric-card flex flex-col justify-between">
+          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">Nivel de Riesgo</span>
+          <div className="mt-2">
+            <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)' }}>
+              {risk.label}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">
 
         {/* ── COLUMNA IZQUIERDA: Controles ─────────── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="flex flex-col gap-6">
 
           {/* Panel parámetros */}
-          <div style={{
-            background: '#0f1729', border: '1px solid #1e3a5f',
-            borderRadius: 6, padding: 20
-          }}>
-            <div style={{
-              color: '#94a3b8', fontSize: 11, letterSpacing: '0.15em',
-              marginBottom: 16, fontFamily: 'JetBrains Mono, monospace'
-            }}>
-              PARÁMETROS DEL SISTEMA
+          <div className="bg-secondary border border-main rounded-lg p-5 shadow-sm">
+            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5">
+              Parámetros de Entrada de Red
             </div>
 
             {/* Slider: Pérdida MW */}
@@ -153,7 +187,7 @@ export function ContingencySimulator() {
               min={200} max={15000} step={100}
               onChange={setPowerLoss}
               displayValue={powerLoss.toLocaleString('es-ES')}
-              color="#ef4444"
+              color="var(--alert-red)"
             />
 
             {/* Slider: Inercia */}
@@ -164,103 +198,53 @@ export function ContingencySimulator() {
               min={0.5} max={5.0} step={0.1}
               onChange={setInertia}
               displayValue={inertia.toFixed(2)}
-              color="#06b6d4"
-              hint={`NW: 3,84 s  |  C: 1,84 s  |  S: 1,30 s`}
+              color="var(--accent-cyan)"
+              hint={`Norm: 3,84s | Cb: 1,84s | Sur: 1,30s`}
             />
 
             {/* Slider: Grid-Forming */}
             <SliderField
-              label="Grid-Forming inverters"
+              label="Inversores Grid-Forming"
               unit="%"
               value={gridFormingPct}
               min={0} max={80} step={1}
               onChange={setGridFormingPct}
               displayValue={`${gridFormingPct}%`}
-              color="#22c55e"
-              hint="0% = situación real 28/04/2025"
+              color="var(--alert-green)"
+              hint="0% = Escenario histórico 28/04"
             />
 
             {/* Slider: BESS */}
             <SliderField
-              label="Baterías BESS"
+              label="Baterías de Respuesta Rápida"
               unit="MWh"
               value={batteryMWh}
               min={0} max={2000} step={50}
               onChange={setBatteryMWh}
               displayValue={`${batteryMWh.toLocaleString('es-ES')}`}
-              color="#a78bfa"
-              hint="0 MWh = situación real 28/04/2025"
-            />
-          </div>
-
-          {/* Panel métricas */}
-          <div style={{
-            background: '#0f1729', border: '1px solid #1e3a5f',
-            borderRadius: 6, padding: 20
-          }}>
-            <div style={{
-              color: '#94a3b8', fontSize: 11, letterSpacing: '0.15em',
-              marginBottom: 16, fontFamily: 'JetBrains Mono, monospace'
-            }}>
-              MÉTRICAS CALCULADAS
-            </div>
-
-            <Metric
-              label="ROCOF"
-              value={`${sim.rocof.toFixed(4)} Hz/s`}
-              alert={Math.abs(sim.rocof) > 0.0015}
-            />
-            <Metric
-              label="Nadir frecuencia"
-              value={`${sim.nadir.toFixed(4)} Hz`}
-              color={risk.color}
-            />
-            <Metric
-              label="Tiempo al nadir"
-              value={`${sim.tNadir.toFixed(2)} s`}
-            />
-            <Metric
-              label="Nivel de riesgo"
-              value={risk.label}
-              badge
-              badgeBg={risk.bg}
-              color={risk.color}
+              color="var(--border-accent)"
+              hint="Reserva de energía de almacenamiento"
             />
           </div>
 
           {/* Panel UFLS */}
-          <div style={{
-            background: '#0f1729', border: '1px solid #1e3a5f',
-            borderRadius: 6, padding: 20
-          }}>
-            <div style={{
-              color: '#94a3b8', fontSize: 11, letterSpacing: '0.15em',
-              marginBottom: 12, fontFamily: 'JetBrains Mono, monospace'
-            }}>
-              DESLASTRE UFLS
+          <div className="bg-secondary border border-main rounded-lg p-5 shadow-sm">
+            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-4">
+              Escalones de Deslastre (UFLS)
             </div>
             {UFLS.map(stage => {
               const active = sim.nadir <= stage.hz;
               return (
-                <div key={stage.hz} style={{
-                  display: 'flex', justifyContent: 'space-between',
-                  alignItems: 'center', padding: '6px 0',
-                  borderBottom: '1px solid #141e35'
-                }}>
-                  <span style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: 12, color: active ? '#ef4444' : '#475569'
-                  }}>
+                <div key={stage.hz} className="flex justify-between items-center py-2.5 border-b border-main/30 last:border-0">
+                  <span className={`font-mono text-xs ${active ? 'text-alert-red font-bold' : 'text-text-secondary'}`} style={{ fontFamily: 'var(--font-mono)' }}>
                     {stage.hz} Hz → {stage.mw.toLocaleString('es-ES')} MW
                   </span>
-                  <span style={{
-                    fontSize: 10, padding: '2px 8px', borderRadius: 3,
-                    background: active ? '#450a0a' : '#1e293b',
-                    color: active ? '#ef4444' : '#475569',
-                    fontFamily: 'JetBrains Mono, monospace',
-                    animation: active ? 'blink-alert 1s infinite' : 'none'
-                  }}>
-                    {active ? '● ACTIVO' : '○ INACTIVO'}
+                  <span className={`text-[9px] font-mono px-2 py-0.5 rounded tracking-wider border ${
+                    active 
+                      ? 'bg-alert-red/15 border-alert-red text-alert-red font-bold' 
+                      : 'bg-tertiary border-main text-text-secondary'
+                  }`} style={{ fontFamily: 'var(--font-mono)' }}>
+                    {active ? 'DISPARADO' : 'SOPORTADO'}
                   </span>
                 </div>
               );
@@ -269,79 +253,87 @@ export function ContingencySimulator() {
         </div>
 
         {/* ── COLUMNA DERECHA: Gráfico ──────────────── */}
-        <div style={{
-          background: '#0f1729', border: '1px solid #1e3a5f',
-          borderRadius: 6, padding: 24
-        }}>
-          <div style={{
-            color: '#94a3b8', fontSize: 11, letterSpacing: '0.15em',
-            marginBottom: 16, fontFamily: 'JetBrains Mono, monospace'
-          }}>
-            TRAYECTORIA DE FRECUENCIA — df/dt = ΔP / (2·H·S<sub>base</sub>)
+        <div className="bg-secondary border border-main rounded-lg p-6 shadow-sm flex flex-col justify-between">
+          
+          <div>
+            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase mb-4">
+              Ecuación Teórica del Oscilador Síncrono (Swing Equation)
+            </div>
+
+            {/* LaTeX Equation rendered elegantly in HTML */}
+            <div className="latex-equation flex justify-center items-center gap-1.5 py-4 my-6 bg-tertiary border-l-4 border-accent rounded-r font-serif text-lg relative select-text">
+              <span className="italic">df</span>
+              <span className="mx-0.5">/</span>
+              <span className="italic">dt</span>
+              <span className="mx-2">=</span>
+              <div className="flex flex-col items-center justify-center text-xs mx-1">
+                <span className="border-b border-text-primary pb-0.5 px-2 italic">&Delta;P</span>
+                <span className="pt-0.5 px-2 font-mono">2 &middot; H &middot; S<sub>base</sub></span>
+              </div>
+              <span className="mx-1">&middot;</span>
+              <span className="italic">f<sub>0</sub></span>
+              <span className="absolute right-6 font-mono text-xs text-text-secondary italic" style={{ fontFamily: 'var(--font-mono)' }}>(Ecuación 3.1)</span>
+            </div>
           </div>
 
-          <ResponsiveContainer width="100%" height={420}>
-            <ComposedChart
-              data={sim.trajectory}
-              margin={{ top: 10, right: 30, left: 10, bottom: 30 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e3a5f" />
-              <XAxis
-                dataKey="t"
-                stroke="#475569"
-                tick={{ fill: '#94a3b8', fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}
-                label={{ value: 'Tiempo (s)', position: 'insideBottomRight', offset: -10, fill: '#94a3b8', fontSize: 11 }}
-              />
-              <YAxis
-                domain={[47.0, 50.3]}
-                stroke="#475569"
-                tick={{ fill: '#94a3b8', fontFamily: 'JetBrains Mono, monospace', fontSize: 11 }}
-                label={{ value: 'Frecuencia (Hz)', angle: -90, position: 'insideLeft', fill: '#94a3b8', fontSize: 11 }}
-              />
-              <Tooltip content={<CustomTooltip />} />
+          {/* Gráfico Recharts */}
+          <div className="my-6">
+            <ResponsiveContainer width="100%" height={380}>
+              <ComposedChart
+                data={sim.trajectory}
+                margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" strokeOpacity={0.5} />
+                <XAxis
+                  dataKey="t"
+                  stroke="var(--border)"
+                  tick={{ fill: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}
+                  label={{ value: 'Tiempo transcurrido (s)', position: 'insideBottomRight', offset: -5, fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+                />
+                <YAxis
+                  domain={[47.0, 50.3]}
+                  stroke="var(--border)"
+                  tick={{ fill: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}
+                  label={{ value: 'Frecuencia de Red (Hz)', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+                />
+                <Tooltip content={<CustomTooltip />} />
 
-              {/* Área roja bajo 49,5 Hz */}
-              <Area
-                type="monotone"
-                dataKey="f"
-                fill="#ef4444"
-                fillOpacity={0.06}
-                stroke="none"
-                baseValue={47.0}
-              />
+                {/* Área roja bajo 49,5 Hz */}
+                <Area
+                  type="monotone"
+                  dataKey="f"
+                  fill="var(--alarm)"
+                  fillOpacity={0.04}
+                  stroke="none"
+                  baseValue={47.0}
+                />
 
-              {/* Línea referencia 50 Hz */}
-              <ReferenceLine y={50.0} stroke="#334155" strokeDasharray="6 3" label={{ value: '50,0 Hz', fill: '#475569', fontSize: 10 }} />
-              {/* UFLS lines */}
-              <ReferenceLine y={49.5} stroke="#f97316" strokeDasharray="4 4" label={{ value: '49,5 Hz UFLS', fill: '#f97316', fontSize: 10 }} />
-              <ReferenceLine y={49.3} stroke="#ef4444" strokeDasharray="4 4" label={{ value: '49,3 Hz', fill: '#ef4444', fontSize: 10 }} />
-              <ReferenceLine y={49.0} stroke="#991b1b" strokeDasharray="4 4" label={{ value: '49,0 Hz', fill: '#991b1b', fontSize: 10 }} />
+                {/* Líneas de referencia técnica */}
+                <ReferenceLine y={50.0} stroke="var(--border)" strokeDasharray="4 4" label={{ value: '50,0 Hz — nominal', fill: 'var(--text-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+                <ReferenceLine y={49.5} stroke="var(--warning)" strokeDasharray="3 3" label={{ value: '49,50 Hz (UFLS I)', fill: 'var(--warning)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+                <ReferenceLine y={49.3} stroke="var(--alarm)" strokeDasharray="3 3" label={{ value: '49,30 Hz (UFLS II)', fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+                <ReferenceLine y={49.0} stroke="var(--alarm)" strokeWidth={1} strokeDasharray="3 3" label={{ value: '49,00 Hz (UFLS III - Disparo)', fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
 
-              {/* Curva principal */}
-              <Line
-                type="monotone"
-                dataKey="f"
-                stroke="#06b6d4"
-                strokeWidth={2.5}
-                dot={false}
-                isAnimationActive={false}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
+                {/* Línea de referencia vertical en el nadir */}
+                <ReferenceLine x={sim.tNadir} stroke="var(--alarm)" strokeWidth={1} strokeDasharray="4 4" label={{ value: `Nadir: ${sim.nadir.toFixed(4)} Hz`, fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)', position: 'top' }} />
 
-          {/* Alerta visual */}
-          {sim.nadir < 49.5 && (
-            <div style={{
-              marginTop: 12, padding: '8px 16px',
-              background: risk.bg, border: `1px solid ${risk.color}`,
-              borderRadius: 4, fontFamily: 'JetBrains Mono, monospace',
-              fontSize: 12, color: risk.color,
-              animation: 'blink-alert 1s infinite'
-            }}>
-              ⚠ UFLS ACTIVADO — Nadir: {sim.nadir.toFixed(3)} Hz
-              {sim.uflsHit.map(s => ` | ${s.hz} Hz → ${s.mw.toLocaleString('es-ES')} MW`).join('')}
-            </div>
-          )}
+                {/* Curva principal */}
+                <Line
+                  type="monotone"
+                  dataKey="f"
+                  stroke="var(--info)"
+                  strokeWidth={1.5}
+                  dot={false}
+                  isAnimationActive={false}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Pie de figura formal */}
+          <div className="border-t border-main/50 pt-4 text-xs text-text-secondary font-serif italic text-center select-text">
+            Figura 7.1: Evolución dinámica de la frecuencia del sistema peninsular ante la contingencia parametrizada (Pérdida de Generación y Amortiguamiento).
+          </div>
         </div>
       </div>
     </div>
@@ -358,14 +350,11 @@ interface SliderFieldProps {
 
 function SliderField({ label, unit, value, min, max, step, onChange, displayValue, color, hint }: SliderFieldProps) {
   return (
-    <div style={{ marginBottom: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-        <span style={{ color: '#94a3b8', fontSize: 12 }}>{label}</span>
-        <span style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: 14, color, fontWeight: 700
-        }}>
-          {displayValue} <span style={{ color: '#475569', fontSize: 11 }}>{unit}</span>
+    <div className="mb-5">
+      <div className="flex justify-between items-center mb-1.5">
+        <span className="text-text-secondary text-xs">{label}</span>
+        <span className="font-mono text-sm font-bold" style={{ color, fontFamily: 'var(--font-mono)' }}>
+          {displayValue} <span className="text-text-secondary/70 text-[10px] font-normal" style={{ fontFamily: 'var(--font-mono)' }}>{unit}</span>
         </span>
       </div>
       <input
@@ -373,44 +362,14 @@ function SliderField({ label, unit, value, min, max, step, onChange, displayValu
         min={min} max={max} step={step}
         value={value}
         onChange={e => onChange(parseFloat(e.target.value))}
-        style={{ width: '100%', accentColor: color, cursor: 'pointer' }}
+        className="w-full cursor-pointer h-1 rounded-lg bg-tertiary accent-current"
+        style={{ color }}
       />
       {hint && (
-        <div style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: 10, color: '#475569', marginTop: 4
-        }}>
+        <div className="font-mono text-[9px] text-text-secondary/60 mt-1" style={{ fontFamily: 'var(--font-mono)' }}>
           {hint}
         </div>
       )}
-    </div>
-  );
-}
-
-interface MetricProps {
-  label: string; value: string;
-  alert?: boolean; color?: string;
-  badge?: boolean; badgeBg?: string;
-}
-
-function Metric({ label, value, alert, color, badge, badgeBg }: MetricProps) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-      padding: '8px 0', borderBottom: '1px solid #141e35'
-    }}>
-      <span style={{ color: '#94a3b8', fontSize: 12 }}>{label}</span>
-      <span style={{
-        fontFamily: 'JetBrains Mono, monospace', fontSize: 14,
-        color: alert ? '#ef4444' : (color ?? '#67e8f9'),
-        background: badge ? badgeBg : 'transparent',
-        padding: badge ? '2px 8px' : '0',
-        borderRadius: badge ? 3 : 0,
-        animation: alert ? 'blink-alert 1s infinite' : 'none',
-        fontWeight: 700
-      }}>
-        {value}
-      </span>
     </div>
   );
 }

@@ -10,18 +10,18 @@ const TERMS = [
     value: '-1,5 Hz/s',
     source: 'REE / ENTSO-E',
     category: 'frecuencia',
-    color: '#ef4444',
+    color: 'var(--alert-red)',
   },
   {
     id: 'inertia',
     term: 'Constante H',
     full: 'Inertia Constant',
-    formula: 'H = E_k / S_nominal (segundos)',
+    formula: 'H_sys(t) = ( Σ (H_i · S_i) + ∫ P_synth_gfm(t) dt ) / S_sys(t)',
     definition: 'Relación entre la energía cinética almacenada en la masa rotatoria de un generador y su potencia nominal. Determina cuánto tiempo puede un generador sostener su potencia ante un desequilibrio. El sistema ibérico tenía H=2,3 s global, pero H=1,3 s en el sur.',
     value: '1,3–3,84 s',
     source: 'ICAI',
     category: 'frecuencia',
-    color: '#06b6d4',
+    color: 'var(--accent)',
   },
   {
     id: 'taplag',
@@ -32,7 +32,7 @@ const TERMS = [
     value: '418→244 kV',
     source: 'ICAI/AELEC',
     category: 'tension',
-    color: '#f97316',
+    color: 'var(--alert-orange)',
   },
   {
     id: 'gridfollowing',
@@ -43,7 +43,7 @@ const TERMS = [
     value: '82% del mix',
     source: 'ENTSO-E / FutuRed',
     category: 'inversor',
-    color: '#eab308',
+    color: 'var(--alert-orange)',
   },
   {
     id: 'gridforming',
@@ -54,7 +54,7 @@ const TERMS = [
     value: '0% el 28-A',
     source: 'ENTSO-E NC RfG 2.0',
     category: 'inversor',
-    color: '#22c55e',
+    color: 'var(--alert-green)',
   },
   {
     id: 'qv',
@@ -65,7 +65,7 @@ const TERMS = [
     value: '-57% margen',
     source: 'ICAI',
     category: 'tension',
-    color: '#a78bfa',
+    color: 'var(--text-mono)',
   },
   {
     id: 'ferranti',
@@ -75,7 +75,7 @@ const TERMS = [
     value: '1,05–2,4 GVAr',
     source: 'ICAI',
     category: 'tension',
-    color: '#f97316',
+    color: 'var(--alert-orange)',
   },
   {
     id: 'ufls',
@@ -86,7 +86,7 @@ const TERMS = [
     value: '~4.000 MW',
     source: 'REE',
     category: 'proteccion',
-    color: '#ef4444',
+    color: 'var(--alert-red)',
   },
   {
     id: 'hvdc',
@@ -97,7 +97,7 @@ const TERMS = [
     value: '1.000 MW fijos',
     source: 'REE p.103',
     category: 'regulacion',
-    color: '#0ea5e9',
+    color: 'var(--accent)',
   },
   {
     id: 'ibr',
@@ -108,7 +108,7 @@ const TERMS = [
     value: '82% penetración',
     source: 'ENTSO-E / REE',
     category: 'inversor',
-    color: '#22c55e',
+    color: 'var(--alert-green)',
   },
   {
     id: 'pll',
@@ -119,7 +119,7 @@ const TERMS = [
     value: 'inestable en red débil',
     source: 'ENTSO-E / FutuRed',
     category: 'inversor',
-    color: '#eab308',
+    color: 'var(--alert-orange)',
   },
   {
     id: 'po74',
@@ -130,7 +130,7 @@ const TERMS = [
     value: 'años de demora',
     source: 'Gobierno / ENTSO-E',
     category: 'regulacion',
-    color: '#8b5cf6',
+    color: 'var(--text-mono)',
   },
   {
     id: 'nrfg',
@@ -141,7 +141,7 @@ const TERMS = [
     value: '≥1 MW obligatorio',
     source: 'ENTSO-E 2025',
     category: 'regulacion',
-    color: '#0ea5e9',
+    color: 'var(--accent)',
   },
   {
     id: 'ssc',
@@ -152,7 +152,7 @@ const TERMS = [
     value: 'mínimos históricos',
     source: 'FutuRed / ENTSO-E',
     category: 'red',
-    color: '#06b6d4',
+    color: 'var(--accent)',
   },
   {
     id: 'blackstart',
@@ -163,7 +163,7 @@ const TERMS = [
     value: 'solo hidro + GFM',
     source: 'REE / FutuRed',
     category: 'proteccion',
-    color: '#22c55e',
+    color: 'var(--alert-green)',
   },
   {
     id: 'ost',
@@ -174,7 +174,7 @@ const TERMS = [
     value: '12:33:21 CEST',
     source: 'ENTSO-E §4.3',
     category: 'proteccion',
-    color: '#22c55e',
+    color: 'var(--alert-green)',
   },
 ];
 
@@ -209,49 +209,49 @@ export default function TechLexicon() {
   const selectedTerm = TERMS.find((t) => t.id === selectedTermId);
 
   return (
-    <div className="flex-grow flex flex-col justify-between text-[#e2e8f0] font-sans">
+    <div className="flex-grow flex flex-col justify-between text-text-primary font-sans animate-fade-in w-full">
       
       {/* Header */}
-      <div className="mb-4">
-        <h2 className="font-mono text-[#06b6d4] text-lg uppercase tracking-widest font-black flex items-center gap-2">
-          <span>📖</span> GLOSARIO TÉCNICO INTERACTIVO
+      <div className="border-b border-main pb-4 mb-4">
+        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+          Glosario Técnico de Dinámica de Sistemas Eléctricos
         </h2>
-        <p className="text-[#94a3b8] text-xs font-mono uppercase tracking-wider mt-1">
-          Conceptos y Formulación de Dinámica Rápida del Sistema Eléctrico Ibérico
+        <p className="text-xs text-text-secondary font-mono mt-1">
+          Capítulo VII · Compendio Conceptual y Formulación Matemática Relativa al TFG Blackout 2025
         </p>
       </div>
 
       {/* SEARCH AND FILTERS TOOLBAR */}
-      <div className="bg-[#0f1729] border border-[#1e3a5f] p-4 rounded-lg shadow-lg mb-6 flex flex-col gap-4">
-        <div className="flex items-center gap-3 bg-[#0a0e1a] border border-[#1e3a5f]/60 rounded-lg px-3.5 py-2">
-          <span className="text-[#06b6d4]">🔍</span>
+      <div className="bg-secondary border border-main p-4 rounded-lg shadow-sm mb-6 flex flex-col gap-4">
+        <div className="flex items-center gap-3 bg-tertiary border border-main rounded-lg px-4 py-2.5 shadow-inner">
+          <span className="text-text-secondary">🔍</span>
           <input
             type="text"
             placeholder="Buscar por término, acrónimo, descripción o fórmula..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-transparent text-xs font-mono text-white placeholder-[#475569] focus:outline-none flex-grow"
+            className="bg-transparent text-xs font-mono text-text-primary placeholder-text-secondary/50 focus:outline-none flex-grow"
           />
           {searchTerm && (
             <button
               onClick={() => setSearchTerm('')}
-              className="text-[#94a3b8] hover:text-white font-mono text-xs"
+              className="text-text-secondary hover:text-text-primary font-mono text-[10px] font-bold cursor-pointer"
             >
-              [CLEAR]
+              [CERRAR]
             </button>
           )}
         </div>
 
         {/* Category Pill Selection */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-3 py-1.5 rounded font-mono text-[10px] uppercase border transition-all duration-200 ${
+              className={`px-3 py-1.5 rounded font-mono text-[10px] uppercase border transition-all duration-200 cursor-pointer ${
                 activeCategory === cat.id
-                  ? 'bg-[#06b6d4]/10 border-[#06b6d4] text-[#06b6d4] font-bold shadow-[0_0_8px_rgba(6,182,212,0.15)]'
-                  : 'bg-transparent border-[#1e3a5f]/40 text-[#94a3b8] hover:text-[#e2e8f0] hover:border-[#1e3a5f]/80'
+                  ? 'bg-accent text-white border-accent font-bold'
+                  : 'bg-transparent border-main text-text-secondary hover:text-text-primary hover:bg-tertiary/40'
               }`}
             >
               {cat.label}
@@ -261,44 +261,44 @@ export default function TechLexicon() {
       </div>
 
       {/* TERMS GRID (3 columns) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch flex-grow">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch flex-grow mb-6">
         {filteredTerms.map((term) => (
           <div
             key={term.id}
             onClick={() => setSelectedTermId(term.id)}
-            className="bg-[#0f1729] border border-[#1e3a5f] hover:border-[#0ea5e9]/70 rounded-lg p-5 cursor-pointer shadow-md hover:shadow-lg relative overflow-hidden transition-all duration-300 flex flex-col justify-between group"
+            className="bg-secondary border border-main hover:border-accent rounded-lg p-5 cursor-pointer shadow-sm hover:shadow-md relative overflow-hidden transition-all duration-200 flex flex-col justify-between group"
           >
             {/* Top color tag indicator */}
             <div
-              className="absolute top-0 left-0 right-0 h-[2px] transition-all"
+              className="absolute top-0 left-0 right-0 h-[2.5px] transition-all"
               style={{ backgroundColor: term.color }}
             ></div>
 
             <div>
               <div className="flex justify-between items-start mb-2">
                 <span
-                  className="font-mono text-base font-black tracking-wider group-hover:scale-105 transition-transform"
+                  className="font-serif text-base font-bold tracking-tight transition-transform"
                   style={{ color: term.color }}
                 >
                   {term.term}
                 </span>
-                <span className="text-[9px] font-mono text-[#475569] uppercase border border-[#1e3a5f]/40 px-1.5 py-0.5 rounded">
+                <span className="text-[9px] font-mono text-text-secondary uppercase border border-main px-1.5 py-0.5 rounded font-bold">
                   {term.category.toUpperCase()}
                 </span>
               </div>
 
-              <div className="text-[10px] font-mono text-[#94a3b8] tracking-wide mb-3 truncate">
+              <div className="text-[10px] font-mono text-text-secondary tracking-wide mb-3 truncate">
                 {term.full}
               </div>
 
-              <p className="text-xs text-[#94a3b8] leading-relaxed line-clamp-3 mb-4 select-none">
+              <p className="text-xs text-text-secondary leading-relaxed line-clamp-3 mb-4 select-none">
                 {term.definition}
               </p>
             </div>
 
-            <div className="border-t border-[#1e3a5f]/40 pt-3 mt-3 flex justify-between items-center font-mono">
-              <span className="text-[10px] text-[#475569]">VALOR REGISTRAL:</span>
-              <span className="text-xs font-bold text-white bg-[#0a0e1a] border border-[#1e3a5f]/60 px-2 py-0.5 rounded">
+            <div className="border-t border-main/40 pt-3 mt-3 flex justify-between items-center font-mono text-[10px]">
+              <span className="text-text-secondary uppercase">VALOR REGISTRAL:</span>
+              <span className="text-xs font-bold text-text-primary bg-tertiary border border-main px-2.5 py-0.5 rounded shadow-inner">
                 {term.value}
               </span>
             </div>
@@ -306,7 +306,7 @@ export default function TechLexicon() {
         ))}
 
         {filteredTerms.length === 0 && (
-          <div className="col-span-full bg-[#0f1729]/50 border border-[#1e3a5f]/40 rounded-lg p-10 text-center font-mono text-xs text-[#475569]">
+          <div className="col-span-full bg-secondary border border-main rounded-lg p-10 text-center font-mono text-xs text-text-secondary shadow-sm">
             ⚠️ Ningún concepto coincide con los filtros especificados. Intente resetear la búsqueda.
           </div>
         )}
@@ -314,8 +314,8 @@ export default function TechLexicon() {
 
       {/* DETAIL MODAL PANEL */}
       {selectedTerm && (
-        <div className="fixed inset-0 bg-[#0a0e1a]/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0f1729] border border-[#0ea5e9] rounded-lg p-6 max-w-xl w-full relative shadow-[0_0_35px_rgba(6,182,212,0.15)] animate-fade-in">
+        <div className="fixed inset-0 bg-secondary/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-secondary border border-accent rounded-lg p-6 max-w-xl w-full relative shadow-lg animate-fade-in">
             {/* Top dynamic color block */}
             <div
               className="absolute top-0 left-0 right-0 h-[3.5px]"
@@ -325,52 +325,52 @@ export default function TechLexicon() {
             {/* Close Button */}
             <button
               onClick={() => setSelectedTermId(null)}
-              className="absolute top-4 right-4 text-[#94a3b8] hover:text-white font-mono text-xs border border-[#1e3a5f]/60 px-2 py-1 bg-[#0a0e1a] rounded"
+              className="absolute top-4 right-4 text-text-secondary hover:text-text-primary font-mono text-[10px] font-bold border border-main px-2.5 py-1 bg-tertiary rounded cursor-pointer transition-colors"
             >
               [CERRAR ESC]
             </button>
 
             {/* Content */}
             <div className="space-y-4">
-              <div className="flex items-baseline gap-3 border-b border-[#1e3a5f]/50 pb-3">
-                <span className="font-mono text-2xl font-black" style={{ color: selectedTerm.color }}>
+              <div className="flex items-baseline gap-3 border-b border-main pb-3">
+                <span className="font-serif text-2xl font-bold" style={{ color: selectedTerm.color }}>
                   {selectedTerm.term}
                 </span>
-                <span className="text-[10px] font-mono text-[#94a3b8] uppercase">
+                <span className="text-[10px] font-mono text-text-secondary uppercase font-bold">
                   {selectedTerm.category}
                 </span>
               </div>
 
               <div>
-                <span className="text-[10px] text-[#475569] font-mono uppercase block">Nombre Completo</span>
-                <span className="text-sm text-white font-mono font-medium">{selectedTerm.full}</span>
+                <span className="text-[9px] text-text-secondary font-mono uppercase block mb-0.5">Nombre Científico completo</span>
+                <span className="text-sm text-text-primary font-serif font-bold">{selectedTerm.full}</span>
               </div>
 
               {/* Formula Panel (renders only if exists) */}
               {selectedTerm.formula && (
-                <div className="bg-[#0a0e1a] border border-[#1e3a5f] p-4 rounded text-center">
-                  <span className="text-[9px] text-[#06b6d4] font-mono uppercase block text-left mb-1">// EXPRESIÓN MATEMÁTICA</span>
-                  <span className="font-mono text-[#67e8f9] text-base font-bold tracking-wider">
+                <div className="bg-tertiary border border-main p-4 rounded text-center shadow-inner">
+                  <span className="text-[9px] text-accent font-mono uppercase block text-left mb-2">// EXPRESIÓN DINÁMICA (LaTeX)</span>
+                  <div className="text-text-primary text-base select-all py-1" style={{ fontFamily: "'Latin Modern Math', 'TeX Gyre Schola', 'New Century Schoolbook', Georgia, serif", fontStyle: 'italic', letterSpacing: '0.05em' }}>
                     {selectedTerm.formula}
-                  </span>
+                  </div>
                 </div>
               )}
 
               <div>
-                <span className="text-[10px] text-[#475569] font-mono uppercase block mb-1">Definición Analítica</span>
-                <p className="text-xs text-[#e2e8f0] leading-relaxed font-mono bg-[#0a0e1a]/40 border border-[#1e3a5f]/30 p-3.5 rounded">
+                <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Definición Analítica y Contexto del Colapso</span>
+                <p className="text-xs text-text-secondary leading-relaxed font-sans bg-tertiary border border-main p-3.5 rounded select-text">
                   {selectedTerm.definition}
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 border-t border-[#1e3a5f]/50 pt-4 font-mono text-xs">
+              <div className="grid grid-cols-2 gap-4 border-t border-main/40 pt-4 font-mono text-xs">
                 <div>
-                  <span className="text-[9px] text-[#475569] uppercase block">Valor del Suceso</span>
-                  <span className="font-bold text-white mt-1 block">{selectedTerm.value}</span>
+                  <span className="text-[9px] text-text-secondary uppercase block">Valor del Suceso</span>
+                  <span className="font-bold text-text-primary mt-1 block select-all">{selectedTerm.value}</span>
                 </div>
                 <div>
-                  <span className="text-[9px] text-[#475569] uppercase block">Fuentes Citadas</span>
-                  <span className="font-bold text-[#06b6d4] mt-1 block">{selectedTerm.source}</span>
+                  <span className="text-[9px] text-text-secondary uppercase block">Fuentes Citadas</span>
+                  <span className="font-bold text-accent mt-1 block select-all">{selectedTerm.source}</span>
                 </div>
               </div>
             </div>

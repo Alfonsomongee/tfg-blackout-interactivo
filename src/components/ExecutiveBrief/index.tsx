@@ -1,111 +1,110 @@
-
 export default function ExecutiveBrief() {
   return (
-    <div className="flex-grow flex flex-col justify-between text-[#e2e8f0] font-sans">
+    <div className="flex-grow flex flex-col justify-between text-text-primary font-sans animate-fade-in w-full">
       {/* Header section */}
-      <div className="mb-4">
-        <h2 className="font-mono text-[#06b6d4] text-lg uppercase tracking-widest font-black flex items-center gap-2">
-          <span>📋</span> RESUMEN EJECUTIVO: ALERTA NACIONAL 28-A
+      <div className="border-b border-main pb-4 mb-4">
+        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+          Resumen Ejecutivo e Informe de Síntesis Forense
         </h2>
-        <p className="text-[#94a3b8] text-xs font-mono uppercase tracking-wider mt-1">
-          Informe de Síntesis Forense de Alto Nivel para Autoridades y Reguladores
+        <p className="text-xs text-text-secondary font-mono mt-1">
+          Capítulo I · Dictamen de Alto Nivel para Reguladores e Instituciones del Sector Eléctrico
         </p>
       </div>
 
-      {/* Main 3-column Grid (designed for no vertical scroll on typical screens) */}
+      {/* Main 3-column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 items-stretch flex-grow">
         
         {/* COLUMNA IZQUIERDA — "LO QUE PASÓ" (30% ancho / 3 cols) */}
-        <div className="lg:col-span-3 flex flex-col justify-between gap-4 bg-[#0f1729] border border-[#1e3a5f] p-5 rounded-lg shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#06b6d4] to-transparent"></div>
-          <div className="font-mono text-[#06b6d4] text-[10px] tracking-widest uppercase font-bold border-b border-[#1e3a5f]/40 pb-2 mb-2">
-            // TELEMETRÍA DE IMPACTO
+        <div className="lg:col-span-3 flex flex-col justify-between gap-4 bg-secondary border border-main p-5 rounded-lg shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent to-transparent"></div>
+          <div className="font-mono text-text-mono text-[10px] tracking-widest uppercase font-bold border-b border-main/40 pb-2 mb-2">
+            // TELEMETRÍA DEL IMPACTO SÍSMICO
           </div>
 
           <div className="flex flex-col flex-grow justify-around gap-4">
             <div>
-              <div className="font-mono text-5xl font-black text-[#0ea5e9] leading-none tracking-tight">
-                22,5 s
+              <div className="font-mono text-4xl lg:text-5xl font-black text-accent leading-none tracking-tight">
+                22,50 s
               </div>
-              <div className="text-xs font-mono uppercase text-[#94a3b8] tracking-widest mt-1">
-                Duración del colapso
-              </div>
-            </div>
-
-            <div>
-              <div className="font-mono text-5xl font-black text-[#ef4444] leading-none tracking-tight">
-                &gt;15 GW
-              </div>
-              <div className="text-xs font-mono uppercase text-[#94a3b8] tracking-widest mt-1">
-                Generación perdida
+              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
+                Velocidad de propagación
               </div>
             </div>
 
             <div>
-              <div className="font-mono text-5xl font-black text-[#f97316] leading-none tracking-tight">
+              <div className="font-mono text-4xl lg:text-5xl font-black text-alert-red leading-none tracking-tight">
+                &gt;15,0 GW
+              </div>
+              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
+                Potencia total desconectada
+              </div>
+            </div>
+
+            <div>
+              <div className="font-mono text-4xl lg:text-5xl font-black text-alert-orange leading-none tracking-tight">
                 ~60 M
               </div>
-              <div className="text-xs font-mono uppercase text-[#94a3b8] tracking-widest mt-1">
-                Personas afectadas
+              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
+                Población desconectada
               </div>
             </div>
 
             <div>
-              <div className="font-mono text-5xl font-black text-[#22c55e] leading-none tracking-tight">
-                82 %
+              <div className="font-mono text-4xl lg:text-5xl font-black text-alert-green leading-none tracking-tight">
+                82,4 %
               </div>
-              <div className="text-xs font-mono uppercase text-[#94a3b8] tracking-widest mt-1">
-                Penetración renovable
+              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
+                Penetración instantánea renovable
               </div>
             </div>
           </div>
         </div>
 
         {/* COLUMNA CENTRAL — "POR QUÉ PASÓ" (40% ancho / 4 cols) */}
-        <div className="lg:col-span-4 flex flex-col justify-between gap-4 bg-[#0f1729] border border-[#1e3a5f] p-5 rounded-lg shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#f97316] to-transparent"></div>
-          <div className="font-mono text-[#f97316] text-[10px] tracking-widest uppercase font-bold border-b border-[#1e3a5f]/40 pb-2">
-            // ANÁLISIS DE CAUSAS RAÍZ
+        <div className="lg:col-span-4 flex flex-col justify-between gap-4 bg-secondary border border-main p-5 rounded-lg shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-alert-orange to-transparent"></div>
+          <div className="font-mono text-alert-orange text-[10px] tracking-widest uppercase font-bold border-b border-main/40 pb-2">
+            // FRACTURAS TÉCNICAS E HISTÓRICAS
           </div>
 
           <div className="flex flex-col justify-between flex-grow gap-4 pt-2">
             
             {/* Fractura Operativa */}
-            <div className="flex flex-col gap-1.5 pb-3 border-b border-[#1e3a5f]/50">
+            <div className="flex flex-col gap-1.5 pb-3 border-b border-main/40">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444] animate-pulse"></span>
-                <span className="font-mono text-xs font-black text-[#ef4444] tracking-wider uppercase">
-                  🔴 FRACTURA OPERATIVA
+                <span className="w-2.5 h-2.5 rounded-full bg-alert-red animate-pulse"></span>
+                <span className="font-mono text-xs font-black text-alert-red tracking-wider uppercase">
+                  Fractura Física Operativa
                 </span>
               </div>
-              <p className="text-xs text-[#e2e8f0] leading-relaxed font-mono">
-                El mallado de 11 líneas de 400 kV inyectó <strong className="text-[#0ea5e9] font-normal">&gt;0,7 GVAr</strong> capacitivos frente a apenas <strong className="text-[#ef4444] font-normal">0,2 GVAr</strong> de absorción inductiva real disponible. Este desequilibrio generó una sobretensión masiva irreversible.
+              <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
+                El mallado masivo inyectó <strong className="text-accent font-bold">&gt;0,7 GVAr</strong> capacitivos frente a apenas <strong className="text-alert-red font-bold">0,2 GVAr</strong> de capacidad de absorción inductiva real disponible. Este desbalance desató una sobretensión lineal en cadena.
               </p>
             </div>
 
             {/* Fractura Regulatoria */}
-            <div className="flex flex-col gap-1.5 pb-3 border-b border-[#1e3a5f]/50">
+            <div className="flex flex-col gap-1.5 pb-3 border-b border-main/40">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#eab308] animate-pulse"></span>
-                <span className="font-mono text-xs font-black text-[#eab308] tracking-wider uppercase">
-                  🟡 FRACTURA REGULATORIA
+                <span className="w-2.5 h-2.5 rounded-full bg-alert-orange animate-pulse"></span>
+                <span className="font-mono text-xs font-black text-alert-orange tracking-wider uppercase">
+                  Fractura Regulatoria Nacional
                 </span>
               </div>
-              <p className="text-xs text-[#e2e8f0] leading-relaxed font-mono">
-                El Procedimiento de Operación <strong className="text-white font-normal">P.O. 7.4</strong> prohibía legalmente al 82% de la generación activa (IBR) regular tensión dinámicamente, forzándolas a factor de potencia fijo. Años de demora regulatoria acumulada.
+              <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
+                La directriz reglamentaria <strong className="text-text-primary font-bold">P.O. 7.4</strong> restringía legalmente al 82% de la potencia activa acoplada (inversores) regular tensión dinámicamente, obligándolas a operar a factor de potencia estático constante.
               </p>
             </div>
 
             {/* Fractura Sistémica */}
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#0ea5e9] animate-pulse"></span>
-                <span className="font-mono text-xs font-black text-[#0ea5e9] tracking-wider uppercase">
-                  🔵 FRACTURA SISTÉMICA
+                <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse"></span>
+                <span className="font-mono text-xs font-black text-accent tracking-wider uppercase">
+                  Fractura Sistémica Operativa
                 </span>
               </div>
-              <p className="text-xs text-[#e2e8f0] leading-relaxed font-mono">
-                El criterio estático de seguridad <strong className="text-white font-normal">N-1</strong> clasificó el estado del sistema como plenamente "Normal" 5 minutos antes del colapso, resultando ciego ante la inestabilidad de tensión en régimen dinámico rápido.
+              <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
+                El algoritmo estático tradicional de seguridad <strong className="text-text-primary font-bold">N-1</strong> clasificó el sistema en estado "Seguro" minutos previos al desastre, ignorando la susceptibilidad a transitorios rápidos ante fallas de tensión.
               </p>
             </div>
 
@@ -113,50 +112,40 @@ export default function ExecutiveBrief() {
         </div>
 
         {/* COLUMNA DERECHA — "QUÉ NO CAUSÓ EL APAGÓN" (30% ancho / 3 cols) */}
-        <div className="lg:col-span-3 flex flex-col justify-between gap-3 bg-[#0f1729] border border-[#1e3a5f] p-5 rounded-lg shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#22c55e] to-transparent"></div>
-          <div className="font-mono text-[#22c55e] text-[10px] tracking-widest uppercase font-bold border-b border-[#1e3a5f]/40 pb-2 mb-2">
-            // MITOS VS REALIDADES HISTÓRICAS
+        <div className="lg:col-span-3 flex flex-col justify-between gap-3 bg-secondary border border-main p-5 rounded-lg shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-alert-green to-transparent"></div>
+          <div className="font-mono text-alert-green text-[10px] tracking-widest uppercase font-bold border-b border-main/40 pb-2 mb-2">
+            // MITOS DE OPINIÓN VS HECHOS CIENTÍFICOS
           </div>
 
           <div className="flex flex-col flex-grow justify-between gap-3">
             {/* Mito 1 */}
             <div className="flex flex-col gap-1">
-              <div className="px-3 py-1.5 rounded bg-[#450a0a] border border-[#ef4444]/30 text-xs text-[#ef4444] font-mono line-through font-bold">
-                ✗ FALSO: "Faltó energía nuclear"
+              <div className="px-3 py-1.5 rounded bg-alert-red/5 border border-alert-red/20 text-[10px] text-alert-red font-mono line-through font-bold">
+                ✗ MITO: "Faltó inercia nuclear o carbón"
               </div>
-              <div className="px-3 py-1.5 rounded bg-[#052e16] border border-[#22c55e]/30 text-xs text-[#4ade80] font-mono leading-relaxed">
-                <span className="font-bold">✓ REAL:</span> H=2,3 s global. El colchón inercial superaba holgadamente el umbral mínimo de seguridad de ENTSO-E (2,0 s).
+              <div className="px-3 py-1.5 rounded bg-alert-green/5 border border-alert-green/20 text-xs text-text-secondary font-sans leading-normal select-text">
+                <span className="font-bold text-alert-green font-mono">✓ HECHO:</span> La inercia sistémica peninsular H era de 2,3 s, holgadamente por encima del umbral mínimo de seguridad de ENTSO-E (2,0 s).
               </div>
             </div>
 
             {/* Mito 2 */}
             <div className="flex flex-col gap-1">
-              <div className="px-3 py-1.5 rounded bg-[#450a0a] border border-[#ef4444]/30 text-xs text-[#ef4444] font-mono line-through font-bold">
-                ✗ FALSO: "Exceso de renovables"
+              <div className="px-3 py-1.5 rounded bg-alert-red/5 border border-alert-red/20 text-[10px] text-alert-red font-mono line-through font-bold">
+                ✗ MITO: "Exceso de plantas fotovoltaicas"
               </div>
-              <div className="px-3 py-1.5 rounded bg-[#052e16] border border-[#22c55e]/30 text-xs text-[#4ade80] font-mono leading-relaxed">
-                <span className="font-bold">✓ REAL:</span> El blackout fue provocado por inestabilidad capacitiva de tensión y saturación reactiva, no por escasez de potencia activa.
+              <div className="px-3 py-1.5 rounded bg-alert-green/5 border border-alert-green/20 text-xs text-text-secondary font-sans leading-normal select-text">
+                <span className="font-bold text-alert-green font-mono">✓ HECHO:</span> El apagón fue motivado por inestabilidad reactiva de sobretensión, no por falta de potencia activa disponible en el mix.
               </div>
             </div>
 
             {/* Mito 3 */}
             <div className="flex flex-col gap-1">
-              <div className="px-3 py-1.5 rounded bg-[#450a0a] border border-[#ef4444]/30 text-xs text-[#ef4444] font-mono line-through font-bold">
-                ✗ FALSO: "Ciberataque ruso en subestaciones"
+              <div className="px-3 py-1.5 rounded bg-alert-red/5 border border-alert-red/20 text-[10px] text-alert-red font-mono line-through font-bold">
+                ✗ MITO: "Desconexión deliberada de Francia"
               </div>
-              <div className="px-3 py-1.5 rounded bg-[#052e16] border border-[#22c55e]/30 text-xs text-[#4ade80] font-mono leading-relaxed">
-                <span className="font-bold">✓ REAL:</span> Explicación estrictamente física: saturación destructiva de curvas Q-V en el nudo crítico andaluz de Carmona de 400 kV.
-              </div>
-            </div>
-
-            {/* Mito 4 */}
-            <div className="flex flex-col gap-1">
-              <div className="px-3 py-1.5 rounded bg-[#450a0a] border border-[#ef4444]/30 text-xs text-[#ef4444] font-mono line-through font-bold">
-                ✗ FALSO: "Francia nos abandonó y cortó"
-              </div>
-              <div className="px-3 py-1.5 rounded bg-[#052e16] border border-[#22c55e]/30 text-xs text-[#4ade80] font-mono leading-relaxed">
-                <span className="font-bold">✓ REAL:</span> Los relés OST transpirenaicos abrieron de forma automática e impecable de acuerdo con el código de red (ENTSO-E §4.3) salvando a Europa.
+              <div className="px-3 py-1.5 rounded bg-alert-green/5 border border-alert-green/20 text-xs text-text-secondary font-sans leading-normal select-text">
+                <span className="font-bold text-alert-green font-mono">✓ HECHO:</span> Los relés OST transpirenaicos actuaron de forma intachable para aislar la inestabilidad según los códigos de red paneuropeos (ENTSO-E §4.3).
               </div>
             </div>
           </div>
@@ -165,8 +154,8 @@ export default function ExecutiveBrief() {
       </div>
 
       {/* Component Footer */}
-      <footer className="mt-5 border-t border-[#1e3a5f]/40 pt-3 text-center text-[10px] text-[#475569] font-mono uppercase tracking-wider">
-        Fuentes: REE (jun. 2025) · ICAI/AELEC (may. 2025) · ENTSO-E ICS (abr. 2025) · Comité de Análisis MITECO (jun. 2025)
+      <footer className="mt-6 border-t border-main/40 pt-4 text-center text-[10px] text-text-secondary/70 font-mono uppercase tracking-wider">
+        INFORMES ANALIZADOS: REE (JUNIO 2025) · REPORTE TÉCNICO ICAI (MAYO 2025) · ENTSO-E ICS REPORT (ABRIL 2025) · COMITÉ CIENTÍFICO MITECO
       </footer>
     </div>
   );

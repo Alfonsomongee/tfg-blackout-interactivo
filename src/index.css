@@ -324,31 +324,85 @@ input[type="range"]:hover::-webkit-slider-thumb {
 }
 
 @media print {
-  nav, .sidebar { display: none !important; }
-  body {
-    background: #fff !important;
-    color: #000 !important;
-    font-family: Georgia, serif !important;
+  /* Ocultar navegación */
+  nav, .sidebar, [data-no-print] { display: none !important; }
+
+  /* Reset de fondo */
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
     font-size: 11pt;
+    font-family: Georgia, 'Times New Roman', serif !important;
   }
-  main { padding: 0 !important; }
-  .surface, .metric-card {
+
+  /* Main ocupa toda la página */
+  main { padding: 0 !important; margin: 0 !important; }
+
+  /* Superficies */
+  .surface, .metric-card, .surface-raised {
     background: transparent !important;
-    border: 1px solid #ccc !important;
+    border: 1px solid #cccccc !important;
     break-inside: avoid;
   }
-  .t-mono, .t-data {
+
+  /* Texto */
+  .t-subheading { color: #444444 !important; }
+  .t-body, .t-caption { color: #333333 !important; }
+  .t-mono, .t-data, .t-data-lg {
     font-family: 'Courier New', monospace !important;
-    color: #000 !important;
+    color: #000000 !important;
   }
+
+  /* Tabla académica */
   .table-academic th, .table-academic td {
-    border-color: #888 !important;
-    color: #000 !important;
+    border-color: #888888 !important;
+    color: #000000 !important;
   }
+
+  /* Recharts: hacer visible sobre fondo blanco */
+  .recharts-cartesian-grid line { stroke: #dddddd !important; }
+  .recharts-text { fill: #333333 !important; }
+
+  /* Cabecera de página en impresión */
   body::before {
-    content: "Análisis del Apagón 28-A — Alfonso Monge — Univ. de Sevilla — 2026";
-    display: block; font-size: 9pt; color: #666;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 8pt; margin-bottom: 16pt;
+    content: "Análisis del Apagón del 28 de Abril de 2025 — Alfonso Monge Díaz-Ángel — Universidad de Sevilla — 2026";
+    display: block;
+    font-size: 9pt;
+    color: #666666;
+    border-bottom: 1px solid #cccccc;
+    padding-bottom: 8pt;
+    margin-bottom: 16pt;
   }
+
+  /* Saltos de página */
+  h1, h2 { break-after: avoid; }
+  figure, table { break-inside: avoid; }
+}
+
+/* Sidebar Nav Items Unificados */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all var(--transition);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+}
+.nav-item:hover {
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+}
+.nav-item.active {
+  border-left: 2px solid var(--info);
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  padding-left: calc(1.25rem - 2px);
+  font-weight: 500;
 }
