@@ -20,6 +20,8 @@ import MethodologyTransparency from './components/MethodologyTransparency';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
+import PositionPolarimeter from './components/PositionPolarimeter';
+import ForensicVerdict from './components/ForensicVerdict';
 import { useStore } from './hooks/useStore';
 
 // Page wrapper for smooth layout fade-in transition on route change
@@ -180,6 +182,9 @@ const Layout: React.FC = () => {
           <NavLink to="/compare" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>📊 Comparador de Narrativas</span>
           </NavLink>
+          <NavLink to="/polarimetro" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>🧭 Polarímetro de Posiciones</span>
+          </NavLink>
           <NavLink to="/causal" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>🔗 Cadena Causal</span>
           </NavLink>
@@ -230,6 +235,9 @@ const Layout: React.FC = () => {
           </NavLink>
           <NavLink to="/reforms" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>📋 Progreso Reformas</span>
+          </NavLink>
+          <NavLink to="/veredicto" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>⚖️ Veredicto Forense</span>
           </NavLink>
 
           <button
@@ -353,6 +361,13 @@ const Layout: React.FC = () => {
               <span>Comparador de Narrativas</span>
             </NavLink>
 
+            <NavLink to="/polarimetro" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+              </svg>
+              <span>Polarímetro</span>
+            </NavLink>
+
             <NavLink to="/causal" className={linkClass}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -438,6 +453,13 @@ const Layout: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
               <span>Progreso Reformas</span>
+            </NavLink>
+
+            <NavLink to="/veredicto" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5" />
+              </svg>
+              <span>Veredicto Forense</span>
             </NavLink>
 
             <button
@@ -566,9 +588,11 @@ const Layout: React.FC = () => {
             <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
             <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
             <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
+            <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
             <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
             <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
             <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
+            <Route path="/veredicto" element={<PageWrapper><ForensicVerdict /></PageWrapper>} />
             <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
             <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
             <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />

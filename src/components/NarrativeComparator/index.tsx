@@ -8,6 +8,9 @@ interface Narrative {
   responsibility: string;
   verdict: string;
   verdictType: 'nominal' | 'warning' | 'alarm' | 'info';
+  evidence: string;
+  criticism: string;
+  whyDiverges: string;
 }
 
 interface EventData {
@@ -37,6 +40,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Los generadores debían absorber la reactiva capacitiva generada por el mallado conforme al P.O. 7.4.',
         verdict: 'ACCIÓN CORRECTA',
         verdictType: 'nominal',
+        evidence: 'Mallado frecuente en red española para mejorar flujos e incrementar estabilidad de tensión estática.',
+        criticism: 'No explica por qué inyectó tanta reactiva sin un análisis de impacto dinámico previo en un escenario de baja inercia.',
+        whyDiverges: 'Divergencia entre la lógica de operación rutinaria tradicional vs. la evaluación de riesgos dinámicos en una red con un 82% de IBR.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -46,6 +52,9 @@ const EVENTS: EventData[] = [
         responsibility: 'El operador llevó la red a un estado de colapso inevitable. Los generadores actuaron conforme a la física en su punto de conexión.',
         verdict: 'CAUSA RAÍZ',
         verdictType: 'alarm',
+        evidence: 'Mediciones de telemetría refinadas por Compass Lexecon junto a modelos dinámicos detallados de las reactancias del sistema.',
+        criticism: 'No justifica por qué los generadores de la zona sur mantuvieron límites de absorción tan restrictivos a pesar de la escalada previa.',
+        whyDiverges: 'Asignación de responsabilidad operativa directa vs. incapacidad técnica de los generadores por restricciones normativas de seguridad.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -55,6 +64,9 @@ const EVENTS: EventData[] = [
         responsibility: 'La causa raíz es normativa: la restricción que impedía a los IBR controlar tensión dinámicamente. Fallo del marco regulatorio.',
         verdict: 'FACTOR AGRAVANTE',
         verdictType: 'warning',
+        evidence: 'Auditoría detallada de los registros de estado EAS (Area Security Assessment) paneuropeos y los históricos de consignas reactivas.',
+        criticism: 'Evita señalar fallos operacionales concretos de REE para concentrarse exclusivamente en debilidades de regulación a escala europea.',
+        whyDiverges: 'Diferencia de perspectiva: un regulador paneuropeo persigue la armonización futura, mientras que los actores locales disputan costes jurídicos inmediatos.',
       },
     },
     consensusPoints: [],
@@ -76,6 +88,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Decisión operativa correcta y protocolizada. El HVDC no fue causa raíz.',
         verdict: 'ACCIÓN CORRECTA',
         verdictType: 'nominal',
+        evidence: 'Registros de telemetría de las subestaciones de Baixas y Santa Llogaia coordinados con RTE Francia.',
+        criticism: 'Oculta el hecho de que fijar de forma rígida el flujo a 1.000 MW limitó gravemente la capacidad amortiguadora del enlace.',
+        whyDiverges: 'Prioridad de estabilidad del flujo de intercambio transfronterizo vs. necesidad de control activo dinámico.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -85,6 +100,9 @@ const EVENTS: EventData[] = [
         responsibility: 'La decisión de mantener PMODE1 hasta el último instante limitó la capacidad de defensa de la frontera pirenaica.',
         verdict: 'DECISIÓN CUESTIONADA',
         verdictType: 'warning',
+        evidence: 'Modelos dinámicos detallados de las reactancias del enlace HVDC en simulaciones de estabilidad angular de transitorios.',
+        criticism: 'No llega a cuantificar con precisión el impacto neto que la inversión inmediata de flujos habría tenido en la estabilidad final de Granada.',
+        whyDiverges: 'Filosofía de defensa activa distribuida frente a esquemas convencionales de consigna fija de interconexión.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -94,6 +112,9 @@ const EVENTS: EventData[] = [
         responsibility: 'No atribuye causalidad directa al HVDC. Subraya que la separación transpirenaica fue normativamente correcta.',
         verdict: 'POSICIÓN NEUTRAL',
         verdictType: 'info',
+        evidence: 'Historial factual de los relés de protección de sobrecarga angular y desfase registrados en las interconexiones pirenaicas.',
+        criticism: 'Se limita a sancionar la separación de la red sin cuestionar si el acoplamiento debió operar en modo dinámico ante caídas locales.',
+        whyDiverges: 'Prioridad de evitar una desconexión general de Europa Continental frente a la mitigación de la caída de frecuencia en Iberia.',
       },
     },
     consensusPoints: ['El HVDC operaba en PMODE1 exportando 1.000 MW fijos durante el colapso'],
@@ -115,6 +136,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Los generadores dispararon fuera de las condiciones que justificaban su protección. Fallo de disciplina técnica del parque generador privado.',
         verdict: 'DISPAROS INADECUADOS',
         verdictType: 'alarm',
+        evidence: 'Datos del SCADA de REE registrados en el centro de control nacional con una resolución temporal convencional.',
+        criticism: 'Punto ciego metodológico: ignora el transitorio de sobretensión ocurrido aguas abajo en las líneas colectoras de distribución de 220 kV.',
+        whyDiverges: 'Confianza ciega en la telemedida estática del operador vs. la realidad transitoria descentralizada en el punto de generación.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -124,6 +148,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Los disparos fueron normativamente correctos. El operador careció de observabilidad en la red de 220 kV. El Tap-Lag es una limitación estructural del sistema de monitorización.',
         verdict: 'ACTUACIÓN CORRECTA',
         verdictType: 'nominal',
+        evidence: 'Oscilografías locales del parque fotovoltaico de Granada que verifican la tensión física instantánea del generador.',
+        criticism: 'No aclara por qué los ajustes de protección del generador carecían de una temporización coordinada para resistir huecos o transitorios.',
+        whyDiverges: 'Defensa de la integridad de los activos de generación distribuida y apego a la norma física local vs. requerimientos de red.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -133,6 +160,9 @@ const EVENTS: EventData[] = [
         responsibility: 'La causa raíz es la inobservabilidad estructural de la red de colectores y la inadecuación de los estándares de seguridad para redes de baja inercia.',
         verdict: 'LIMITACIÓN SISTÉMICA',
         verdictType: 'warning',
+        evidence: 'Historial consolidado de la cascada dinámica y análisis de tiempos de actuación de los relés de sobretensión.',
+        criticism: 'No define claramente quién debe costear el despliegue tecnológico de PMUs para solucionar la inobservabilidad en la red de distribución.',
+        whyDiverges: 'Enfoque técnico analítico multinacional vs. disputas contractuales e indemnizatorias por desconexión en el mercado nacional.',
       },
     },
     consensusPoints: [],
@@ -154,6 +184,9 @@ const EVENTS: EventData[] = [
         responsibility: 'El déficit de inercia no fue la causa del colapso. Fue un colapso de tensión capacitiva, no de frecuencia.',
         verdict: 'NO FUE LA CAUSA',
         verdictType: 'nominal',
+        evidence: 'Cálculos de inercia en tiempo real del despacho nacional de REE en base al despacho de grupos síncronos de gran potencia.',
+        criticism: 'El indicador global de inercia de 2,3 s oculta la fragilidad inercial extrema en la zona sur debido al desacoplamiento local.',
+        whyDiverges: 'Medida agregada macroscópica y simplicidad analítica vs. análisis multizonal localizado.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -163,6 +196,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Factor estructural agravante, no causa raíz. La causa raíz fue la saturación de los márgenes Q-V por el mallado.',
         verdict: 'FACTOR AGRAVANTE',
         verdictType: 'warning',
+        evidence: 'Análisis de estabilidad de área detallado y desglose regional de las masas rotatorias síncronas remanentes en despacho.',
+        criticism: 'Una inercia infinitamente mayor no habría impedido el colapso dinámico por tensión si la reactiva inyectada superaba la capacidad de absorción del sistema.',
+        whyDiverges: 'Prioridad otorgada al comportamiento dinámico localizado frente al análisis estático promediado nacional.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -172,6 +208,9 @@ const EVENTS: EventData[] = [
         responsibility: 'El paradigma Grid-Following ha agotado su viabilidad. NC RfG 2.0 exigirá Grid-Forming e inercia sintética para todos los módulos ≥1 MW.',
         verdict: 'NO FUE LA CAUSA',
         verdictType: 'nominal',
+        evidence: 'Estudios de contingencia multinodo integrados en los códigos de red paneuropeos para la transición energética.',
+        criticism: 'El Grid-Forming obligatorio es una meta futura tecnológica y costosa, no una solución aplicable a los parques existentes hoy.',
+        whyDiverges: 'Enfoque normativo de largo plazo e incentivo de reforma estructural frente a reparaciones y asignaciones de culpa operativas a corto plazo.',
       },
     },
     consensusPoints: [
@@ -191,10 +230,13 @@ const EVENTS: EventData[] = [
         label: 'Gobierno / REE',
         color: 'var(--alarm)',
         framing: 'El UFLS se activó correctamente conforme a los umbrales establecidos: 49,5 Hz (2.000 MW de bombeo), 49,3 Hz (588 MW), 49,0 Hz (1.402 MW industriales y distribución). El mecanismo actuó como herramienta universal para restaurar el equilibrio generación-demanda. Su efecto negativo sobre la tensión es una consecuencia intrínseca del diseño, no un fallo operativo.',
-        keyClaim: 'UFLS activado: 3 escalones, ~4.000 MW deslastrados. Protección marroquí desconectó 314 MW adicionales a 49,5 Hz.',
+        keyClaim: 'UFLS activado: 3 escalones, ~4.000 MW de demanda e instalaciones industriales deslastrados.',
         responsibility: 'El UFLS actuó conforme a su diseño. La paradoja es una limitación estructural del esquema de defensa, no una decisión operativa incorrecta.',
         verdict: 'ACTUACIÓN CORRECTA',
         verdictType: 'nominal',
+        evidence: 'Histórico factual del disparo de los relés de frecuencia de transporte y los medidores de subestaciones de distribución.',
+        criticism: 'No realiza autocrítica sobre la total desatención de la tensión en los esquemas automáticos de desconexión del sistema.',
+        whyDiverges: 'Enfoque de defensa estricta del equilibrio de frecuencia activa frente a esquemas integrales con acoplamiento reactivo.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -204,6 +246,9 @@ const EVENTS: EventData[] = [
         responsibility: 'El esquema UFLS estaba diseñado para un problema diferente al que se materializó. Inadecuación del marco de defensa para redes dominadas por IBR.',
         verdict: 'PARADOJA CONFIRMADA',
         verdictType: 'alarm',
+        evidence: 'Análisis fasorial de carga transitoria y simulación dinámica del comportamiento del factor de potencia de carga tras el deslastre.',
+        criticism: 'No aporta una lógica de alternativa viable que permita salvar la frecuencia activa sin agravar la sobretensión capacitiva.',
+        whyDiverges: 'Enfoque centrado en la interacción mutua tensión-frecuencia en sistemas débiles frente a la mitología clásica de control aislado.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -213,6 +258,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Inadecuación estructural del marco de defensa. Requiere actualización para redes con alta penetración de electrónica de potencia.',
         verdict: 'PARADOJA CONFIRMADA',
         verdictType: 'alarm',
+        evidence: 'Modelado dinámico multinodo del impacto del deslastre de carga en escenarios europeos de inercia y potencia de cortocircuito críticas.',
+        criticism: 'Denuncia la paradoja estructural pero evita establecer plazos firmes para el costoso rediseño del plan de defensa europeo.',
+        whyDiverges: 'Enfoque de regulador multilateral transnacional frente al deseo de los operadores nacionales de autoprotección inmediata.',
       },
     },
     consensusPoints: [
@@ -233,6 +281,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Fallo de control en instalación de generación privada. Origen del evento desencadenante.',
         verdict: 'OSCILACIÓN FORZADA',
         verdictType: 'alarm',
+        evidence: 'Registros de oscilación de potencia activa correlacionados temporalmente en la subestación colectora de Badajoz.',
+        criticism: 'No ha publicado un informe público transparente detallando el registro oscilográfico y el código de control del parque señalado.',
+        whyDiverges: 'Atracción a la causa singular (fallo del generador privado) frente al análisis sistémico de la debilidad del lazo general.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -242,6 +293,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Modo natural amplificado por la ausencia de amortiguamiento síncronico — consecuencia del despacho, no de una planta específica.',
         verdict: 'MODO NATURAL',
         verdictType: 'warning',
+        evidence: 'Estimaciones de análisis modal a partir del espectro de respuesta de frecuencia y reactancias de transporte de la zona sur.',
+        criticism: 'No descarta por completo la presencia física de perturbaciones externas periódicas provenientes de los lazos de control FV.',
+        whyDiverges: 'Enfoque en la estabilidad intrínseca del sistema síncrono frente a la simplificación de culpar a una perturbación externa de control.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -251,6 +305,9 @@ const EVENTS: EventData[] = [
         responsibility: 'No atribuye causalidad definitiva. La baja inercia amplificó el fenómeno independientemente de su origen.',
         verdict: 'CAUSALIDAD INCIERTA',
         verdictType: 'warning',
+        evidence: 'Datos integrados de los registradores de PMU distribuidos por todos los operadores del sistema europeo.',
+        criticism: 'Falta de resolución en la asignación final de responsabilidades para evitar tensiones regulatorias entre los estados miembros.',
+        whyDiverges: 'Prioridad en la caracterización matemática y espectral paneuropea frente a litigios corporativos nacionales.',
       },
     },
     consensusPoints: [],
@@ -272,6 +329,9 @@ const EVENTS: EventData[] = [
         responsibility: 'PARQUE GENERADOR PRIVADO — incumplimiento normativo colectivo.',
         verdict: 'FALLO DE GENERADORES',
         verdictType: 'alarm',
+        evidence: 'Inspecciones técnicas de REE sobre las consignas de reactiva asignadas y el comportamiento oscilográfico en barras de centrales.',
+        criticism: 'Pretende exigir un aporte dinámico dinámico y de amortiguamiento para el cual la normativa estática vigente no habilitaba a los generadores.',
+        whyDiverges: 'Enfoque fiscalizador/punitivo y protección del monopolio natural del operador frente a culpas externas.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -281,6 +341,9 @@ const EVENTS: EventData[] = [
         responsibility: 'OPERADOR DEL SISTEMA (REE) — mallado, inobservabilidad y despacho inadecuado.',
         verdict: 'FALLO DEL OPERADOR',
         verdictType: 'alarm',
+        evidence: 'Modelos matemáticos dinámicos y simulaciones de márgenes Q-V que demuestran la contracción letal provocada por el mallado en vacío.',
+        criticism: 'Minimiza la falta de resiliencia de la electrónica de control de muchos parques y su escaso compromiso con el soporte de red en transitorios.',
+        whyDiverges: 'Defensa corporativa y legal de los activos privados de generación frente a la planificación del operador de red.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -290,6 +353,9 @@ const EVENTS: EventData[] = [
         responsibility: 'MARCO REGULATORIO (P.O. 7.4 / RD 413/2014) — normativa obsoleta para la red actual.',
         verdict: 'FALLO REGULATORIO',
         verdictType: 'alarm',
+        evidence: 'Análisis factual del proceso de transposición de directivas europeas de códigos de red y el atraso acumulado del MITECO.',
+        criticism: 'Su postura diluye de forma excesiva las responsabilidades operacionales concretas en una abstracción reguladora e institucional.',
+        whyDiverges: 'Interés en promover de forma prioritaria los estándares multinacionales unificados del código de red RfG 2.0 en toda la UE.',
       },
     },
     consensusPoints: [
@@ -313,6 +379,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Prevención: actualización P.O. 7.4 + cumplimiento normativo de los generadores.',
         verdict: 'ERA EVITABLE',
         verdictType: 'nominal',
+        evidence: 'Auditoría interna de los recursos síncronos despachados el 30/04 que estabilizaron los transitorios homólogos de tensión.',
+        criticism: 'Centra la solución en exigencias normativas punitivas que no resuelven la falta física de observabilidad de los centros de control regionales.',
+        whyDiverges: 'Enfoque de gobernanza normativo tradicional frente a la necesidad de adaptación digital instantánea de la red.',
       },
       icai: {
         label: 'ICAI / AELEC',
@@ -322,6 +391,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Prevención: revertir o no ejecutar el mallado + mantener generación síncrona en zona sur.',
         verdict: 'ERA EVITABLE',
         verdictType: 'nominal',
+        evidence: 'Cálculos de simulación analítica de curvas de transferencia de potencia máxima en el corredor de transporte sur.',
+        criticism: 'Propone soluciones inmediatas pero que no resuelven a largo plazo la alta penetración de renovables asíncronas en España.',
+        whyDiverges: 'Optimización operacional inmediata de los márgenes existentes vs. reforma estructural de largo plazo del sistema de transporte.',
       },
       entso: {
         label: 'ENTSO-E',
@@ -331,6 +403,9 @@ const EVENTS: EventData[] = [
         responsibility: 'Prevención: NC RfG 2.0 + herramientas CSA dinámicas + mercados de servicios ancilares de inercia.',
         verdict: 'REFORMA ESTRU.',
         verdictType: 'info',
+        evidence: 'Informes técnicos comparativos de la implantación de servicios de inercia en mercados de referencia como Escocia o Texas.',
+        criticism: 'Ignora el sustancial impacto económico y financiero de obligar al parque existente a modernizarse con tecnología Grid-Forming.',
+        whyDiverges: 'Enfoque regulador centrado exclusivamente en la seguridad del suministro a largo plazo frente a los costes económicos inmediatos.',
       },
     },
     consensusPoints: [
@@ -345,6 +420,8 @@ const EVENTS: EventData[] = [
 
 export const NarrativeComparator: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>('meshing');
+  const [expandedNarratives, setExpandedNarratives] = useState<Record<string, boolean>>({});
+  
   const currentEvent = EVENTS.find(e => e.id === selectedId) || EVENTS[0];
 
   const getVerdictBadgeClass = (type: 'nominal' | 'warning' | 'alarm' | 'info') => {
@@ -360,6 +437,50 @@ export const NarrativeComparator: React.FC = () => {
       default:
         return 'bg-tertiary border-main text-text-secondary';
     }
+  };
+
+  const renderAnalysisBlock = (key: string, narrative: Narrative) => {
+    const isExpanded = !!expandedNarratives[key];
+    return (
+      <div className="mt-4 pt-3 border-t border-main/30">
+        <button
+          onClick={() => setExpandedNarratives(prev => ({ ...prev, [key]: !prev[key] }))}
+          className="w-full flex items-center justify-between text-[10px] font-mono uppercase font-bold text-accent hover:text-accent-blue transition-colors cursor-pointer select-none"
+        >
+          <span>🔍 Análisis Crítico</span>
+          <span>{isExpanded ? '▲ Contraer' : '▼ Expandir'}</span>
+        </button>
+        
+        {isExpanded && (
+          <div className="mt-3 space-y-3.5 bg-secondary/80 border border-main p-3 rounded-md animate-fade-in select-text text-left">
+            <div>
+              <p className="text-[10px] uppercase font-mono font-bold text-accent-blue mb-1">
+                ✓ Evidencia
+              </p>
+              <p className="text-[11px] text-text-secondary leading-normal">
+                {narrative.evidence}
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase font-mono font-bold text-alarm mb-1">
+                ⚠ Crítica
+              </p>
+              <p className="text-[11px] text-text-secondary leading-normal">
+                {narrative.criticism}
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase font-mono font-bold text-info mb-1">
+                → Causa de divergencia
+              </p>
+              <p className="text-[11px] text-text-secondary leading-normal">
+                {narrative.whyDiverges}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -436,7 +557,7 @@ export const NarrativeComparator: React.FC = () => {
                     </span>
                     <ul className="list-none m-0 p-0 space-y-1.5 text-xs text-text-secondary">
                       {currentEvent.consensusPoints.map((p, i) => (
-                        <li key={i} className="pl-3 border-l-2 border-alert-green select-text leading-relaxed">
+                        <li key={i} className="pl-3 border-l-2 border-alert-green select-text leading-relaxed text-left">
                           {p}
                         </li>
                       ))}
@@ -450,7 +571,7 @@ export const NarrativeComparator: React.FC = () => {
                     </span>
                     <ul className="list-none m-0 p-0 space-y-1.5 text-xs text-text-secondary">
                       {currentEvent.divergencePoints.map((p, i) => (
-                        <li key={i} className="pl-3 border-l-2 border-alert-orange select-text leading-relaxed">
+                        <li key={i} className="pl-3 border-l-2 border-alert-orange select-text leading-relaxed text-left">
                           {p}
                         </li>
                       ))}
@@ -473,13 +594,13 @@ export const NarrativeComparator: React.FC = () => {
                     </span>
                   </div>
                   
-                  <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
+                  <p className="text-xs text-text-secondary leading-relaxed font-sans select-text text-left">
                     {currentEvent.narratives.gov.framing}
                   </p>
 
                   <div className="border-t border-main/30 my-3"></div>
 
-                  <div>
+                  <div className="text-left">
                     <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Evidencia / Dato Citado:</span>
                     <span className="font-mono text-[10px] text-text-primary leading-normal block select-text bg-tertiary p-2 rounded border border-main/30">
                       {currentEvent.narratives.gov.keyClaim}
@@ -488,12 +609,14 @@ export const NarrativeComparator: React.FC = () => {
 
                   <div className="border-t border-main/30 my-3"></div>
 
-                  <div>
+                  <div className="text-left">
                     <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Atribución de Responsabilidad:</span>
                     <span className="text-xs text-text-secondary font-serif italic block select-text">
                       {currentEvent.narratives.gov.responsibility}
                     </span>
                   </div>
+
+                  {renderAnalysisBlock(`${currentEvent.id}-gov`, currentEvent.narratives.gov)}
                 </div>
 
                 <div className="mt-5 border-t border-main/30 pt-3">
@@ -513,13 +636,13 @@ export const NarrativeComparator: React.FC = () => {
                     </span>
                   </div>
                   
-                  <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
+                  <p className="text-xs text-text-secondary leading-relaxed font-sans select-text text-left">
                     {currentEvent.narratives.icai.framing}
                   </p>
 
                   <div className="border-t border-main/30 my-3"></div>
 
-                  <div>
+                  <div className="text-left">
                     <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Evidencia / Dato Citado:</span>
                     <span className="font-mono text-[10px] text-text-primary leading-normal block select-text bg-tertiary p-2 rounded border border-main/30">
                       {currentEvent.narratives.icai.keyClaim}
@@ -528,12 +651,14 @@ export const NarrativeComparator: React.FC = () => {
 
                   <div className="border-t border-main/30 my-3"></div>
 
-                  <div>
+                  <div className="text-left">
                     <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Atribución de Responsabilidad:</span>
                     <span className="text-xs text-text-secondary font-serif italic block select-text">
                       {currentEvent.narratives.icai.responsibility}
                     </span>
                   </div>
+
+                  {renderAnalysisBlock(`${currentEvent.id}-icai`, currentEvent.narratives.icai)}
                 </div>
 
                 <div className="mt-5 border-t border-main/30 pt-3">
@@ -553,13 +678,13 @@ export const NarrativeComparator: React.FC = () => {
                     </span>
                   </div>
                   
-                  <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
+                  <p className="text-xs text-text-secondary leading-relaxed font-sans select-text text-left">
                     {currentEvent.narratives.entso.framing}
                   </p>
 
                   <div className="border-t border-main/30 my-3"></div>
 
-                  <div>
+                  <div className="text-left">
                     <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Evidencia / Dato Citado:</span>
                     <span className="font-mono text-[10px] text-text-primary leading-normal block select-text bg-tertiary p-2 rounded border border-main/30">
                       {currentEvent.narratives.entso.keyClaim}
@@ -568,12 +693,14 @@ export const NarrativeComparator: React.FC = () => {
 
                   <div className="border-t border-main/30 my-3"></div>
 
-                  <div>
+                  <div className="text-left">
                     <span className="text-[9px] text-text-secondary font-mono uppercase block mb-1">Atribución de Responsabilidad:</span>
                     <span className="text-xs text-text-secondary font-serif italic block select-text">
                       {currentEvent.narratives.entso.responsibility}
                     </span>
                   </div>
+
+                  {renderAnalysisBlock(`${currentEvent.id}-entso`, currentEvent.narratives.entso)}
                 </div>
 
                 <div className="mt-5 border-t border-main/30 pt-3">
