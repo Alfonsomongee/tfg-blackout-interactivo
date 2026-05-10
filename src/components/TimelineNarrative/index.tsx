@@ -22,8 +22,12 @@ export function TimelineNarrative() {
     for (let t = 0; t <= 2010; t += 30) {
       const freq = 50 - (t / 2010) * 2.5 - Math.sin(t / 150) * 0.3;
       const voltage = 100 - (t / 2010) * 35 - Math.sin(t / 100) * 5;
+      const m = Math.floor(t / 60);
+      const s = t % 60;
+      const timeLabel = `${m}:${s.toString().padStart(2, '0')}`;
       data.push({
-        time: Math.floor(t / 60),
+        seconds: t,
+        time: timeLabel,
         freq: Math.max(47, freq),
         voltage: Math.max(60, voltage),
       });
@@ -49,12 +53,11 @@ export function TimelineNarrative() {
   }, [isPlaying, playSpeed]);
 
   const currentEvent = EVENTS.find(e => Math.abs(e.time - currentTime) < 50);
-  const chartMinutes = Math.floor(currentTime / 60);
   const minutes = Math.floor(currentTime / 60);
   const seconds = Math.floor(currentTime % 60);
 
   return (
-    <div style={{maxWidth:'1200px', margin:'0 auto', padding:'2.5rem 3rem'}}>
+    <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <p className="t-subheading" style={{marginBottom:'0.5rem'}}>Análisis temporal</p>
       <h2 style={{fontFamily:'var(--font-serif)', fontSize:'1.5rem', fontWeight:400,
                   color:'var(--text-primary)', marginBottom:'0.5rem'}}>
@@ -85,9 +88,11 @@ export function TimelineNarrative() {
                     flexWrap:'wrap', marginBottom:'1rem'}}>
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            style={{padding:'0.75rem 1.5rem', background:'var(--accent)',
+            style={{padding:'0.75rem 1.5rem', 
+                   background: isPlaying ? 'var(--alert-green)' : 'var(--accent)',
                    color: 'white', border:'none', borderRadius:'var(--radius-md)',
-                   cursor:'pointer', fontWeight:500, fontSize:'0.95rem'}}>
+                   cursor:'pointer', fontWeight:500, fontSize:'0.95rem',
+                   transition: 'background-color 0.2s ease'}}>
             {isPlaying ? '⏸ Pausar' : '▶ Play'}
           </button>
 
@@ -129,15 +134,14 @@ export function TimelineNarrative() {
       </div>
 
       {/* CHARTS */}
-      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'2rem',
-                  marginBottom:'2rem'}}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         
         <div style={{background:'var(--bg-surface)', border:'1px solid var(--border-subtle)',
                     borderRadius:'var(--radius-md)', padding:'1.5rem'}}>
           <p style={{fontSize:'0.875rem', fontWeight:500, color:'var(--text-primary)',
                     margin:'0 0 1rem'}}>Frecuencia (Hz)</p>
           <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={chartData.filter(d => d.time <= chartMinutes + 1)}>
+            <LineChart data={chartData.filter(d => d.seconds <= currentTime)}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" />
               <XAxis dataKey="time" stroke="var(--text-muted)" />
               <YAxis domain={[47, 50.5]} stroke="var(--text-muted)" />
@@ -156,7 +160,7 @@ export function TimelineNarrative() {
           <p style={{fontSize:'0.875rem', fontWeight:500, color:'var(--text-primary)',
                     margin:'0 0 1rem'}}>Tensión Carmona (% Vn)</p>
           <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={chartData.filter(d => d.time <= chartMinutes + 1)}>
+            <LineChart data={chartData.filter(d => d.seconds <= currentTime)}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" />
               <XAxis dataKey="time" stroke="var(--text-muted)" />
               <YAxis domain={[60, 105]} stroke="var(--text-muted)" />
