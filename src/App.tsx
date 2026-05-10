@@ -19,6 +19,7 @@ import TechnologyRoadmap from './components/TechnologyRoadmap';
 import MethodologyTransparency from './components/MethodologyTransparency';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
+import FooterSimple from './components/FooterSimple';
 import { useStore } from './hooks/useStore';
 
 // Page wrapper for smooth layout fade-in transition on route change
@@ -39,6 +40,7 @@ const Layout: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const location = useLocation();
   
   // Theme state: default 'light' for printed monograph paper aesthetic
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -577,34 +579,40 @@ const Layout: React.FC = () => {
         </main>
 
         {/* BOTTOM GLOBAL TECHNICAL PANEL */}
-        <section className="bg-secondary border-t border-main px-6 py-6 font-mono text-xs z-10">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-text-secondary leading-relaxed">
-            <div>
-              <h4 className="text-text-primary font-bold uppercase mb-2">// DINÁMICA DE FRECUENCIA (EC. OSCILACIÓN)</h4>
-              <p className="select-text text-[11px]">
-                La inercia síncrona real define el RoCoF inicial tras perturbaciones de potencia de acuerdo con la ley de balance de potencia. La inercia sintética o reservas ultrarrápidas de frecuencia permiten mitigar y estabilizar el nadir.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-text-primary font-bold uppercase mb-2">// MARGEN DE TENSIÓN COLECTOR</h4>
-              <p className="select-text text-[11px]">
-                La transición energética acopla generadores asíncronos mediante inversores con bajo amortiguamiento dinámico de tensión en subestaciones colectoras lejanas, aumentando el riesgo de avalancha por sobretensión lineal.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-text-primary font-bold uppercase mb-2">// DOCUMENTACIÓN ACADÉMICA</h4>
-              <p className="select-text text-[11px]">
-                Desarrollado como prototipo interactivo para el Trabajo de Fin de Grado de Alfonso Monge Díaz-Angel. Escuela Técnica Superior de Ingeniería, ETSI, Universidad de Sevilla, 2026.
-              </p>
-            </div>
-          </div>
-        </section>
+        {location.pathname === '/' ? (
+          <>
+            <section className="bg-secondary border-t border-main px-6 py-6 font-mono text-xs z-10">
+              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-text-secondary leading-relaxed">
+                <div>
+                  <h4 className="text-text-primary font-bold uppercase mb-2">// DINÁMICA DE FRECUENCIA (EC. OSCILACIÓN)</h4>
+                  <p className="select-text text-[11px]">
+                    La inercia síncrona real define el RoCoF inicial tras perturbaciones de potencia de acuerdo con la ley de balance de potencia. La inercia sintética o reservas ultrarrápidas de frecuencia permiten mitigar y estabilizar el nadir.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-text-primary font-bold uppercase mb-2">// MARGEN DE TENSIÓN COLECTOR</h4>
+                  <p className="select-text text-[11px]">
+                    La transición energética acopla generadores asíncronos mediante inversores con bajo amortiguamiento dinámico de tensión en subestaciones colectoras lejanas, aumentando el riesgo de avalancha por sobretensión lineal.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-text-primary font-bold uppercase mb-2">// DOCUMENTACIÓN ACADÉMICA</h4>
+                  <p className="select-text text-[11px]">
+                    Desarrollado como prototipo interactivo para el Trabajo de Fin de Grado de Alfonso Monge Díaz-Angel. Escuela Técnica Superior de Ingeniería, ETSI, Universidad de Sevilla, 2026.
+                  </p>
+                </div>
+              </div>
+            </section>
 
-        {/* PUBLICATION FOOTER */}
-        <footer className="border-t border-main bg-primary py-4.5 px-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-text-secondary/50 z-10 font-mono gap-2">
-          <span>ETSI SEVILLA — DEPARTAMENTO DE INGENIERÍA ELÉCTRICA</span>
-          <span>AUTOR: ALFONSO MONGE DÍAZ-ANGEL</span>
-        </footer>
+            {/* PUBLICATION FOOTER */}
+            <footer className="border-t border-main bg-primary py-4.5 px-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-text-secondary/50 z-10 font-mono gap-2">
+              <span>ETSI SEVILLA — DEPARTAMENTO DE INGENIERÍA ELÉCTRICA</span>
+              <span>AUTOR: ALFONSO MONGE DÍAZ-ANGEL</span>
+            </footer>
+          </>
+        ) : (
+          <FooterSimple />
+        )}
 
         {searchOpen && <GlobalSearch onClose={() => setSearchOpen(false)} />}
         <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
