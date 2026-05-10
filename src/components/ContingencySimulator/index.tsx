@@ -91,14 +91,14 @@ export const ContingencySimulator: React.FC = () => {
               <input
                 type="range"
                 min="-5000"
-                max="-1000"
+                max="-500"
                 step="100"
                 value={powerImbalance}
                 onChange={(e) => setPowerImbalance(Number(e.target.value))}
                 className="w-full accent-rose-500 h-1 bg-slate-800 rounded-lg cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                <span>-1000 MW</span>
+                <span>-500 MW</span>
                 <span>-5000 MW (Crítico)</span>
               </div>
             </div>
