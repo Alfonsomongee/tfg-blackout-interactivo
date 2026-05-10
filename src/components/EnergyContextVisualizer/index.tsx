@@ -3,6 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import AnimatedMetric from '../AnimatedMetric';
 
 const MIX_EVOLUTION = [
   { year: '2010', renovables: 30, termicas: 45, nuclear: 19, otras: 6 },
@@ -122,23 +123,48 @@ export default function EnergyContextVisualizer() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { label: 'Capacidad renovable instalada (ene 2025)', value: '>100 GW', color: 'var(--nominal)' },
-              { label: 'Solar FV instalada', value: '48,1 GW', color: 'var(--warning)' },
-              { label: 'Eólica instalada', value: '33,1 GW', color: 'var(--info)' },
-              { label: 'Ciclos combinados (CCGT)', value: '26 GW / <15% uso', color: 'var(--text-secondary)' },
-              { label: 'Reducción emisiones vs 2007', value: '75,7%', color: 'var(--nominal)' },
-              { label: 'Emisiones sector eléctrico 2024', value: '27,0 Mt CO₂', color: 'var(--alarm)' },
-            ].map((m, i) => (
-              <div key={i} className="bg-secondary border border-main rounded-lg p-4 flex flex-col justify-between">
-                <p className="text-[10px] text-text-secondary uppercase font-mono tracking-wider mb-2 text-left">
-                  {m.label}
-                </p>
-                <p className="text-xl font-bold text-text-primary text-left" style={{ color: m.color }}>
-                  {m.value}
-                </p>
-              </div>
-            ))}
+            <AnimatedMetric
+              value={100}
+              prefix=">"
+              unit=" GW"
+              label="Capacidad renovable instalada (ene 2025)"
+              color="var(--nominal)"
+            />
+            <AnimatedMetric
+              value={48.1}
+              decimals={1}
+              unit=" GW"
+              label="Solar FV instalada"
+              color="var(--warning)"
+            />
+            <AnimatedMetric
+              value={33.1}
+              decimals={1}
+              unit=" GW"
+              label="Eólica instalada"
+              color="var(--info)"
+            />
+            <AnimatedMetric
+              value={26}
+              unit=" GW"
+              label="Ciclos combinados (CCGT)"
+              sublabel="Tasa de utilización histórica menor al 15%"
+              color="var(--text-secondary)"
+            />
+            <AnimatedMetric
+              value={75.7}
+              decimals={1}
+              unit="%"
+              label="Reducción de emisiones vs 2007"
+              color="var(--nominal)"
+            />
+            <AnimatedMetric
+              value={27.0}
+              decimals={1}
+              unit=" Mt CO₂"
+              label="Emisiones sector eléctrico 2024"
+              color="var(--alarm)"
+            />
           </div>
         </div>
       )}

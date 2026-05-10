@@ -433,3 +433,8 @@ body.presentation-mode main {
 body.presentation-mode main > div {
   cursor: pointer;
 }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

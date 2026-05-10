@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import AnimatedMetric from '../AnimatedMetric';
 import {
   ComposedChart,
   Line,
@@ -136,36 +137,38 @@ export function ContingencySimulator() {
       </div>
 
       {/* D1. Cuadrícula de Métricas principales */}
-      <div className="metric-cards grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-        <div className="metric-card flex flex-col justify-between">
-          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">ROCOF Inicial (df/dt)</span>
-          <span className="value font-mono text-xl font-bold mt-2" style={{ fontFamily: 'var(--font-mono)' }}>
-            {sim.rocof.toFixed(4)} <span className="text-xs text-text-secondary">Hz/s</span>
-          </span>
-        </div>
-        
-        <div className="metric-card flex flex-col justify-between">
-          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">Nadir de Frecuencia</span>
-          <span className="value font-mono text-xl font-bold mt-2" style={{ color: risk.color, fontFamily: 'var(--font-mono)' }}>
-            {sim.nadir.toFixed(4)} <span className="text-xs text-text-secondary">Hz</span>
-          </span>
-        </div>
-
-        <div className="metric-card flex flex-col justify-between">
-          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">Tiempo al Nadir</span>
-          <span className="value font-mono text-xl font-bold mt-2" style={{ fontFamily: 'var(--font-mono)' }}>
-            {sim.tNadir.toFixed(2)} <span className="text-xs text-text-secondary">s</span>
-          </span>
-        </div>
-
-        <div className="metric-card flex flex-col justify-between">
-          <span className="label font-mono text-[10px] uppercase tracking-wider text-text-secondary">Nivel de Riesgo</span>
-          <div className="mt-2">
-            <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+        <AnimatedMetric
+          value={sim.rocof}
+          decimals={4}
+          unit=" Hz/s"
+          label="ROCOF Inicial (df/dt)"
+          color="var(--accent-blue)"
+        />
+        <AnimatedMetric
+          value={sim.nadir}
+          decimals={4}
+          unit=" Hz"
+          label="Nadir de Frecuencia"
+          color={risk.color}
+        />
+        <AnimatedMetric
+          value={sim.tNadir}
+          decimals={2}
+          unit=" s"
+          label="Tiempo al Nadir"
+          color="var(--text-primary)"
+        />
+        <AnimatedMetric
+          label="Nivel de Riesgo"
+          color={risk.color}
+        >
+          <div style={{ margin: '0 0 0.25rem' }}>
+            <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', padding: '4px 10px' }}>
               {risk.label}
             </span>
           </div>
-        </div>
+        </AnimatedMetric>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">

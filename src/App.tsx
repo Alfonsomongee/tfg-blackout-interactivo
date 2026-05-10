@@ -1,30 +1,57 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
-import { Hero } from './components/Hero/Hero';
-import { TimelineNarrative } from './components/TimelineNarrative';
-import { DivergenceMatrix } from './components/DivergenceMatrix';
-import { ContingencySimulator } from './components/ContingencySimulator';
-import ChapterDossier from './components/ChapterDossier';
+import Hero from './components/Hero/Hero';
 import ExecutiveBrief from './components/ExecutiveBrief';
-import PropagationMap from './components/PropagationMap';
-import ResponsibilityRadar from './components/ResponsibilityRadar';
-import TechLexicon from './components/TechLexicon';
-import ReformTracker from './components/ReformTracker';
-import NarrativeComparator from './components/NarrativeComparator';
-import CausalChain from './components/CausalChain';
+
+// Lazy-loaded page components
+const TimelineNarrative = lazy(() => import('./components/TimelineNarrative').then(m => ({ default: m.TimelineNarrative })));
+const DivergenceMatrix = lazy(() => import('./components/DivergenceMatrix').then(m => ({ default: m.DivergenceMatrix })));
+const ContingencySimulator = lazy(() => import('./components/ContingencySimulator').then(m => ({ default: m.ContingencySimulator })));
+const ChapterDossier = lazy(() => import('./components/ChapterDossier'));
+const PropagationMap = lazy(() => import('./components/PropagationMap'));
+const ResponsibilityRadar = lazy(() => import('./components/ResponsibilityRadar'));
+const TechLexicon = lazy(() => import('./components/TechLexicon'));
+const ReformTracker = lazy(() => import('./components/ReformTracker'));
+const NarrativeComparator = lazy(() => import('./components/NarrativeComparator'));
+const CausalChain = lazy(() => import('./components/CausalChain'));
+const ThreeFracturesVisualizer = lazy(() => import('./components/ThreeFracturesVisualizer'));
+const ConsensusDivergenceVisualizer = lazy(() => import('./components/ConsensusDivergenceVisualizer'));
+const TechnologyRoadmap = lazy(() => import('./components/TechnologyRoadmap'));
+const MethodologyTransparency = lazy(() => import('./components/MethodologyTransparency'));
+const PositionPolarimeter = lazy(() => import('./components/PositionPolarimeter'));
+const ForensicVerdict = lazy(() => import('./components/ForensicVerdict'));
+const EnergyContextVisualizer = lazy(() => import('./components/EnergyContextVisualizer'));
+const MediaNarrativeAnalysis = lazy(() => import('./components/MediaNarrativeAnalysis'));
+
+// Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
-import ThreeFracturesVisualizer from './components/ThreeFracturesVisualizer';
-import ConsensusDivergenceVisualizer from './components/ConsensusDivergenceVisualizer';
-import TechnologyRoadmap from './components/TechnologyRoadmap';
-import MethodologyTransparency from './components/MethodologyTransparency';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
-import PositionPolarimeter from './components/PositionPolarimeter';
-import ForensicVerdict from './components/ForensicVerdict';
-import EnergyContextVisualizer from './components/EnergyContextVisualizer';
-import MediaNarrativeAnalysis from './components/MediaNarrativeAnalysis';
 import { useStore } from './hooks/useStore';
+
+function PageLoader() {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      height: '60vh', flexDirection: 'column', gap: '1rem'
+    }}>
+      <div style={{
+        width: '40px', height: '40px',
+        border: '2px solid var(--border)',
+        borderTop: '2px solid var(--accent-blue)',
+        borderRadius: '50%',
+        animation: 'spin 0.8s linear infinite'
+      }} />
+      <p style={{
+        fontSize: '0.75rem', color: 'var(--text-muted)',
+        fontFamily: 'var(--font-mono)'
+      }}>
+        CARGANDO MÓDULO...
+      </p>
+    </div>
+  );
+}
 
 // Page wrapper for smooth layout fade-in transition on route change
 const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -36,6 +63,77 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     >
       {children}
     </div>
+  );
+};
+
+const NAV_GROUPS = [
+  {
+    title: 'Contexto',
+    items: [
+      { to: '/', label: 'Portada TFG', type: 'core', icon: '⚡' },
+      { to: '/contexto-energetico', label: 'Contexto Energético', type: 'core', icon: '📊' },
+      { to: '/brief', label: 'Resumen Ejecutivo', type: 'core', icon: '📋' },
+    ]
+  },
+  {
+    title: 'Análisis Forense',
+    items: [
+      { to: '/timeline', label: 'Línea de Tiempo', type: 'core', icon: '⏳' },
+      { to: '/map', label: 'Mapa Propagación', type: 'core', icon: '🗺️' },
+      { to: '/matrix', label: 'Matriz Comparada', type: 'detalle', icon: '📊' },
+      { to: '/radar', label: 'Radar Causalidad', type: 'detalle', icon: '⚖️' },
+      { to: '/compare', label: 'Comparador de Narrativas', type: 'detalle', icon: '📊' },
+      { to: '/polarimetro', label: 'Polarímetro', type: 'detalle', icon: '🧭' },
+      { to: '/causal', label: 'Cadena Causal', type: 'detalle', icon: '🔗' },
+      { to: '/fracturas', label: 'Tres Fracturas', type: 'detalle', icon: '📂' },
+      { to: '/consenso', label: 'Consenso/Divergencia', type: 'detalle', icon: '📊' },
+      { to: '/narrativa-mediatica', label: 'Narrativa Mediática', type: 'detalle', icon: '📰' },
+    ]
+  },
+  {
+    title: 'Modelado y Simulación',
+    items: [
+      { to: '/simulator', label: 'Simulador Físico', type: 'core', icon: '⚙️' },
+      { to: '/roadmap', label: 'Hoja de Ruta', type: 'core', icon: '🗺️' },
+    ]
+  },
+  {
+    title: 'Garantía de Calidad',
+    items: [
+      { to: '/dossier', label: 'Dossier TFG', type: 'detalle', icon: '📚' },
+      { to: '/lexicon', label: 'Glosario Técnico', type: 'detalle', icon: '📖' },
+      { to: '/metodologia', label: 'Metodología', type: 'detalle', icon: '📊' },
+      { to: '/reforms', label: 'Progreso Reformas', type: 'detalle', icon: '📋' },
+      { to: '/veredicto', label: 'Veredicto Forense', type: 'core', icon: '⚖️' },
+    ]
+  }
+];
+
+const SidebarLink: React.FC<{
+  item: { to: string; label: string; type: string; icon: string };
+  onClick?: () => void;
+}> = ({ item, onClick }) => {
+  const isCore = item.type === 'core';
+  return (
+    <NavLink
+      to={item.to}
+      onClick={onClick}
+      className={({ isActive }) => {
+        const baseClass = "flex items-center gap-2.5 px-3.5 py-2 font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer text-left border-l-2";
+        const typeClass = isCore
+          ? "text-[11px] font-bold border-transparent text-text-primary/90 bg-primary/5 hover:bg-primary/20 hover:text-text-primary mb-1 rounded-sm"
+          : "text-[10px] text-text-secondary pl-6 border-transparent hover:text-text-primary mb-0.5";
+        const activeClass = isActive
+          ? isCore
+            ? "active bg-raised border-accent text-text-primary font-black"
+            : "active bg-raised/50 border-accent/60 text-text-primary font-bold pl-7"
+          : "border-transparent";
+        return `${baseClass} ${typeClass} ${activeClass}`;
+      }}
+    >
+      <span className="opacity-80 font-normal">{item.icon}</span>
+      <span>{item.label}</span>
+    </NavLink>
   );
 };
 
@@ -99,10 +197,6 @@ const Layout: React.FC = () => {
     };
   }, [zoneVoltages]);
 
-  // Sidebar link styles builder using our unified .nav-item CSS classes
-  const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `nav-item ${isActive ? 'active' : ''}`;
-
   return (
     <div className="min-h-screen bg-primary text-text-primary font-sans flex flex-col tech-grid relative overflow-x-hidden select-none">
       
@@ -139,114 +233,26 @@ const Layout: React.FC = () => {
 
       {/* MOBILE DRAWER OVERLAY */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-15 bg-primary/95 z-30 flex flex-col p-6 gap-0.5 overflow-y-auto">
-          {/* CONTEXTO */}
-          <div style={{
-            padding: '0.75rem 1.25rem 0.375rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.625rem',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--text-muted)'
-          }}>
-            CONTEXTO
-          </div>
-          <NavLink to="/contexto-energetico" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📊 Contexto Energético</span>
-          </NavLink>
-          <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>⚡ Portada / Monografía</span>
-          </NavLink>
-          <NavLink to="/brief" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📋 Resumen Ejecutivo</span>
-          </NavLink>
-
-          {/* ANÁLISIS */}
-          <div style={{
-            padding: '1.25rem 1.25rem 0.375rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.625rem',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--text-muted)'
-          }}>
-            ANÁLISIS
-          </div>
-          <NavLink to="/timeline" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>⏳ Línea de Tiempo</span>
-          </NavLink>
-          <NavLink to="/map" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>🗺️ Mapa de Propagación</span>
-          </NavLink>
-          <NavLink to="/matrix" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📊 Matriz de Divergencias</span>
-          </NavLink>
-          <NavLink to="/radar" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>⚖️ Radar de Responsabilidad</span>
-          </NavLink>
-          <NavLink to="/compare" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📊 Comparador de Narrativas</span>
-          </NavLink>
-          <NavLink to="/polarimetro" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>🧭 Polarímetro de Posiciones</span>
-          </NavLink>
-          <NavLink to="/causal" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>🔗 Cadena Causal</span>
-          </NavLink>
-          <NavLink to="/fracturas" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📂 Tres Fracturas</span>
-          </NavLink>
-          <NavLink to="/consenso" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📊 Consenso/Divergencia</span>
-          </NavLink>
-          <NavLink to="/narrativa-mediatica" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📰 Narrativa Mediática</span>
-          </NavLink>
-
-          {/* HERRAMIENTAS */}
-          <div style={{
-            padding: '1.25rem 1.25rem 0.375rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.625rem',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--text-muted)'
-          }}>
-            HERRAMIENTAS
-          </div>
-          <NavLink to="/simulator" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>⚡ Simulador Físico</span>
-          </NavLink>
-          <NavLink to="/roadmap" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>🗺️ Hoja de Ruta</span>
-          </NavLink>
-
-          {/* DOCUMENTACIÓN */}
-          <div style={{
-            padding: '1.25rem 1.25rem 0.375rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.625rem',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--text-muted)'
-          }}>
-            DOCUMENTACIÓN
-          </div>
-          <NavLink to="/dossier" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📚 Dossier TFG</span>
-          </NavLink>
-          <NavLink to="/lexicon" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📖 Glosario Técnico</span>
-          </NavLink>
-          <NavLink to="/metodologia" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📊 Metodología</span>
-          </NavLink>
-          <NavLink to="/reforms" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>📋 Progreso Reformas</span>
-          </NavLink>
-          <NavLink to="/veredicto" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>⚖️ Veredicto Forense</span>
-          </NavLink>
+        <div className="lg:hidden fixed inset-0 top-15 bg-primary/95 z-30 flex flex-col p-6 gap-2 overflow-y-auto">
+          {NAV_GROUPS.map((group, gIdx) => (
+            <div key={gIdx} className="mb-4">
+              <div style={{
+                padding: '0.5rem 1rem 0.25rem',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.625rem',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--text-muted)'
+              }}>
+                // {group.title}
+              </div>
+              <div className="flex flex-col gap-0.5">
+                {group.items.map((item, iIdx) => (
+                  <SidebarLink key={iIdx} item={item} onClick={() => setMobileMenuOpen(false)} />
+                ))}
+              </div>
+            </div>
+          ))}
 
           <button
             onClick={() => {
@@ -295,206 +301,36 @@ const Layout: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-col gap-0.5">
-            {/* CONTEXTO */}
-            <div style={{
-              padding: '0.75rem 1.25rem 0.375rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.625rem',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--text-muted)'
-            }}>
-              CONTEXTO
-            </div>
-            
-            <NavLink to="/contexto-energetico" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Contexto Energético</span>
-            </NavLink>
-
-            <NavLink to="/" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span>Portada TFG</span>
-            </NavLink>
-
-            <NavLink to="/brief" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              <span>Resumen Ejecutivo</span>
-            </NavLink>
-
-            {/* ANÁLISIS */}
-            <div style={{
-              padding: '1.25rem 1.25rem 0.375rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.625rem',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--text-muted)'
-            }}>
-              ANÁLISIS
-            </div>
-
-            <NavLink to="/timeline" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Línea de Tiempo</span>
-            </NavLink>
-
-            <NavLink to="/map" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-              <span>Mapa Propagación</span>
-            </NavLink>
-
-            <NavLink to="/matrix" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-              </svg>
-              <span>Matriz Comparada</span>
-            </NavLink>
-
-            <NavLink to="/radar" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5" />
-              </svg>
-              <span>Radar Causalidad</span>
-            </NavLink>
-
-            <NavLink to="/compare" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span>Comparador de Narrativas</span>
-            </NavLink>
-
-            <NavLink to="/polarimetro" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-              </svg>
-              <span>Polarímetro</span>
-            </NavLink>
-
-            <NavLink to="/causal" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </svg>
-              <span>Cadena Causal</span>
-            </NavLink>
-
-            <NavLink to="/fracturas" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9l-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              <span>Tres Fracturas</span>
-            </NavLink>
-
-            <NavLink to="/consenso" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Consenso/Divergencia</span>
-            </NavLink>
-
-            <NavLink to="/narrativa-mediatica" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 2v6h6" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 13H8M16 17H8M10 9H8" />
-              </svg>
-              <span>Narrativa Mediática</span>
-            </NavLink>
-
-            {/* HERRAMIENTAS */}
-            <div style={{
-              padding: '1.25rem 1.25rem 0.375rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.625rem',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--text-muted)'
-            }}>
-              HERRAMIENTAS
-            </div>
-
-            <NavLink to="/simulator" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span>Simulador Físico</span>
-            </NavLink>
-
-            <NavLink to="/roadmap" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-              <span>Hoja de Ruta</span>
-            </NavLink>
-
-            {/* DOCUMENTACIÓN */}
-            <div style={{
-              padding: '1.25rem 1.25rem 0.375rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.625rem',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--text-muted)'
-            }}>
-              DOCUMENTACIÓN
-            </div>
-
-            <NavLink to="/dossier" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span>Dossier TFG</span>
-            </NavLink>
-
-            <NavLink to="/lexicon" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>Glosario Técnico</span>
-            </NavLink>
-
-            <NavLink to="/metodologia" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-              </svg>
-              <span>Metodología</span>
-            </NavLink>
-
-            <NavLink to="/reforms" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-              </svg>
-              <span>Progreso Reformas</span>
-            </NavLink>
-
-            <NavLink to="/veredicto" className={linkClass}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5" />
-              </svg>
-              <span>Veredicto Forense</span>
-            </NavLink>
+          <nav className="flex flex-col gap-1 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
+            {NAV_GROUPS.map((group, gIdx) => (
+              <div key={gIdx} className="mb-4">
+                <div style={{
+                  padding: '0.5rem 1rem 0.25rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.625rem',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-muted)'
+                }}>
+                  // {group.title}
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  {group.items.map((item, iIdx) => (
+                    <SidebarLink key={iIdx} item={item} />
+                  ))}
+                </div>
+              </div>
+            ))}
 
             <button
               onClick={() => setSearchOpen(true)}
-              className="nav-item text-left flex items-center gap-3 w-full border-t border-main/30 mt-2 pt-2.5"
+              className="flex items-center gap-2.5 px-3.5 py-3 rounded text-[10px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary hover:bg-primary uppercase tracking-widest mt-2 transition-all"
             >
               <svg className="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="flex-grow text-[11px] font-mono">Buscar...</span>
-              <span className="text-[9px] font-mono opacity-60 bg-tertiary border border-main px-1.5 py-0.5 rounded">⌘K</span>
+              <span className="flex-grow text-left">Buscar...</span>
+              <span className="text-[8px] font-mono opacity-60 bg-secondary border border-main px-1 py-0.5 rounded">⌘K</span>
             </button>
           </nav>
 
@@ -604,28 +440,30 @@ const Layout: React.FC = () => {
 
         {/* CONTAINER FOR ACTIVE SCENE */}
         <main className="flex-grow flex flex-col justify-start">
-          <Routes>
-            <Route path="/" element={<PageWrapper><Hero /></PageWrapper>} />
-            <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
-            <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
-            <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
-            <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
-            <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
-            <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
-            <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
-            <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
-            <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
-            <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
-            <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
-            <Route path="/narrativa-mediatica" element={<PageWrapper><MediaNarrativeAnalysis /></PageWrapper>} />
-            <Route path="/veredicto" element={<PageWrapper><ForensicVerdict /></PageWrapper>} />
-            <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
-            <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
-            <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
-            <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
-            <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
-            <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<PageWrapper><Hero /></PageWrapper>} />
+              <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
+              <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
+              <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
+              <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
+              <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
+              <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
+              <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
+              <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
+              <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
+              <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
+              <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
+              <Route path="/narrativa-mediatica" element={<PageWrapper><MediaNarrativeAnalysis /></PageWrapper>} />
+              <Route path="/veredicto" element={<PageWrapper><ForensicVerdict /></PageWrapper>} />
+              <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
+              <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
+              <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
+              <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
+              <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
+              <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
+            </Routes>
+          </Suspense>
         </main>
 
         {/* BOTTOM GLOBAL TECHNICAL PANEL */}

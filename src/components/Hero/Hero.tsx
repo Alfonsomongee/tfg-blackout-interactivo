@@ -1,244 +1,267 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useStore } from '../../hooks/useStore';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCountUp } from '../../hooks/useCountUp';
+import { useInView } from '../../hooks/useInView';
 
-export const Hero: React.FC = () => {
-  const [showPdfModal, setShowPdfModal] = useState(false);
-  const { setTourRunning } = useStore();
+const KEY_METRICS = [
+  { value: 60, unit: 'M', label: 'personas sin suministro', decimals: 0 },
+  { value: 82, unit: '%', label: 'penetración renovable no síncrona', decimals: 0 },
+  { value: 15, unit: ' GW', label: 'generación perdida en < 90 s', decimals: 0 },
+  { value: 2.3, unit: ' s', label: 'inercia síncrona del sistema', decimals: 1 },
+];
+
+function MetricCard({
+  metric,
+  delay,
+  animate,
+}: {
+  metric: typeof KEY_METRICS[0];
+  delay: number;
+  animate: boolean;
+}) {
+  const [started, setStarted] = useState(false);
+  const val = useCountUp(metric.value, 1200, started, metric.decimals);
+
+  useEffect(() => {
+    if (!animate) return;
+    const t = setTimeout(() => setStarted(true), delay);
+    return () => clearTimeout(t);
+  }, [animate, delay]);
 
   return (
-    <div className="relative min-h-screen bg-primary text-text-primary tech-grid flex flex-col justify-center items-center py-16 px-6 select-none overflow-hidden">
-      
-      {/* Refined Academic Double Border (Monograph Style) */}
-      <div className="absolute inset-4 border border-main/50 pointer-events-none rounded"></div>
-      <div className="absolute inset-6 border-2 border-main/25 pointer-events-none rounded"></div>
-
-      {/* Content Container */}
-      <div className="relative z-10 max-w-4xl w-full text-center flex flex-col items-center py-10">
-        
-        {/* Sello académico oficial al inicio */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 bg-secondary border border-main px-3 py-1.5 rounded font-mono text-[10px] tracking-widest uppercase text-text-secondary w-fit shadow-sm">
-          <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
-          <span>SISTEMA PENINSULAR ESPAÑOL</span>
-          <span className="text-text-secondary/40">|</span>
-          <span className="font-bold text-accent">US_ETSI_2026</span>
-        </div>
-
-        {/* Eyebrow */}
-        <p className="t-subheading">
-          TFG · Grado en Ingeniería de la Energía · Univ. de Sevilla · 2026
-        </p>
-
-        {/* Título Principal */}
-        <h1 
-          className="font-serif font-extrabold text-text-primary tracking-tight leading-tight mb-4 select-text"
-          style={{ fontSize: '2.5rem' }}
-        >
-          ¿Por qué colapsó la red eléctrica ibérica en 22 segundos?
-        </h1>
-
-        {/* Subtítulo Exacto */}
-        <p 
-          className="font-serif italic text-base md:text-lg text-text-secondary mb-8 select-text"
-          style={{ maxWidth: '56ch', margin: '0 auto 2rem' }}
-        >
-          Análisis forense comparativo de las narrativas de REE, ICAI/AELEC y ENTSO-E sobre el incidente del 28 de abril de 2025.
-        </p>
-
-        {/* Guided Tour Start CTA Button */}
-        <button
-          onClick={() => setTourRunning(true)}
-          className="inline-flex items-center gap-3 px-8 py-4 mb-8 font-mono text-xs tracking-widest uppercase text-white bg-accent border border-accent rounded-md shadow-lg hover:opacity-90 active:scale-98 transition-all duration-200 cursor-pointer"
-        >
-          <span className="text-sm">▶</span> lanzar presentación guiada del tfg (8 minutos)
-        </button>
-
-        {/* B5. DIVIDER */}
-        <hr className="divider w-full mb-8" />
-
-        {/* B6. GRID 4 COLUMNAS — metric-cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full mb-8">
-          {/* Item 1 */}
-          <div className="metric-card flex flex-col justify-center items-center">
-            <span className="value">22,5 s</span>
-            <span className="unit">Intervalo de colapso</span>
-          </div>
-
-          {/* Item 2 */}
-          <div className="metric-card flex flex-col justify-center items-center">
-            <span className="value">&gt;15 GW</span>
-            <span className="unit">Desbalance de potencia</span>
-          </div>
-
-          {/* Item 3 */}
-          <div className="metric-card flex flex-col justify-center items-center">
-            <span className="value">~60 M</span>
-            <span className="unit">Personas afectadas</span>
-          </div>
-
-          {/* Item 4 */}
-          <div className="metric-card flex flex-col justify-center items-center">
-            <span className="value">82%</span>
-            <span className="unit">Renovable (solar/eólica)</span>
-          </div>
-        </div>
-
-        {/* B7. DIVIDER */}
-        <hr className="divider w-full mb-8" />
-
-        {/* B8. t-heading "Estructura del análisis" + grid de módulos */}
-        <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
-          <h2 className="font-serif text-lg font-bold text-text-primary mb-6 text-center uppercase tracking-wider" style={{ fontFamily: 'var(--font-serif)' }}>
-            Estructura del análisis
-          </h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-12">
-            <Link
-              to="/brief"
-              className="border border-accent text-text-primary font-mono text-xs tracking-wider py-3 px-4 rounded bg-secondary hover:bg-accent hover:text-white transition-all duration-200 text-center uppercase"
-            >
-              Capítulo I: Resumen Ejecutivo
-            </Link>
-            <Link
-              to="/timeline"
-              className="border border-accent text-text-primary font-mono text-xs tracking-wider py-3 px-4 rounded bg-secondary hover:bg-accent hover:text-white transition-all duration-200 text-center uppercase"
-            >
-              Capítulo II: Registro de Eventos
-            </Link>
-            <Link
-              to="/simulator"
-              className="border border-accent text-text-primary font-mono text-xs tracking-wider py-3 px-4 rounded bg-secondary hover:bg-accent hover:text-white transition-all duration-200 text-center uppercase"
-            >
-              Capítulo III: Simulador Dinámico
-            </Link>
-            <button
-              onClick={() => setShowPdfModal(true)}
-              className="border border-accent text-text-primary font-mono text-xs tracking-wider py-3 px-4 rounded bg-secondary hover:bg-accent hover:text-white transition-all duration-200 text-center uppercase cursor-pointer"
-            >
-              Archivo Académico Completo (PDF)
-            </button>
-          </div>
-        </div>
-
-        {/* B9. CTA al final del Hero */}
-        <div style={{marginTop:'2.5rem', paddingTop:'2rem',
-                     borderTop:'1px solid var(--border-subtle)',
-                     display:'flex', alignItems:'center', gap:'1rem'}}>
-          <a href="https://github.com/Alfonsomongee/tfg-blackout-interactivo"
-             target="_blank"
-             rel="noreferrer"
-             style={{fontFamily:'var(--font-mono)', fontSize:'0.8125rem',
-                     color:'var(--text-secondary)', textDecoration:'none',
-                     border:'1px solid var(--border)', padding:'0.5rem 1rem',
-                     borderRadius:'var(--radius-sm)'}}>
-            Código fuente →
-          </a>
-          <span className="t-caption">
-            Datos: REE · ICAI/AELEC · ENTSO-E · Comité de Análisis MITECO
-          </span>
-        </div>
-
-        {/* B10. Citar este trabajo */}
-        <details style={{marginTop:'1.5rem'}}>
-          <summary style={{fontFamily:'var(--font-mono)', fontSize:'0.8125rem',
-                           color:'var(--text-muted)', cursor:'pointer',
-                           listStyle:'none'}}>
-            ↳ Citar este trabajo
-          </summary>
-          <div style={{marginTop:'1rem', padding:'1.25rem',
-                       background:'var(--bg-surface)',
-                       border:'1px solid var(--border-subtle)',
-                       borderRadius:'var(--radius-md)',
-                       textAlign: 'left'}}>
-
-            <p className="t-subheading" style={{marginBottom:'0.5rem'}}>APA</p>
-            <p style={{fontFamily:'var(--font-mono)', fontSize:'0.8125rem',
-                       color:'var(--text-secondary)', marginBottom:'1rem'}}>
-              Monge Díaz-Ángel, A. (2026). Análisis del Apagón del 28 de
-              Abril de 2025: Estabilidad y Baja Inercia en el Sistema
-              Eléctrico Español [Trabajo Fin de Grado]. Universidad de Sevilla.
-            </p>
-
-            <p className="t-subheading" style={{marginBottom:'0.5rem'}}>IEEE</p>
-            <p style={{fontFamily:'var(--font-mono)', fontSize:'0.8125rem',
-                       color:'var(--text-secondary)', marginBottom:'1rem'}}>
-              A. Monge Díaz-Ángel, «Análisis del Apagón del 28 de Abril
-              de 2025», TFG, Depto. Ingeniería Energética,
-              Univ. de Sevilla, Sevilla, 2026.
-            </p>
-
-            <p className="t-subheading" style={{marginBottom:'0.5rem'}}>BibTeX</p>
-            <pre style={{fontFamily:'var(--font-mono)', fontSize:'0.75rem',
-                         color:'var(--text-secondary)',
-                         background:'var(--bg-raised)',
-                         padding:'0.75rem', borderRadius:'var(--radius-sm)',
-                         overflowX:'auto'}}>
-{`@mastersthesis{monge2026blackout,
-  author={Monge D\\'iaz-\\'Angel, Alfonso},
-  title={An\\'alisis del Apag\\'on del 28 de Abril de 2025},
-  school={Universidad de Sevilla},
-  year={2026},
-  type={Trabajo Fin de Grado}
-}`}
-            </pre>
-          </div>
-        </details>
-
-      </div>
-
-      {/* PDF Informative Modal styled as an Archival Slip */}
-      {showPdfModal && (
-        <div className="fixed inset-0 bg-primary/95 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-          <div className="bg-secondary border-2 border-main p-8 max-w-lg w-full rounded shadow-md relative">
-            <button
-              onClick={() => setShowPdfModal(false)}
-              className="absolute top-4 right-4 text-text-secondary hover:text-text-primary font-mono text-sm cursor-pointer"
-            >
-              [CERRAR X]
-            </button>
-            <h3 className="font-serif text-base font-bold text-accent mb-4 uppercase tracking-wider flex items-center gap-2">
-              <span className="w-2.5 h-2.5 bg-accent rounded-sm"></span>
-              Ficha del Repositorio de la Universidad
-            </h3>
-            <p className="text-xs text-text-secondary leading-relaxed mb-6 select-text">
-              El manuscrito completo del TFG titulado <strong className="text-text-primary">"Investigación Dinámica de Estabilidad de Frecuencia y Parámetros Operativos del Sistema Eléctrico Ibérico del 2025"</strong> está catalogado en los archivos del Departamento de Ingeniería Eléctrica de la ETSI (Sevilla). Contiene los análisis de flujo dinámico, demostraciones formales de la ecuación del oscilador síncrono y los registros transitorios detallados de las subestaciones de 400 kV.
-            </p>
-            <div className="bg-tertiary p-4 rounded border border-main mb-6 font-mono text-[10px] text-text-primary">
-              <div className="flex justify-between mb-1">
-                <span>FORMATO:</span>
-                <span className="font-bold">PDF / ISO-32000-1 Archival</span>
-              </div>
-              <div className="flex justify-between mb-1">
-                <span>TAMAÑO:</span>
-                <span className="font-bold">8.42 MB</span>
-              </div>
-              <div className="flex justify-between">
-                <span>MD5 CHECKSUM:</span>
-                <span className="font-bold">9B3B9D90F9A8CE089F0A3E8A081B1C7E</span>
-              </div>
-            </div>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowPdfModal(false)}
-                className="bg-primary border border-main hover:border-accent text-[10px] font-mono px-4 py-2 rounded text-text-secondary hover:text-text-primary transition-colors duration-200 cursor-pointer"
-              >
-                CERRAR FICHA
-              </button>
-              <button
-                onClick={() => {
-                  alert('El documento de investigación completo se ha enviado al canal de descargas de la Universidad.');
-                  setShowPdfModal(false);
-                }}
-                className="bg-accent hover:bg-accent/90 text-white text-[10px] font-mono font-bold px-4 py-2 rounded transition-colors duration-200 cursor-pointer"
-              >
-                DESCARGAR MANUSCRITO
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+    <div style={{
+      padding: '1.25rem 1.5rem',
+      background: 'rgba(255,255,255,0.04)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: 'var(--radius-md)',
+      transition: 'border-color 0.3s',
+    }}
+    onMouseEnter={e => {
+      (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-blue)';
+    }}
+    onMouseLeave={e => {
+      (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+    }}>
+      <p style={{
+        margin: '0 0 0.25rem',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '2rem',
+        fontWeight: 600,
+        color: 'white',
+        letterSpacing: '-0.02em',
+        lineHeight: 1,
+      }}>
+        {val.toFixed(metric.decimals)}{metric.unit}
+      </p>
+      <p style={{
+        margin: 0,
+        fontSize: '0.75rem',
+        color: 'rgba(255,255,255,0.5)',
+        fontFamily: 'var(--font-mono)',
+        lineHeight: 1.4,
+      }}>
+        {metric.label}
+      </p>
     </div>
   );
-};
+}
 
-export default Hero;
+export default function Hero() {
+  const navigate = useNavigate();
+  const { ref, inView } = useInView(0.1);
+  const [seconds, setSeconds] = useState(0);
+  const [metricsAnimated, setMetricsAnimated] = useState(false);
+
+  // Animación de los 22 segundos del colapso
+  useEffect(() => {
+    if (!inView) return;
+    const interval = setInterval(() => {
+      setSeconds(prev => {
+        if (prev >= 22) {
+          clearInterval(interval);
+          return 22;
+        }
+        return prev + 1;
+      });
+    }, 80);
+    setTimeout(() => setMetricsAnimated(true), 400);
+    return () => clearInterval(interval);
+  }, [inView]);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(160deg, #0a0e1a 0%, #0d1520 50%, #0a0e1a 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: 'clamp(2rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5rem)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+
+      {/* Grid background sutil */}
+      <div style={{
+        position: 'absolute', inset: 0, opacity: 0.04,
+        backgroundImage: `
+          linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
+        `,
+        backgroundSize: '60px 60px',
+        pointerEvents: 'none',
+      }} />
+
+      {/* Eyebrow */}
+      <p style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.6875rem',
+        letterSpacing: '0.2em',
+        color: 'rgba(255,255,255,0.35)',
+        margin: '0 0 2rem',
+        textTransform: 'uppercase',
+      }}>
+        COMITÉ FORENSE · ETSI SEVILLA · 28 ABR 2025
+      </p>
+
+      {/* Headline */}
+      <h1 style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+        fontWeight: 400,
+        color: 'white',
+        lineHeight: 1.15,
+        maxWidth: '18ch',
+        margin: '0 0 1rem',
+        letterSpacing: '-0.01em',
+      }}>
+        ¿Por qué colapsó la red eléctrica ibérica en{' '}
+        <span style={{
+          color: 'var(--accent-blue)',
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 600,
+        }}>
+          {seconds} segundos
+        </span>
+        ?
+      </h1>
+
+      {/* Subheadline */}
+      <p style={{
+        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+        color: 'rgba(255,255,255,0.5)',
+        maxWidth: '56ch',
+        lineHeight: 1.7,
+        margin: '0 0 3rem',
+        fontFamily: 'var(--font-mono)',
+      }}>
+        Análisis forense comparativo de las narrativas técnicas, regulatorias y
+        operativas del apagón del 28 de abril de 2025. Cuatro informes.
+        Tres versiones irreconciliables.
+      </p>
+
+      {/* Metrics grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '1rem',
+        maxWidth: '800px',
+        marginBottom: '3rem',
+      }}>
+        {KEY_METRICS.map((m, i) => (
+          <MetricCard
+            key={i}
+            metric={m}
+            delay={i * 150}
+            animate={metricsAnimated}
+          />
+        ))}
+      </div>
+
+      {/* Divider */}
+      <div style={{
+        width: '48px', height: '1px',
+        background: 'rgba(255,255,255,0.15)',
+        marginBottom: '2rem',
+      }} />
+
+      {/* CTAs */}
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <button
+          onClick={() => navigate('/timeline')}
+          style={{
+            padding: '0.875rem 2rem',
+            background: 'var(--accent-blue)',
+            color: 'white',
+            border: 'none',
+            borderRadius: 'var(--radius-md)',
+            cursor: 'pointer',
+            fontSize: '0.875rem',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 500,
+            letterSpacing: '0.05em',
+            transition: 'opacity 0.2s',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+          INICIAR ANÁLISIS FORENSE →
+        </button>
+
+        <button
+          onClick={() => navigate('/brief')}
+          style={{
+            padding: '0.875rem 2rem',
+            background: 'transparent',
+            color: 'rgba(255,255,255,0.6)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            borderRadius: 'var(--radius-md)',
+            cursor: 'pointer',
+            fontSize: '0.875rem',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.05em',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLElement).style.color = 'white';
+            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.4)';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.6)';
+            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
+          }}>
+          RESUMEN EJECUTIVO
+        </button>
+      </div>
+
+      {/* Bottom info bar */}
+      <div style={{
+        position: 'absolute',
+        bottom: '2rem', left: 'clamp(1.5rem, 5vw, 5rem)',
+        right: 'clamp(1.5rem, 5vw, 5rem)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '0.5rem',
+      }}>
+        <p style={{
+          margin: 0, fontSize: '0.6875rem',
+          color: 'rgba(255,255,255,0.2)',
+          fontFamily: 'var(--font-mono)',
+          letterSpacing: '0.1em',
+        }}>
+          ALFONSO MONGE DÍAZ-ÁNGEL · GRADO EN INGENIERÍA DE LA ENERGÍA
+        </p>
+        <p style={{
+          margin: 0, fontSize: '0.6875rem',
+          color: 'rgba(255,255,255,0.2)',
+          fontFamily: 'var(--font-mono)',
+          letterSpacing: '0.1em',
+        }}>
+          DIRECTOR: DAVID TOMÁS SANCHEZ MARTÍNEZ · SEVILLA 2026
+        </p>
+      </div>
+    </div>
+  );
+}

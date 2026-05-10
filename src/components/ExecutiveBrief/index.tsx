@@ -1,3 +1,5 @@
+import AnimatedMetric from '../AnimatedMetric';
+
 export default function ExecutiveBrief() {
   return (
     <div className="flex-grow flex flex-col justify-between text-text-primary font-sans animate-fade-in w-full">
@@ -22,41 +24,35 @@ export default function ExecutiveBrief() {
           </div>
 
           <div className="flex flex-col flex-grow justify-around gap-4">
-            <div>
-              <div className="font-mono text-4xl lg:text-5xl font-black text-accent leading-none tracking-tight">
-                22,50 s
-              </div>
-              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
-                Velocidad de propagación
-              </div>
-            </div>
-
-            <div>
-              <div className="font-mono text-4xl lg:text-5xl font-black text-alert-red leading-none tracking-tight">
-                &gt;15,0 GW
-              </div>
-              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
-                Potencia total desconectada
-              </div>
-            </div>
-
-            <div>
-              <div className="font-mono text-4xl lg:text-5xl font-black text-alert-orange leading-none tracking-tight">
-                ~60 M
-              </div>
-              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
-                Población desconectada
-              </div>
-            </div>
-
-            <div>
-              <div className="font-mono text-4xl lg:text-5xl font-black text-alert-green leading-none tracking-tight">
-                82,4 %
-              </div>
-              <div className="text-[10px] font-mono uppercase text-text-secondary tracking-widest mt-1">
-                Penetración instantánea renovable
-              </div>
-            </div>
+            <AnimatedMetric
+              value={22.50}
+              decimals={2}
+              unit=" s"
+              label="Velocidad de propagación"
+              color="var(--accent-blue)"
+            />
+            <AnimatedMetric
+              value={15.0}
+              decimals={1}
+              prefix=">"
+              unit=" GW"
+              label="Potencia total desconectada"
+              color="var(--alert-red)"
+            />
+            <AnimatedMetric
+              value={60}
+              prefix="~"
+              unit="M"
+              label="Población desconectada"
+              color="var(--alert-orange)"
+            />
+            <AnimatedMetric
+              value={82.4}
+              decimals={1}
+              unit="%"
+              label="Penetración instantánea renovable"
+              color="var(--alert-green)"
+            />
           </div>
         </div>
 
