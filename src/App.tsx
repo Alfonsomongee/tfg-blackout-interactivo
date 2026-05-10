@@ -5,6 +5,11 @@ import { TimelineNarrative } from './components/TimelineNarrative';
 import { DivergenceMatrix } from './components/DivergenceMatrix';
 import { ContingencySimulator } from './components/ContingencySimulator';
 import ChapterDossier from './components/ChapterDossier';
+import ExecutiveBrief from './components/ExecutiveBrief';
+import PropagationMap from './components/PropagationMap';
+import ResponsibilityRadar from './components/ResponsibilityRadar';
+import TechLexicon from './components/TechLexicon';
+import ReformTracker from './components/ReformTracker';
 import { useStore } from './hooks/useStore';
 
 // Page wrapper for smooth layout fade-in transition on route change
@@ -84,12 +89,21 @@ const Layout: React.FC = () => {
 
       {/* MOBILE DRAWER OVERLAY */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-15 bg-[#0a0e1a]/95 z-30 flex flex-col p-6 gap-3">
+        <div className="lg:hidden fixed inset-0 top-15 bg-[#0a0e1a]/95 z-30 flex flex-col p-6 gap-2.5 overflow-y-auto">
           <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
-            <span>⚙️ Inicio / Telemetría</span>
+            <span>⚡ Inicio / SCADA</span>
+          </NavLink>
+          <NavLink to="/brief" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📋 Resumen Ejecutivo</span>
+          </NavLink>
+          <NavLink to="/map" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>🗺️ Mapa de Propagación</span>
           </NavLink>
           <NavLink to="/timeline" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>⏳ Línea de Tiempo</span>
+          </NavLink>
+          <NavLink to="/radar" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>⚖️ Radar de Responsabilidad</span>
           </NavLink>
           <NavLink to="/matrix" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>📊 Matriz de Divergencias</span>
@@ -99,6 +113,12 @@ const Layout: React.FC = () => {
           </NavLink>
           <NavLink to="/dossier" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>📚 Dossier TFG</span>
+          </NavLink>
+          <NavLink to="/lexicon" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📖 Glosario Técnico</span>
+          </NavLink>
+          <NavLink to="/reforms" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📋 Seguimiento de Reformas</span>
           </NavLink>
         </div>
       )}
@@ -123,12 +143,26 @@ const Layout: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-col gap-2.5">
+          <nav className="flex flex-col gap-2 max-h-[calc(100vh-220px)] overflow-y-auto pr-1">
             <NavLink to="/" className={linkClass}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>Panel de Inicio</span>
+            </NavLink>
+
+            <NavLink to="/brief" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span>Resumen Ejecutivo</span>
+            </NavLink>
+
+            <NavLink to="/map" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              <span>Mapa Propagación</span>
             </NavLink>
 
             <NavLink to="/timeline" className={linkClass}>
@@ -136,6 +170,13 @@ const Layout: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>Línea de Tiempo</span>
+            </NavLink>
+
+            <NavLink to="/radar" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5" />
+              </svg>
+              <span>Radar Causalidad</span>
             </NavLink>
 
             <NavLink to="/matrix" className={linkClass}>
@@ -157,6 +198,20 @@ const Layout: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
               <span>Dossier TFG</span>
+            </NavLink>
+
+            <NavLink to="/lexicon" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Glosario Técnico</span>
+            </NavLink>
+
+            <NavLink to="/reforms" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+              <span>Progreso Reformas</span>
             </NavLink>
           </nav>
         </div>
@@ -234,10 +289,15 @@ const Layout: React.FC = () => {
         <main className="flex-grow flex flex-col justify-start">
           <Routes>
             <Route path="/" element={<PageWrapper><Hero /></PageWrapper>} />
+            <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
+            <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
             <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
+            <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
             <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
             <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
             <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
+            <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
+            <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
           </Routes>
         </main>
 
