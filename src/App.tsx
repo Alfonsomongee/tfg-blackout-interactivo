@@ -22,6 +22,8 @@ const PositionPolarimeter = lazy(() => import('./components/PositionPolarimeter'
 const ForensicVerdict = lazy(() => import('./components/ForensicVerdict'));
 const EnergyContextVisualizer = lazy(() => import('./components/EnergyContextVisualizer'));
 const MediaNarrativeAnalysis = lazy(() => import('./components/MediaNarrativeAnalysis'));
+const BlackStartTimeline = lazy(() => import('./components/BlackStartTimeline'));
+const TribunalFAQ = lazy(() => import('./components/TribunalFAQ'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -85,6 +87,7 @@ const NAV_GROUPS = [
       { to: '/compare', label: 'Comparador de Narrativas', type: 'detalle', icon: '📊' },
       { to: '/polarimetro', label: 'Polarímetro', type: 'detalle', icon: '🧭' },
       { to: '/causal', label: 'Cadena Causal', type: 'detalle', icon: '🔗' },
+      { to: '/black-start', label: 'Black Start (Fase 4)', type: 'core', icon: '⚡' },
       { to: '/fracturas', label: 'Tres Fracturas', type: 'detalle', icon: '📂' },
       { to: '/consenso', label: 'Consenso/Divergencia', type: 'detalle', icon: '📊' },
       { to: '/narrativa-mediatica', label: 'Narrativa Mediática', type: 'detalle', icon: '📰' },
@@ -100,6 +103,7 @@ const NAV_GROUPS = [
   {
     title: 'Garantía de Calidad',
     items: [
+      { to: '/tribunal', label: 'FAQ Tribunal', type: 'core', icon: '⚖️' },
       { to: '/dossier', label: 'Dossier TFG', type: 'detalle', icon: '📚' },
       { to: '/lexicon', label: 'Glosario Técnico', type: 'detalle', icon: '📖' },
       { to: '/metodologia', label: 'Metodología', type: 'detalle', icon: '📊' },
@@ -452,6 +456,7 @@ const Layout: React.FC = () => {
               <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
               <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
               <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
+              <Route path="/black-start" element={<PageWrapper><BlackStartTimeline /></PageWrapper>} />
               <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
               <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
               <Route path="/narrativa-mediatica" element={<PageWrapper><MediaNarrativeAnalysis /></PageWrapper>} />
@@ -462,6 +467,7 @@ const Layout: React.FC = () => {
               <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
               <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
               <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
+              <Route path="/tribunal" element={<PageWrapper><TribunalFAQ /></PageWrapper>} />
             </Routes>
           </Suspense>
         </main>

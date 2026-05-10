@@ -232,6 +232,38 @@ export default function Hero() {
           }}>
           RESUMEN EJECUTIVO
         </button>
+
+        {/* TODO: Alfonso debe copiar su PDF a /public/tfg-blackout-2025.pdf */}
+        <a
+          href="/tfg-blackout-2025.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            padding: '0.875rem 2rem',
+            background: 'transparent',
+            color: 'rgba(255,255,255,0.4)',
+            border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: 'var(--radius-md)',
+            cursor: 'pointer',
+            fontSize: '0.875rem',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.05em',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.7)';
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.3)';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(255,255,255,0.4)';
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.1)';
+          }}>
+          ↓ DESCARGAR TFG (PDF)
+        </a>
       </div>
 
       {/* Bottom info bar */}
