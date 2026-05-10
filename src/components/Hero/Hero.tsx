@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useStore } from '../../hooks/useStore';
 
 export const Hero: React.FC = () => {
   const [showPdfModal, setShowPdfModal] = useState(false);
+  const { setTourRunning } = useStore();
 
   return (
     <div className="relative min-h-screen bg-primary text-text-primary tech-grid flex flex-col justify-center items-center py-16 px-6 select-none overflow-hidden">
@@ -42,6 +44,14 @@ export const Hero: React.FC = () => {
         >
           Análisis forense comparativo de las narrativas de REE, ICAI/AELEC y ENTSO-E sobre el incidente del 28 de abril de 2025.
         </p>
+
+        {/* Guided Tour Start CTA Button */}
+        <button
+          onClick={() => setTourRunning(true)}
+          className="inline-flex items-center gap-3 px-8 py-4 mb-8 font-mono text-xs tracking-widest uppercase text-white bg-accent border border-accent rounded-md shadow-lg hover:opacity-90 active:scale-98 transition-all duration-200 cursor-pointer"
+        >
+          <span className="text-sm">▶</span> lanzar presentación guiada del tfg (8 minutos)
+        </button>
 
         {/* B5. DIVIDER */}
         <hr className="divider w-full mb-8" />

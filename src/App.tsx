@@ -13,6 +13,12 @@ import ReformTracker from './components/ReformTracker';
 import NarrativeComparator from './components/NarrativeComparator';
 import CausalChain from './components/CausalChain';
 import GlobalSearch from './components/GlobalSearch';
+import ThreeFracturesVisualizer from './components/ThreeFracturesVisualizer';
+import ConsensusDivergenceVisualizer from './components/ConsensusDivergenceVisualizer';
+import TechnologyRoadmap from './components/TechnologyRoadmap';
+import MethodologyTransparency from './components/MethodologyTransparency';
+import GuidedTour from './components/GuidedTour';
+import PresentationMode from './components/PresentationMode';
 import { useStore } from './hooks/useStore';
 
 // Page wrapper for smooth layout fade-in transition on route change
@@ -29,7 +35,7 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const Layout: React.FC = () => {
-  const { zoneVoltages } = useStore();
+  const { zoneVoltages, tourRunning, setTourRunning } = useStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -175,6 +181,12 @@ const Layout: React.FC = () => {
           <NavLink to="/causal" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>🔗 Cadena Causal</span>
           </NavLink>
+          <NavLink to="/fracturas" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📂 Tres Fracturas</span>
+          </NavLink>
+          <NavLink to="/consenso" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📊 Consenso/Divergencia</span>
+          </NavLink>
 
           {/* HERRAMIENTAS */}
           <div style={{
@@ -189,6 +201,9 @@ const Layout: React.FC = () => {
           </div>
           <NavLink to="/simulator" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>⚡ Simulador Físico</span>
+          </NavLink>
+          <NavLink to="/roadmap" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>🗺️ Hoja de Ruta</span>
           </NavLink>
 
           {/* DOCUMENTACIÓN */}
@@ -207,6 +222,9 @@ const Layout: React.FC = () => {
           </NavLink>
           <NavLink to="/lexicon" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>📖 Glosario Técnico</span>
+          </NavLink>
+          <NavLink to="/metodologia" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
+            <span>📊 Metodología</span>
           </NavLink>
           <NavLink to="/reforms" onClick={() => setMobileMenuOpen(false)} className={linkClass}>
             <span>📋 Progreso Reformas</span>
@@ -340,6 +358,20 @@ const Layout: React.FC = () => {
               <span>Cadena Causal</span>
             </NavLink>
 
+            <NavLink to="/fracturas" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9l-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span>Tres Fracturas</span>
+            </NavLink>
+
+            <NavLink to="/consenso" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Consenso/Divergencia</span>
+            </NavLink>
+
             {/* HERRAMIENTAS */}
             <div style={{
               padding: '1.25rem 1.25rem 0.375rem',
@@ -357,6 +389,13 @@ const Layout: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span>Simulador Físico</span>
+            </NavLink>
+
+            <NavLink to="/roadmap" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              <span>Hoja de Ruta</span>
             </NavLink>
 
             {/* DOCUMENTACIÓN */}
@@ -383,6 +422,13 @@ const Layout: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <span>Glosario Técnico</span>
+            </NavLink>
+
+            <NavLink to="/metodologia" className={linkClass}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+              <span>Metodología</span>
             </NavLink>
 
             <NavLink to="/reforms" className={linkClass}>
@@ -489,11 +535,21 @@ const Layout: React.FC = () => {
             </div>
 
             {/* Publication document status */}
-            <div className="px-3">
+            <div className="px-3 border-r border-main/40">
               <span className="text-[9px] text-text-secondary uppercase font-mono block mb-0.5">DOCUMENTO</span>
               <span className="text-[9px] font-mono font-bold text-alert-green bg-alert-green/10 border border-alert-green/30 px-1.5 py-0.5 rounded uppercase">
                 {telemetry.status === 'ESTABLE (NOMINAL)' ? 'APROBADO REE' : 'REVISIÓN forense'}
               </span>
+            </div>
+
+            {/* Presentation Mode Button */}
+            <div className="px-3">
+              <button
+                data-presentation-btn
+                className="px-3 py-1 bg-accent/10 border border-accent/40 rounded text-[10px] font-mono font-bold text-accent hover:bg-accent hover:text-white transition-all duration-200 uppercase tracking-wider cursor-pointer flex items-center gap-1.5"
+              >
+                🖥 Presentación
+              </button>
             </div>
           </div>
         </header>
@@ -509,9 +565,13 @@ const Layout: React.FC = () => {
             <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
             <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
             <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
+            <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
+            <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
             <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
+            <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
             <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
             <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
+            <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
             <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
           </Routes>
         </main>
@@ -547,6 +607,7 @@ const Layout: React.FC = () => {
         </footer>
 
         {searchOpen && <GlobalSearch onClose={() => setSearchOpen(false)} />}
+        <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
 
       </div>
     </div>
@@ -556,6 +617,7 @@ const Layout: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <Router>
+      <PresentationMode />
       <Layout />
     </Router>
   );

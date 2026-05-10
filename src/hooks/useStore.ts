@@ -27,6 +27,10 @@ interface SimulationState {
   zoneVoltages: { [key: string]: { voltage: number; freq: number; load: number; status: 'nominal' | 'alert' | 'critical' } };
   triggerFaultInZone: (zone: string) => void;
   resetAllFaults: () => void;
+
+  // Guided Tour State
+  tourRunning: boolean;
+  setTourRunning: (val: boolean) => void;
 }
 
 const initialPhases: TimelinePhase[] = [
@@ -269,6 +273,9 @@ export const useStore = create<SimulationState>((set) => ({
     }
     return { zoneVoltages: nextZones };
   }),
-  resetAllFaults: () => set({ zoneVoltages: initialZones })
+  resetAllFaults: () => set({ zoneVoltages: initialZones }),
+
+  tourRunning: false,
+  setTourRunning: (val) => set({ tourRunning: val })
 }));
 export type { SimulationState };

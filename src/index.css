@@ -406,3 +406,28 @@ input[type="range"]:hover::-webkit-slider-thumb {
   padding-left: calc(1.25rem - 2px);
   font-weight: 500;
 }
+
+/* Presentation Mode Styles */
+body.presentation-mode {
+  overflow: hidden;
+}
+
+body.presentation-mode [data-no-print],
+body.presentation-mode aside,
+body.presentation-mode nav,
+body.presentation-mode header {
+  display: none !important;
+}
+
+body.presentation-mode main {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 3rem;
+  overflow: auto;
+  background: var(--bg-primary);
+}
+
+body.presentation-mode main > div {
+  cursor: pointer;
+}
