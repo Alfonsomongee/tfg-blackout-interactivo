@@ -1,0 +1,26 @@
+{
+  "phases": [
+    {
+      "id": 0,
+      "timestamp": "2025-04-28T12:00:00Z",
+      "label": "Baseline",
+      "description": "Sistema en operacion normal",
+      "frequency_hz": 50.0,
+      "frequency_derivative_hz_per_s": 0.0,
+      "inertia_seconds": 2.3,
+      "voltage_zones": [{"zone": "N-Spain", "voltage_pu": 1.02, "reactive_power_mvar": 450}],
+      "events": []
+    },
+    {
+      "id": 1,
+      "timestamp": "2025-04-28T12:11:17Z",
+      "label": "HVDC Trip",
+      "description": "HVDC PMODE transition triggered",
+      "frequency_hz": 50.0,
+      "frequency_derivative_hz_per_s": -4.18,
+      "inertia_seconds": 2.3,
+      "voltage_zones": [{"zone": "NE-Spain", "voltage_pu": 0.87, "reactive_power_mvar": -120}],
+      "events": [{"timestamp": "2025-04-28T12:11:17Z", "type": "hvdc_trip", "description": "Iberian-French HVDC link disconnects", "magnitude": 3500, "unit": "MW"}]
+    }
+  ]
+}
