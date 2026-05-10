@@ -6,23 +6,78 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary:     #0a0e1a;
-  --bg-secondary:   #0f1729;
-  --bg-tertiary:    #141e35;
-  --border-main:    #1e3a5f;
-  --border-accent:  #0ea5e9;
-  --text-primary:   #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-mono:      #67e8f9;
-  --alert-red:      #ef4444;
-  --alert-orange:   #f97316;
-  --alert-green:    #22c55e;
+  /* Default Academic Light Theme - Printed Monograph Style */
+  --bg-primary:     #fcfbf7; /* Luxurious warm ivory book paper */
+  --bg-secondary:   #ffffff; /* Pristine white for report sections */
+  --bg-tertiary:    #f4f3ee; /* Slightly darker paper for headers/inputs */
+  --border-main:    #dcdad2; /* Refined canvas line gray */
+  --border-accent:  #1e3a8a; /* Classic ENTSO-E corporate dark navy */
+  --text-primary:   #1c1e21; /* Rich ink black */
+  --text-secondary: #5c5f66; /* Muted graphite */
+  --text-mono:      #1e40af; /* Deep corporate indigo for metrics */
+  --alert-red:      #b91c1c; /* Official academic crimson */
+  --alert-orange:   #c2410c; /* Brick orange */
+  --alert-green:    #15803d; /* Forest green */
+  --accent-blue:    #1d4ed8; /* Corporate royal blue */
+  --accent-cyan:    #0369a1; /* Technical cyan blue */
+  --font-serif:     'Georgia', 'Cambria', 'Times New Roman', serif;
+
+  /* ── Aliases para sistema de tokens unificado ── */
+  --bg-base:        var(--bg-primary);
+  --bg-surface:     var(--bg-secondary);
+  --bg-raised:      var(--bg-tertiary);
+  --border:         var(--border-main);
+  --border-subtle:  var(--border-main);
+  --text-muted:     var(--text-secondary);
+  --font-mono:      'JetBrains Mono', 'IBM Plex Mono', monospace;
+  --nominal:        var(--alert-green);
+  --warning:        var(--alert-orange);
+  --alarm:          var(--alert-red);
+  --info:           var(--accent-blue);
+  --radius-sm:      4px;
+  --radius-md:      6px;
+  --radius-lg:      8px;
+  --transition:     150ms ease;
+}
+
+.dark {
+  /* Dark Editorial Theme - Forensic Monograph Console */
+  --bg-primary:     #0a0e17; /* Deep midnight */
+  --bg-secondary:   #111625; /* Navy slate card background */
+  --bg-tertiary:    #182035; /* Dark steel background for inputs */
+  --border-main:    #1e314f; /* Steel slate border */
+  --border-accent:  #38bdf8; /* Technical sky blue border */
+  --text-primary:   #e2e8f0; /* Crisp slate white */
+  --text-secondary: #94a3b8; /* Muted graphite slate */
+  --text-mono:      #38bdf8; /* Technical sky blue mono */
+  --alert-red:      #ef4444; /* Alert red */
+  --alert-orange:   #f97316; /* Warning orange */
+  --alert-green:    #22c55e; /* Normal green */
   --accent-blue:    #0ea5e9;
   --accent-cyan:    #06b6d4;
+  --font-serif:     'Georgia', 'Cambria', 'Times New Roman', serif;
+
+  /* ── Aliases para sistema de tokens unificado ── */
+  --bg-base:        var(--bg-primary);
+  --bg-surface:     var(--bg-secondary);
+  --bg-raised:      var(--bg-tertiary);
+  --border:         var(--border-main);
+  --border-subtle:  var(--border-main);
+  --text-muted:     var(--text-secondary);
+  --font-mono:      'JetBrains Mono', 'IBM Plex Mono', monospace;
+  --nominal:        var(--alert-green);
+  --warning:        var(--alert-orange);
+  --alarm:          var(--alert-red);
+  --info:           var(--accent-accent);
+  --radius-sm:      4px;
+  --radius-md:      6px;
+  --radius-lg:      8px;
+  --transition:     150ms ease;
 }
 
 * {
   box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -57,45 +112,74 @@ body {
   background: var(--border-accent);
 }
 
-/* Keyframes */
-@keyframes pulse-border {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(14, 165, 233, 0); }
+/* Academic Tables - LaTeX booktabs Style */
+.table-academic {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.table-academic th {
+  border-top: 2px solid var(--text-primary);
+  border-bottom: 1px solid var(--text-primary);
+  padding: 10px 14px;
+  font-weight: 600;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  background: transparent;
+}
+.table-academic td {
+  border-bottom: 1px solid var(--border-main);
+  padding: 12px 14px;
+  color: var(--text-primary);
+}
+.table-academic tr:last-child td {
+  border-bottom: 2px solid var(--text-primary);
 }
 
-@keyframes blink-alert {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.alert-blink {
-  animation: blink-alert 1s infinite;
-}
-
-.pulse-active {
-  animation: pulse-border 2s infinite;
-  border-color: var(--border-accent) !important;
-}
-
-/* CRT and Scanline overlays for industrial aesthetics */
-.crt-grid {
+/* LaTeX Equations Style */
+.latex-equation {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  background: var(--bg-tertiary);
+  border-left: 3px solid var(--border-accent);
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
 }
-.crt-grid::before {
-  content: " ";
-  display: block;
+.latex-equation .eq-number {
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 999;
-  background-size: 100% 3px, 6px 100%;
-  pointer-events: none;
+  right: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
 }
 
+/* Technical Dotted Grid Background - Clean Drafting Look */
 .tech-grid {
-  background-image: linear-gradient(rgba(30, 58, 95, 0.15) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(30, 58, 95, 0.15) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-image: radial-gradient(var(--border-main) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Document Stamp - Formal Monograph Branding */
+.document-stamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--border-accent);
+  border: 1px solid var(--border-accent);
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-block;
 }
 
 @keyframes fadeIn {
@@ -107,3 +191,164 @@ body {
   animation: fadeIn 0.4s ease-out forwards;
 }
 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid currentColor;
+}
+.badge-nominal  { color: var(--nominal);  background: color-mix(in srgb, var(--nominal) 10%, transparent); }
+.badge-warning  { color: var(--warning);  background: color-mix(in srgb, var(--warning) 10%, transparent); }
+.badge-alarm    { color: var(--alarm);    background: color-mix(in srgb, var(--alarm) 10%, transparent); }
+.badge-info     { color: var(--info);     background: color-mix(in srgb, var(--info) 10%, transparent); }
+.badge-neutral  { color: var(--text-muted); background: transparent; border-color: var(--border); }
+
+.metric-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+}
+.metric-card .label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+.metric-card .value {
+  font-family: var(--font-mono);
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
+}
+.metric-card .unit {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.125rem;
+}
+
+.surface {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.surface-raised {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.t-subheading {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.t-body    { font-size: 0.9375rem; line-height: 1.7; color: var(--text-secondary); }
+.t-caption { font-size: 0.8125rem; color: var(--text-muted); }
+.t-mono    { font-family: var(--font-mono); font-size: 0.875rem;
+             color: var(--text-mono);
+             font-feature-settings: "tnum" 1, "zero" 1;
+             font-variant-numeric: tabular-nums; }
+.t-data    { font-family: var(--font-mono); font-size: 1.5rem;
+             font-weight: 400; color: var(--text-primary);
+             font-feature-settings: "tnum" 1;
+             font-variant-numeric: tabular-nums; }
+
+.table-academic { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.table-academic th {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-weight: 400;
+}
+.table-academic td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+.table-academic tr:last-child td { border-bottom: none; }
+.table-academic tr:hover td { background: var(--bg-raised); }
+
+:focus-visible {
+  outline: 2px solid var(--info);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+html { scroll-behavior: smooth; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  border: 2px solid var(--bg-surface);
+  transition: background var(--transition);
+}
+input[type="range"]:hover::-webkit-slider-thumb {
+  background: var(--info);
+}
+
+@media print {
+  nav, .sidebar { display: none !important; }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-family: Georgia, serif !important;
+    font-size: 11pt;
+  }
+  main { padding: 0 !important; }
+  .surface, .metric-card {
+    background: transparent !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+  }
+  .t-mono, .t-data {
+    font-family: 'Courier New', monospace !important;
+    color: #000 !important;
+  }
+  .table-academic th, .table-academic td {
+    border-color: #888 !important;
+    color: #000 !important;
+  }
+  body::before {
+    content: "Análisis del Apagón 28-A — Alfonso Monge — Univ. de Sevilla — 2026";
+    display: block; font-size: 9pt; color: #666;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8pt; margin-bottom: 16pt;
+  }
+}
