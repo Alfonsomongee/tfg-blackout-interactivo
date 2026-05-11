@@ -3,9 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const PRESENTATION_PAGES = [
   '/', '/brief', '/contexto-energetico', '/countdown', '/timeline', '/map', '/matrix',
-  '/radar', '/compare', '/polarimetro', '/causal', '/black-start',
+  '/radar', '/compare', '/divergencias', '/reactiva', '/polarimetro', '/causal', '/black-start',
   '/fracturas', '/consenso', '/narrativa-mediatica', '/simulator',
-  '/roadmap', '/dossier', '/lexicon', '/metodologia', '/reforms',
+  '/roadmap', '/dossier', '/lexicon', '/metodologia', '/reforms', '/trilema',
   '/veredicto', '/tribunal'
 ];
 

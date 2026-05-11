@@ -25,6 +25,9 @@ const MediaNarrativeAnalysis = lazy(() => import('./components/MediaNarrativeAna
 const BlackStartTimeline = lazy(() => import('./components/BlackStartTimeline'));
 const TribunalFAQ = lazy(() => import('./components/TribunalFAQ'));
 const CollapseCountdown = lazy(() => import('./components/CollapseCountdown'));
+const DivergenceTable = lazy(() => import('./components/DivergenceTable'));
+const ReactiveBalance = lazy(() => import('./components/ReactiveBalance'));
+const EnergyTrilemma = lazy(() => import('./components/EnergyTrilemma'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -78,6 +81,8 @@ const NAV_GROUPS = [
       { to: '/matrix', label: 'Matriz Comparada', type: 'detalle', icon: '📊' },
       { to: '/radar', label: 'Radar Causalidad', type: 'detalle', icon: '⚖️' },
       { to: '/compare', label: 'Comparador de Narrativas', type: 'detalle', icon: '📊' },
+      { to: '/divergencias', label: 'Divergencias Irreconciliables', type: 'core', icon: '⚡' },
+      { to: '/reactiva', label: 'Balance de Reactiva', type: 'detalle', icon: '📊' },
       { to: '/polarimetro', label: 'Polarímetro', type: 'detalle', icon: '🧭' },
       { to: '/causal', label: 'Cadena Causal', type: 'detalle', icon: '🔗' },
       { to: '/black-start', label: 'Black Start (Fase 4)', type: 'core', icon: '⚡' },
@@ -101,6 +106,7 @@ const NAV_GROUPS = [
       { to: '/lexicon', label: 'Glosario Técnico', type: 'detalle', icon: '📖' },
       { to: '/metodologia', label: 'Metodología', type: 'detalle', icon: '📊' },
       { to: '/auditoria-reformas', label: 'Historial de Reformas', type: 'detalle', icon: '🔧' },
+      { to: '/trilema', label: 'Trilema Energético', type: 'core', icon: '🔺' },
       { to: '/veredicto', label: 'Veredicto Forense', type: 'core', icon: '⚖️' }
     ]
   }
@@ -505,6 +511,9 @@ const Layout: React.FC = () => {
               <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
               <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
               <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
+              <Route path="/divergencias" element={<PageWrapper><DivergenceTable /></PageWrapper>} />
+              <Route path="/reactiva" element={<PageWrapper><ReactiveBalance /></PageWrapper>} />
+              <Route path="/trilema" element={<PageWrapper><EnergyTrilemma /></PageWrapper>} />
               <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
               <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
               <Route path="/black-start" element={<PageWrapper><BlackStartTimeline /></PageWrapper>} />
