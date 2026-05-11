@@ -409,42 +409,96 @@ input[type="range"]:hover::-webkit-slider-thumb {
   font-weight: 500;
 }
 
-/* Presentation Mode Styles */
+/* PRESENTATION MODE - CENTRADO Y FULLSCREEN */
 body.presentation-mode {
-  overflow: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 body.presentation-mode #root {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 body.presentation-mode main,
-body.presentation-mode .page-content,
-body.presentation-mode > div {
-  max-width: 100vw !important;
+body.presentation-mode [role="main"],
+body.presentation-mode > div > div {
+  flex: 1 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 3rem !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
-  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
+/* Contenido centrado */
+body.presentation-mode > div,
+body.presentation-mode section,
+body.presentation-mode article {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  margin: auto !important;
+}
+
+/* Grid y Kanban */
+body.presentation-mode [class*="grid"],
+body.presentation-mode [class*="kanban"],
+body.presentation-mode [class*="column"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Gráficos */
+body.presentation-mode .recharts-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+body.presentation-mode svg {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Ocultar UI */
 body.presentation-mode aside,
 body.presentation-mode nav,
-body.presentation-mode header {
+body.presentation-mode header,
+body.presentation-mode footer {
   display: none !important;
 }
 
-body.presentation-mode main {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 3rem;
-  overflow: auto;
-  background: var(--bg-primary);
+/* Acordeones y cards */
+body.presentation-mode [class*="accordion"],
+body.presentation-mode [class*="card"] {
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-body.presentation-mode main > div {
-  cursor: pointer;
+/* Reset spacing en elementos raíz */
+body.presentation-mode h1,
+body.presentation-mode h2,
+body.presentation-mode h3 {
+  margin: 0 0 1rem 0 !important;
 }
 
 @keyframes spin {
