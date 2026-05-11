@@ -409,43 +409,55 @@ input[type="range"]:hover::-webkit-slider-thumb {
   font-weight: 500;
 }
 
-/* PRESENTATION MODE - LIMPIO, SIN OVERLAY */
+/* PRESENTATION MODE - LIMPIO, PRESERVANDO MAQUETACIÓN ORIGINAL */
 body.presentation-mode {
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
   width: 100vw !important;
   height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
-  background: transparent !important;
+  background-color: var(--primary) !important;
 }
 
 body.presentation-mode #root {
   width: 100vw !important;
   height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
+  overflow: hidden !important;
 }
 
+/* Ocultar elementos de navegación de la interfaz estándar */
+body.presentation-mode aside,
+body.presentation-mode nav,
+body.presentation-mode header,
+body.presentation-mode footer {
+  display: none !important;
+}
+
+/* Resetear paddings y márgenes del contenedor principal de la página */
+body.presentation-mode .lg\:pl-64,
+body.presentation-mode [class*="lg:pl-64"] {
+  padding-left: 0 !important;
+}
+body.presentation-mode .pt-14,
+body.presentation-mode [class*="pt-14"],
+body.presentation-mode .lg\:pt-1,
+body.presentation-mode [class*="lg:pt-1"] {
+  padding-top: 0 !important;
+}
+
+/* Asegurar que la pantalla principal ocupa todo el espacio y tiene scroll interno */
 body.presentation-mode main,
-body.presentation-mode [role="main"],
-body.presentation-mode > div > div:not(#presentation-info-bar) {
-  flex: 1 !important;
-  width: 100vw !important;
+body.presentation-mode [role="main"] {
+  width: 100% !important;
   height: 100vh !important;
   margin: 0 !important;
-  padding: 3rem !important;
+  padding: 3rem 3rem 8rem 3rem !important; /* Generoso espacio inferior para evitar pisar la barra flotante */
   box-sizing: border-box !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
   background: transparent !important;
 }
 
@@ -499,7 +511,7 @@ body.presentation-mode .recharts-wrapper {
   margin: 0 auto !important;
 }
 
-body.presentation-mode svg {
+body.presentation-mode svg:not(.recharts-surface) {
   max-width: 100% !important;
   width: 100% !important;
   height: auto !important;
