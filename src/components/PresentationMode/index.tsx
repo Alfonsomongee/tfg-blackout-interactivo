@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const PRESENTATION_PAGES = [
-  '/', '/brief', '/contexto-energetico', '/timeline', '/map', '/matrix',
+  '/', '/brief', '/contexto-energetico', '/countdown', '/timeline', '/map', '/matrix',
   '/radar', '/compare', '/polarimetro', '/causal', '/black-start',
   '/fracturas', '/consenso', '/narrativa-mediatica', '/simulator',
   '/roadmap', '/dossier', '/lexicon', '/metodologia', '/reforms',

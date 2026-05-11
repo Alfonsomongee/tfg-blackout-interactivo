@@ -24,6 +24,7 @@ const EnergyContextVisualizer = lazy(() => import('./components/EnergyContextVis
 const MediaNarrativeAnalysis = lazy(() => import('./components/MediaNarrativeAnalysis'));
 const BlackStartTimeline = lazy(() => import('./components/BlackStartTimeline'));
 const TribunalFAQ = lazy(() => import('./components/TribunalFAQ'));
+const CollapseCountdown = lazy(() => import('./components/CollapseCountdown'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -71,6 +72,7 @@ const NAV_GROUPS = [
   {
     title: 'Análisis Forense',
     items: [
+      { to: '/countdown', label: '90 Segundos (Tiempo Real)', type: 'core', icon: '⏱️' },
       { to: '/timeline', label: 'Línea de Tiempo', type: 'core', icon: '⏳' },
       { to: '/map', label: 'Mapa Propagación', type: 'core', icon: '🗺️' },
       { to: '/matrix', label: 'Matriz Comparada', type: 'detalle', icon: '📊' },
@@ -497,6 +499,7 @@ const Layout: React.FC = () => {
               <Route path="/" element={<PageWrapper><Hero /></PageWrapper>} />
               <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
               <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
+              <Route path="/countdown" element={<PageWrapper><CollapseCountdown /></PageWrapper>} />
               <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
               <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
               <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
