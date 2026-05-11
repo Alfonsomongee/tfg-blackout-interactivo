@@ -409,7 +409,7 @@ input[type="range"]:hover::-webkit-slider-thumb {
   font-weight: 500;
 }
 
-/* PRESENTATION MODE - CENTRADO Y FULLSCREEN */
+/* PRESENTATION MODE - LIMPIO, SIN OVERLAY */
 body.presentation-mode {
   margin: 0 !important;
   padding: 0 !important;
@@ -418,6 +418,7 @@ body.presentation-mode {
   height: 100vh !important;
   display: flex !important;
   flex-direction: column !important;
+  background: transparent !important;
 }
 
 body.presentation-mode #root {
@@ -427,11 +428,12 @@ body.presentation-mode #root {
   flex-direction: column !important;
   margin: 0 !important;
   padding: 0 !important;
+  background: transparent !important;
 }
 
 body.presentation-mode main,
 body.presentation-mode [role="main"],
-body.presentation-mode > div > div {
+body.presentation-mode > div > div:not(#presentation-info-bar) {
   flex: 1 !important;
   width: 100vw !important;
   height: 100vh !important;
@@ -444,6 +446,31 @@ body.presentation-mode > div > div {
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
+  background: transparent !important;
+}
+
+/* ELIMINA CUALQUIER PSEUDO-ELEMENTO GRIS */
+body.presentation-mode::before,
+body.presentation-mode::after,
+body.presentation-mode > *::before,
+body.presentation-mode > *::after {
+  display: none !important;
+}
+
+/* Asegura que NO hay capas oscuras */
+body.presentation-mode [class*="overlay"],
+body.presentation-mode [class*="modal"],
+body.presentation-mode [class*="backdrop"],
+body.presentation-mode [class*="shade"] {
+  display: none !important;
+}
+
+/* Ocultar UI sin gris */
+body.presentation-mode aside,
+body.presentation-mode nav,
+body.presentation-mode header,
+body.presentation-mode footer {
+  display: none !important;
 }
 
 /* Contenido centrado */
@@ -477,14 +504,6 @@ body.presentation-mode svg {
   width: 100% !important;
   height: auto !important;
   overflow: visible !important;
-}
-
-/* Ocultar UI */
-body.presentation-mode aside,
-body.presentation-mode nav,
-body.presentation-mode header,
-body.presentation-mode footer {
-  display: none !important;
 }
 
 /* Acordeones y cards */

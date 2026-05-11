@@ -142,7 +142,7 @@ export function PresentationMode() {
       : 'EXTERNO';
 
     return (
-      <div style={{
+      <div id="presentation-info-bar" style={{
         position: 'fixed', bottom: 0, left: 0, right: 0,
         background: 'rgba(0,0,0,0.85)', padding: '0.75rem 1.5rem',
         display: 'flex', justifyContent: 'space-between',
