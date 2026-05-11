@@ -30,6 +30,10 @@ import GlobalSearch from './components/GlobalSearch';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
+import ShareButton from './components/ShareButton';
+import ReadingProgress from './components/ReadingProgress';
+import BackToTop from './components/BackToTop';
+import ScrollToTop from './components/ScrollToTop';
 import { useStore } from './hooks/useStore';
 
 function PageLoader() {
@@ -54,19 +58,6 @@ function PageLoader() {
     </div>
   );
 }
-
-// Page wrapper for smooth layout fade-in transition on route change
-const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const location = useLocation();
-  return (
-    <div
-      key={location.pathname}
-      className="animate-fade-in flex-grow p-6 flex flex-col gap-6 max-w-7xl mx-auto w-full z-10"
-    >
-      {children}
-    </div>
-  );
-};
 
 const NAV_GROUPS = [
   {
@@ -107,11 +98,55 @@ const NAV_GROUPS = [
       { to: '/dossier', label: 'Dossier TFG', type: 'detalle', icon: '📚' },
       { to: '/lexicon', label: 'Glosario Técnico', type: 'detalle', icon: '📖' },
       { to: '/metodologia', label: 'Metodología', type: 'detalle', icon: '📊' },
-      { to: '/reforms', label: 'Progreso Reformas', type: 'detalle', icon: '📋' },
-      { to: '/veredicto', label: 'Veredicto Forense', type: 'core', icon: '⚖️' },
+      { to: '/auditoria-reformas', label: 'Historial de Reformas', type: 'detalle', icon: '🔧' },
+      { to: '/veredicto', label: 'Veredicto Forense', type: 'core', icon: '⚖️' }
     ]
   }
 ];
+
+const getBreadcrumb = (pathname: string) => {
+  for (const group of NAV_GROUPS) {
+    const found = group.items.find(item => item.to === pathname);
+    if (found) {
+      return { group: group.title, item: found.label };
+    }
+  }
+  return null;
+};
+
+// Page wrapper for smooth layout fade-in transition on route change
+const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+  const breadcrumb = getBreadcrumb(location.pathname);
+
+  // Sync document title dynamically
+  useEffect(() => {
+    if (breadcrumb) {
+      document.title = `${breadcrumb.item} — TFG Blackout`;
+    } else {
+      document.title = 'TFG Blackout';
+    }
+  }, [breadcrumb]);
+
+  return (
+    <div
+      key={location.pathname}
+      className="animate-fade-in flex-grow p-6 flex flex-col gap-6 max-w-7xl mx-auto w-full z-10"
+    >
+      {breadcrumb && (
+        <div className="flex items-center justify-between border-b border-main pb-3 mb-2" data-no-print>
+          <div className="flex items-center gap-2 font-mono text-[10px] text-text-muted uppercase tracking-wider">
+            <span>{breadcrumb.group}</span>
+            <span className="opacity-40">/</span>
+            <span className="text-text-secondary font-medium">{breadcrumb.item}</span>
+          </div>
+          <ShareButton />
+        </div>
+      )}
+      {children}
+    </div>
+  );
+};
 
 const SidebarLink: React.FC<{
   item: { to: string; label: string; type: string; icon: string };
@@ -184,6 +219,16 @@ const Layout: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Silent preload of critical paths after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      import('./components/TimelineNarrative');
+      import('./components/NarrativeComparator');
+      import('./components/ForensicVerdict');
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Compute live averages of telemetry for status display
   const telemetry = useMemo(() => {
     const zones = Object.values(zoneVoltages);
@@ -203,6 +248,9 @@ const Layout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-primary text-text-primary font-sans flex flex-col tech-grid relative overflow-x-hidden select-none">
+      <ScrollToTop />
+      <ReadingProgress />
+      <BackToTop />
       
       {/* Top decorative corporate line */}
       <div className="h-1 w-full bg-gradient-to-r from-accent via-accent-cyan to-alert-red fixed top-0 left-0 right-0 z-50"></div>

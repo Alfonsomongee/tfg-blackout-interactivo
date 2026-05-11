@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const PRESENTATION_PAGES = [
-  '/', '/brief', '/timeline', '/map', '/compare', '/causal',
-  '/fracturas', '/consenso', '/roadmap', '/metodologia'
+  '/', '/brief', '/contexto-energetico', '/timeline', '/map', '/matrix',
+  '/radar', '/compare', '/polarimetro', '/causal', '/black-start',
+  '/fracturas', '/consenso', '/narrativa-mediatica', '/simulator',
+  '/roadmap', '/dossier', '/lexicon', '/metodologia', '/reforms',
+  '/veredicto', '/tribunal'
 ];
 
 export function PresentationMode() {
@@ -134,17 +137,21 @@ export function PresentationMode() {
 
   // Info bar en modo presentación
   if (isActive) {
+    const pageDisplay = currentIndex >= 0
+      ? (PRESENTATION_PAGES[currentIndex] === '/' ? 'PORTADA' : PRESENTATION_PAGES[currentIndex].slice(1).toUpperCase())
+      : 'EXTERNO';
+
     return (
       <div style={{
         position: 'fixed', bottom: 0, left: 0, right: 0,
-        background: 'rgba(0,0,0,0.75)', padding: '0.75rem 1.5rem',
+        background: 'rgba(0,0,0,0.85)', padding: '0.75rem 1.5rem',
         display: 'flex', justifyContent: 'space-between',
         alignItems: 'center', color: 'rgba(255,255,255,0.9)',
         fontSize: '0.8rem', fontFamily: 'var(--font-mono)',
         pointerEvents: 'none', zIndex: 9999,
         borderTop: '1px solid rgba(255,255,255,0.1)'
       }}>
-        <span>Pág {currentIndex + 1} / {PRESENTATION_PAGES.length} — {PRESENTATION_PAGES[currentIndex] === '/' ? 'Portada' : PRESENTATION_PAGES[currentIndex].slice(1).toUpperCase()}</span>
+        <span>Pág {currentIndex >= 0 ? currentIndex + 1 : '?'} / {PRESENTATION_PAGES.length} — {pageDisplay}</span>
         <span>← → / CLICK para navegar | ESC para salir</span>
         <span>MODO PRESENTACIÓN</span>
       </div>

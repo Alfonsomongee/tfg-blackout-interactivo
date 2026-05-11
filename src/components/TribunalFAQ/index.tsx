@@ -106,10 +106,18 @@ export default function TribunalFAQ() {
       }}>
         Preguntas del tribunal — Respuestas calibradas
       </h2>
-      <p className="t-body" style={{ maxWidth: '600px', marginBottom: '2rem' }}>
+      <p className="t-body" style={{ maxWidth: '600px', marginBottom: '0.75rem' }}>
         15 preguntas probables del tribunal con respuestas técnicas
         ancladas en el TFG. Cada respuesta incluye la referencia exacta
         al capítulo y página correspondiente.
+      </p>
+      <p style={{
+        fontSize: '0.6875rem', fontFamily: 'var(--font-mono)',
+        color: 'var(--warning)', textTransform: 'uppercase',
+        letterSpacing: '0.05em', display: 'flex', alignItems: 'center',
+        gap: '0.375rem', marginBottom: '2rem', margin: '0 0 2rem'
+      }}>
+        <span>⚡</span> Haz clic en cualquier elemento para expandirlo y ver la respuesta
       </p>
 
       <div style={{ display: 'grid', gap: '2rem' }}>
@@ -126,6 +134,7 @@ export default function TribunalFAQ() {
             <div style={{ display: 'grid', gap: '0.75rem' }}>
               {section.questions.map((item, qi) => {
                 const key = `${si}-${qi}`;
+                const isOpen = openQ === key;
                 return (
                   <div key={qi} style={{
                     background: 'var(--bg-surface)',
@@ -135,7 +144,9 @@ export default function TribunalFAQ() {
                     overflow: 'hidden',
                   }}>
                     <button
-                      onClick={() => setOpenQ(openQ === key ? null : key)}
+                      onClick={() => setOpenQ(isOpen ? null : key)}
+                      aria-expanded={isOpen}
+                      aria-label={`${isOpen ? 'Colapsar' : 'Expandir'} pregunta: ${item.q}`}
                       style={{
                         width: '100%', padding: '1rem', textAlign: 'left',
                         background: 'transparent', border: 'none', cursor: 'pointer',
@@ -152,35 +163,35 @@ export default function TribunalFAQ() {
                         fontSize: '1.25rem', color: section.color,
                         flexShrink: 0,
                       }}>
-                        {openQ === key ? '−' : '+'}
+                        {isOpen ? '−' : '+'}
                       </span>
                     </button>
 
-                    {openQ === key && (
-                      <div style={{
+                    {isOpen && (
+                      <div className="accordion-content" style={{
                         padding: '0 1rem 1rem',
                         borderTop: '1px solid var(--border)',
                       }}>
-                        <p style={{
-                          fontSize: '0.8125rem', color: 'var(--text-secondary)',
-                          lineHeight: 1.8, margin: '0 0 0.75rem',
-                        }}>
-                          {item.a}
-                        </p>
-                        <p style={{
-                          fontSize: '0.6875rem', color: 'var(--text-muted)',
-                          fontFamily: 'var(--font-mono)', margin: 0,
-                        }}>
-                          → {item.ref}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                      <p style={{
+                        fontSize: '0.8125rem', color: 'var(--text-secondary)',
+                        lineHeight: 1.8, margin: '0 0 0.75rem',
+                      }}>
+                        {item.a}
+                      </p>
+                      <p style={{
+                        fontSize: '0.6875rem', color: 'var(--text-muted)',
+                        fontFamily: 'var(--font-mono)', margin: 0,
+                      }}>
+                        → {item.ref}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        ))}
+        </div>
+      ))}
       </div>
     </div>
   );

@@ -12,30 +12,30 @@ const EVENTS = [
   {time: 2010, label: '12:36:30', event: 'Fin del colapso', severity: 'critical'},
 ];
 
+const generateChartData = () => {
+  const data = [];
+  for (let t = 0; t <= 2010; t += 30) {
+    const freq = 50 - (t / 2010) * 2.5 - Math.sin(t / 150) * 0.3;
+    const voltage = 100 - (t / 2010) * 35 - Math.sin(t / 100) * 5;
+    const m = Math.floor(t / 60);
+    const s = t % 60;
+    const timeLabel = `${m}:${s.toString().padStart(2, '0')}`;
+    data.push({
+      seconds: t,
+      time: timeLabel,
+      freq: Math.max(47, freq),
+      voltage: Math.max(60, voltage),
+    });
+  }
+  return data;
+};
+
+const chartData = generateChartData();
+
 export function TimelineNarrative() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [playSpeed, setPlaySpeed] = useState(1);
-
-  const generateChartData = () => {
-    const data = [];
-    for (let t = 0; t <= 2010; t += 30) {
-      const freq = 50 - (t / 2010) * 2.5 - Math.sin(t / 150) * 0.3;
-      const voltage = 100 - (t / 2010) * 35 - Math.sin(t / 100) * 5;
-      const m = Math.floor(t / 60);
-      const s = t % 60;
-      const timeLabel = `${m}:${s.toString().padStart(2, '0')}`;
-      data.push({
-        seconds: t,
-        time: timeLabel,
-        freq: Math.max(47, freq),
-        voltage: Math.max(60, voltage),
-      });
-    }
-    return data;
-  };
-
-  const chartData = generateChartData();
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -138,13 +138,15 @@ export function TimelineNarrative() {
         
         <div style={{background:'var(--bg-surface)', border:'1px solid var(--border-subtle)',
                     borderRadius:'var(--radius-md)', padding:'1.5rem'}}>
-          <p style={{fontSize:'0.875rem', fontWeight:500, color:'var(--text-primary)',
-                    margin:'0 0 1rem'}}>Frecuencia (Hz)</p>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'1rem'}}>
+            <p style={{fontSize:'0.875rem', fontWeight:500, color:'var(--text-primary)', margin:0}}>Frecuencia (Hz)</p>
+            <span style={{fontSize:'0.6875rem', color:'var(--text-muted)', fontFamily:'var(--font-mono)'}}>Fuente: REE / ENTSO-E (Cap. 3)</span>
+          </div>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={chartData.filter(d => d.seconds <= currentTime)}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" />
-              <XAxis dataKey="time" stroke="var(--text-muted)" />
-              <YAxis domain={[47, 50.5]} stroke="var(--text-muted)" />
+              <XAxis dataKey="time" stroke="var(--text-muted)" tick={{fontSize: 9}} interval={8} angle={-30} textAnchor="end" height={40} />
+              <YAxis domain={[47, 50.5]} stroke="var(--text-muted)" tick={{fontSize: 10}} />
               <Tooltip contentStyle={{background:'var(--bg-primary)', border:'1px solid var(--border-subtle)'}} />
               <Line type="monotone" dataKey="freq" stroke="var(--warning)" strokeWidth={2} dot={false} />
             </LineChart>
@@ -157,13 +159,15 @@ export function TimelineNarrative() {
 
         <div style={{background:'var(--bg-surface)', border:'1px solid var(--border-subtle)',
                     borderRadius:'var(--radius-md)', padding:'1.5rem'}}>
-          <p style={{fontSize:'0.875rem', fontWeight:500, color:'var(--text-primary)',
-                    margin:'0 0 1rem'}}>Tensión Carmona (% Vn)</p>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'1rem'}}>
+            <p style={{fontSize:'0.875rem', fontWeight:500, color:'var(--text-primary)', margin:0}}>Tensión Carmona (% Vn)</p>
+            <span style={{fontSize:'0.6875rem', color:'var(--text-muted)', fontFamily:'var(--font-mono)'}}>Fuente: REE / ENTSO-E (Cap. 3)</span>
+          </div>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={chartData.filter(d => d.seconds <= currentTime)}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" />
-              <XAxis dataKey="time" stroke="var(--text-muted)" />
-              <YAxis domain={[60, 105]} stroke="var(--text-muted)" />
+              <XAxis dataKey="time" stroke="var(--text-muted)" tick={{fontSize: 9}} interval={8} angle={-30} textAnchor="end" height={40} />
+              <YAxis domain={[60, 105]} stroke="var(--text-muted)" tick={{fontSize: 10}} />
               <Tooltip contentStyle={{background:'var(--bg-primary)', border:'1px solid var(--border-subtle)'}} />
               <Line type="monotone" dataKey="voltage" stroke="var(--alarm)" strokeWidth={2} dot={false} />
             </LineChart>
