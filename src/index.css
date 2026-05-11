@@ -414,7 +414,20 @@ body.presentation-mode {
   overflow: hidden;
 }
 
-body.presentation-mode [data-no-print],
+body.presentation-mode #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.presentation-mode main,
+body.presentation-mode .page-content,
+body.presentation-mode > div {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box;
+}
+
 body.presentation-mode aside,
 body.presentation-mode nav,
 body.presentation-mode header {
