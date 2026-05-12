@@ -81,6 +81,8 @@ export default function EnergyTrilemma() {
         <div style={{ width: '100%', maxWidth: '500px', margin: '0 auto' }}>
           <svg
             viewBox="0 0 700 560"
+            role="img"
+            aria-label="Trilema energético de la transición: Descarbonización, Estabilidad y Coste"
             style={{
               width: '100%',
               height: 'auto',

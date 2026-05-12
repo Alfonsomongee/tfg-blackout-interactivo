@@ -75,7 +75,7 @@ const NAV_GROUPS = [
   {
     title: 'Análisis Forense',
     items: [
-      { to: '/countdown', label: '90 Segundos (Tiempo Real)', type: 'core', icon: '⏱️' },
+      { to: '/countdown', label: '⏱ 90 Segundos (Tiempo Real)', type: 'core', icon: '⏱️' },
       { to: '/timeline', label: 'Línea de Tiempo', type: 'core', icon: '⏳' },
       { to: '/map', label: 'Mapa Propagación', type: 'core', icon: '🗺️' },
       { to: '/matrix', label: 'Matriz Comparada', type: 'detalle', icon: '📊' },
@@ -105,7 +105,7 @@ const NAV_GROUPS = [
       { to: '/dossier', label: 'Dossier TFG', type: 'detalle', icon: '📚' },
       { to: '/lexicon', label: 'Glosario Técnico', type: 'detalle', icon: '📖' },
       { to: '/metodologia', label: 'Metodología', type: 'detalle', icon: '📊' },
-      { to: '/auditoria-reformas', label: 'Historial de Reformas', type: 'detalle', icon: '🔧' },
+      { to: '/reforms', label: 'Historial de Reformas', type: 'detalle', icon: '🔧' },
       { to: '/trilema', label: 'Trilema Energético', type: 'core', icon: '🔺' },
       { to: '/veredicto', label: 'Veredicto Forense', type: 'core', icon: '⚖️' }
     ]
@@ -129,12 +129,21 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   // Sync document title dynamically
   useEffect(() => {
-    if (breadcrumb) {
+    const customTitles: Record<string, string> = {
+      '/countdown': '⏱ 90 Segundos — Colapso en Tiempo Real | Apagón 28-A',
+      '/divergencias': 'Divergencias Irreconciliables | Apagón 28-A',
+      '/reactiva': 'Balance de Reactiva | Apagón 28-A',
+      '/trilema': 'Trilema Energético | Apagón 28-A',
+    };
+
+    if (customTitles[location.pathname]) {
+      document.title = customTitles[location.pathname];
+    } else if (breadcrumb) {
       document.title = `${breadcrumb.item} — TFG Blackout`;
     } else {
       document.title = 'TFG Blackout';
     }
-  }, [breadcrumb]);
+  }, [breadcrumb, location.pathname]);
 
   return (
     <div
@@ -233,6 +242,8 @@ const Layout: React.FC = () => {
       import('./components/TimelineNarrative');
       import('./components/NarrativeComparator');
       import('./components/ForensicVerdict');
+      import('./components/CollapseCountdown');
+      import('./components/DivergenceTable');
     }, 2000);
     return () => clearTimeout(timer);
   }, []);

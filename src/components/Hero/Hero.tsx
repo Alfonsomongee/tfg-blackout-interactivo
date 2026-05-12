@@ -189,7 +189,7 @@ export default function Hero() {
       {/* CTAs */}
       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
         <button
-          onClick={() => navigate('/timeline')}
+          onClick={() => navigate('/countdown')}
           style={{
             padding: '0.875rem 2rem',
             background: 'var(--accent-blue)',

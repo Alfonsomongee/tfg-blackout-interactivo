@@ -100,7 +100,76 @@ const REFORMS = [
   },
 ];
 
+import { useState } from 'react';
+
+const REFORM_HISTORY = [
+  {
+    date: 'Abril 2025',
+    title: 'Derogación RD 413/2014 (factor potencia fijo)',
+    description: 'El RD 413/2014 forzaba a la generación renovable a operar con factor de potencia fijo, impidiendo el control dinámico de tensión. Su derogación eliminó la restricción que impedía al 82% del parque IBR participar en la estabilización de la red.',
+    status: 'IMPLEMENTADO',
+    impact: 'CRÍTICO',
+    source: 'Gobierno de España / MITECO',
+    linkedTo: 'P.O. 7.4',
+  },
+  {
+    date: 'Mayo 2025',
+    title: 'Protocolo HVDC modo dinámico ante emergencias',
+    description: 'Protocolo bilateral REE-RTE para que el enlace HVDC INELFE-1 cambie automáticamente de PMODE1 (potencia constante) a PMODE2 (control frecuencia) ante caída de frecuencia ibérica. Evita que el enlace exporte potencia durante una emergencia.',
+    status: 'IMPLEMENTADO',
+    impact: 'ALTO',
+    source: 'REE / RTE bilateral',
+    linkedTo: 'HVDC INELFE-1',
+  },
+  {
+    date: 'Junio 2025',
+    title: 'Actualización P.O. 7.4 — Control dinámico de tensión',
+    description: 'Obliga a toda generación con capacidad de control de tensión en tiempo real a activarlo, con penalizaciones por incumplimiento. El propio informe gubernamental reconoce que su entrada en vigor habría sido el cambio más relevante para haber evitado el colapso.',
+    status: 'EN TRAMITACIÓN',
+    impact: 'CRÍTICO',
+    source: 'CNMC / REE',
+    linkedTo: 'RD 413/2014',
+  },
+  {
+    date: 'Julio 2025',
+    title: 'Compensadores síncronos en zona sur',
+    description: 'Instalación de compensadores síncronos (máquinas sin generación) en Andalucía y Extremadura para proveer inercia física, potencia de cortocircuito y control Q continuo. La zona sur disponía de solo 0,2 GVAr de absorción el 28-A.',
+    status: 'EN TRAMITACIÓN',
+    impact: 'ALTO',
+    source: 'REE / Plan de Inversiones',
+    linkedTo: 'Balance reactiva zona sur',
+  },
+  {
+    date: 'Sep 2025',
+    title: 'Nueva interconexión Francia Mid-Cat/BarMar',
+    description: 'Ampliación de la capacidad de interconexión ES-FR hasta el 15% de la demanda punta (objetivo UE). Actualmente en 7,9%. Un mayor acoplamiento con Europa Continental habría reducido la amplitud de las oscilaciones inter-área del 28-A.',
+    status: 'EN TRAMITACIÓN',
+    impact: 'ALTO',
+    source: 'Comisión Europea / ENTSO-E',
+    linkedTo: 'Isla energética ibérica',
+  },
+  {
+    date: 'Pendiente',
+    title: 'NC RfG 2.0 — Grid-Forming obligatorio ≥ 1 MW',
+    description: 'Actualización del Network Code RfG para imponer inversores Grid-Forming como requisito obligatorio para instalaciones ≥ 1 MW. Los inversores deberán comportarse como fuentes de tensión ideales, aportando inercia sintética sin necesidad de red externa.',
+    status: 'PROPUESTO',
+    impact: 'CRÍTICO',
+    source: 'ENTSO-E — Informe Fase II',
+    linkedTo: 'IBR Grid-Following vs Grid-Forming',
+  },
+  {
+    date: 'Pendiente',
+    title: 'Despliegue PMU en nudos críticos',
+    description: 'Unidades de Medición Fasorial en todos los nudos críticos de la red de colectores de 220 kV. Elimina el "punto ciego" del Tap-Lag que impidió al operador ver los 244 kV reales mientras el SCADA mostraba 418 kV en 400 kV.',
+    status: 'PROPUESTO',
+    impact: 'ALTO',
+    source: 'REE / Propuestas post-28A',
+    linkedTo: 'Tap-Lag / Observabilidad',
+  },
+];
+
 export default function ReformTracker() {
+  const [activeTab, setActiveTab] = useState<'kanban' | 'historial'>('kanban');
   const countPropuestos = REFORMS.filter((r) => r.status === 'propuesto').length;
   const countTramitacion = REFORMS.filter((r) => r.status === 'en_tramitacion').length;
   const countImplementados = REFORMS.filter((r) => r.status === 'implementado').length;
@@ -232,64 +301,159 @@ export default function ReformTracker() {
 
       </div>
 
-      {/* KANBAN BOARD */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-stretch">
-        
-        {/* Column 1: PROPUESTO */}
-        <div className="bg-secondary border border-main p-4 rounded-lg flex flex-col gap-4 relative shadow-sm">
-          <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-accent"></div>
-          
-          <div className="border-b border-main/50 pb-2 flex justify-between items-center font-mono">
-            <span className="text-xs font-bold text-accent tracking-widest uppercase">
-              📌 PROPUESTO
-            </span>
-            <span className="text-[10px] bg-accent/10 text-accent px-1.5 rounded font-bold">
-              {countPropuestos}
-            </span>
-          </div>
-
-          <div className="flex-grow flex flex-col gap-3.5 overflow-y-auto max-h-[500px] scrollbar-thin">
-            {renderColumnCards('propuesto')}
-          </div>
-        </div>
-
-        {/* Column 2: EN TRAMITACIÓN */}
-        <div className="bg-secondary border border-main p-4 rounded-lg flex flex-col gap-4 relative shadow-sm">
-          <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-alert-orange"></div>
-          
-          <div className="border-b border-main/50 pb-2 flex justify-between items-center font-mono">
-            <span className="text-xs font-bold text-alert-orange tracking-widest uppercase">
-              ⏳ EN TRAMITACIÓN
-            </span>
-            <span className="text-[10px] bg-alert-orange/10 text-alert-orange px-1.5 rounded font-bold">
-              {countTramitacion}
-            </span>
-          </div>
-
-          <div className="flex-grow flex flex-col gap-3.5 overflow-y-auto max-h-[500px] scrollbar-thin">
-            {renderColumnCards('en_tramitacion')}
-          </div>
-        </div>
-
-        {/* Column 3: IMPLEMENTADO */}
-        <div className="bg-secondary border border-main p-4 rounded-lg flex flex-col gap-4 relative shadow-sm">
-          <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-alert-green"></div>
-          
-          <div className="border-b border-main/50 pb-2 flex justify-between items-center font-mono">
-            <span className="text-xs font-bold text-alert-green tracking-widest uppercase">
-              ✅ IMPLEMENTADO
-            </span>
-            <span className="text-[10px] bg-alert-green/10 text-alert-green px-1.5 rounded font-bold">
-              {countImplementados}
-            </span>
-          </div>
-
-          <div className="flex-grow flex flex-col gap-3.5 overflow-y-auto max-h-[500px] scrollbar-thin">
-            {renderColumnCards('implementado')}
-          </div>
-        </div>
-
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-main mb-6">
+        {(['kanban', 'historial'] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-4 py-2.5 font-mono text-xs tracking-wider uppercase transition-all duration-150 border-b-2 -mb-[1px] ${
+              activeTab === tab
+                ? 'font-bold text-accent border-accent'
+                : 'text-text-secondary border-transparent hover:text-text-primary'
+            }`}
+          >
+            {tab === 'kanban' ? '📊 Kanban de Reformas' : '📜 Historial de Reformas'}
+          </button>
+        ))}
       </div>
+
+      {activeTab === 'historial' ? (
+        <div className="space-y-4 flex-grow animate-fade-in">
+          {REFORM_HISTORY.map((item, idx) => {
+            const getStatusBadge = (status: string) => {
+              switch (status) {
+                case 'IMPLEMENTADO':
+                  return 'bg-alert-green/10 border-alert-green/30 text-alert-green';
+                case 'EN TRAMITACIÓN':
+                  return 'bg-alert-orange/10 border-alert-orange/30 text-alert-orange';
+                default:
+                  return 'bg-accent/10 border-accent/30 text-accent';
+              }
+            };
+
+            const getImpactBadge = (impact: string) => {
+              switch (impact) {
+                case 'CRÍTICO':
+                  return 'bg-alert-red/10 border-alert-red/30 text-alert-red font-bold';
+                default:
+                  return 'bg-text-secondary/10 border-main text-text-secondary';
+              }
+            };
+
+            return (
+              <div
+                key={idx}
+                className="bg-secondary border border-main p-5 rounded-lg flex flex-col md:flex-row gap-4 justify-between items-start md:items-center relative overflow-hidden shadow-sm group hover:border-accent transition-all duration-200"
+              >
+                {/* Visual timeline accent strip */}
+                <div
+                  className="absolute top-0 bottom-0 left-0 w-[4px]"
+                  style={{
+                    backgroundColor:
+                      item.status === 'IMPLEMENTADO'
+                        ? 'var(--alert-green)'
+                        : item.status === 'EN TRAMITACIÓN'
+                        ? 'var(--alert-orange)'
+                        : 'var(--accent)',
+                  }}
+                ></div>
+
+                <div className="pl-3 space-y-2 flex-grow">
+                  <div className="flex flex-wrap gap-2 items-center text-[10px] font-mono">
+                    <span className="text-text-muted font-bold">{item.date}</span>
+                    <span className="text-text-muted/40">•</span>
+                    <span className={`px-2 py-0.5 rounded border ${getStatusBadge(item.status)}`}>
+                      {item.status}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded border ${getImpactBadge(item.impact)}`}>
+                      {item.impact}
+                    </span>
+                    {item.linkedTo && (
+                      <>
+                        <span className="text-text-muted/40">•</span>
+                        <span className="text-text-muted">VÍNCULO: {item.linkedTo}</span>
+                      </>
+                    )}
+                  </div>
+
+                  <h3 className="font-serif text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs text-text-secondary leading-relaxed max-w-4xl select-text">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="pl-3 md:pl-0 flex flex-col items-start md:items-end gap-1 font-mono text-[9px] text-text-secondary md:text-right min-w-[200px] flex-shrink-0">
+                  <span className="uppercase text-text-muted">Fuente de información</span>
+                  <span className="font-bold text-text-primary uppercase text-[10px]">{item.source}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        /* KANBAN BOARD */
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-grow items-stretch">
+          
+          {/* Column 1: PROPUESTO */}
+          <div className="bg-secondary border border-main p-4 rounded-lg flex flex-col gap-4 relative shadow-sm">
+            <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-accent"></div>
+            
+            <div className="border-b border-main/50 pb-2 flex justify-between items-center font-mono">
+              <span className="text-xs font-bold text-accent tracking-widest uppercase">
+                📌 PROPUESTO
+              </span>
+              <span className="text-[10px] bg-accent/10 text-accent px-1.5 rounded font-bold">
+                {countPropuestos}
+              </span>
+            </div>
+
+            <div className="flex-grow flex flex-col gap-3.5 overflow-y-auto max-h-[500px] scrollbar-thin">
+              {renderColumnCards('propuesto')}
+            </div>
+          </div>
+
+          {/* Column 2: EN TRAMITACIÓN */}
+          <div className="bg-secondary border border-main p-4 rounded-lg flex flex-col gap-4 relative shadow-sm">
+            <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-alert-orange"></div>
+            
+            <div className="border-b border-main/50 pb-2 flex justify-between items-center font-mono">
+              <span className="text-xs font-bold text-alert-orange tracking-widest uppercase">
+                ⏳ EN TRAMITACIÓN
+              </span>
+              <span className="text-[10px] bg-alert-orange/10 text-alert-orange px-1.5 rounded font-bold">
+                {countTramitacion}
+              </span>
+            </div>
+
+            <div className="flex-grow flex flex-col gap-3.5 overflow-y-auto max-h-[500px] scrollbar-thin">
+              {renderColumnCards('en_tramitacion')}
+            </div>
+          </div>
+
+          {/* Column 3: IMPLEMENTADO */}
+          <div className="bg-secondary border border-main p-4 rounded-lg flex flex-col gap-4 relative shadow-sm">
+            <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-alert-green"></div>
+            
+            <div className="border-b border-main/50 pb-2 flex justify-between items-center font-mono">
+              <span className="text-xs font-bold text-alert-green tracking-widest uppercase">
+                ✅ IMPLEMENTADO
+              </span>
+              <span className="text-[10px] bg-alert-green/10 text-alert-green px-1.5 rounded font-bold">
+                {countImplementados}
+              </span>
+            </div>
+
+            <div className="flex-grow flex flex-col gap-3.5 overflow-y-auto max-h-[500px] scrollbar-thin">
+              {renderColumnCards('implementado')}
+            </div>
+          </div>
+
+        </div>
+      )}
     </div>
   );
 }
