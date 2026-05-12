@@ -24,6 +24,7 @@
   <url><loc>https://tfg-blackout-interactivo.vercel.app/simulator</loc><priority>0.7</priority></url>
   <url><loc>https://tfg-blackout-interactivo.vercel.app/roadmap</loc><priority>0.7</priority></url>
   <url><loc>https://tfg-blackout-interactivo.vercel.app/dossier</loc><priority>0.6</priority></url>
+  <url><loc>https://tfg-blackout-interactivo.vercel.app/galeria</loc><priority>0.7</priority></url>
   <url><loc>https://tfg-blackout-interactivo.vercel.app/lexicon</loc><priority>0.6</priority></url>
   <url><loc>https://tfg-blackout-interactivo.vercel.app/metodologia</loc><priority>0.6</priority></url>
 </urlset>

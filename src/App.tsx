@@ -28,6 +28,7 @@ const CollapseCountdown = lazy(() => import('./components/CollapseCountdown'));
 const DivergenceTable = lazy(() => import('./components/DivergenceTable'));
 const ReactiveBalance = lazy(() => import('./components/ReactiveBalance'));
 const EnergyTrilemma = lazy(() => import('./components/EnergyTrilemma'));
+const ForensicGallery = lazy(() => import('./components/ForensicGallery'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -103,6 +104,7 @@ const NAV_GROUPS = [
     items: [
       { to: '/tribunal', label: 'FAQ Tribunal', type: 'core', icon: '⚖️' },
       { to: '/dossier', label: 'Dossier TFG', type: 'detalle', icon: '📚' },
+      { to: '/galeria', label: 'Galería de Figuras', type: 'detalle', icon: '🖼️' },
       { to: '/lexicon', label: 'Glosario Técnico', type: 'detalle', icon: '📖' },
       { to: '/metodologia', label: 'Metodología', type: 'detalle', icon: '📊' },
       { to: '/reforms', label: 'Historial de Reformas', type: 'detalle', icon: '🔧' },
@@ -134,6 +136,7 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       '/divergencias': 'Divergencias Irreconciliables | Apagón 28-A',
       '/reactiva': 'Balance de Reactiva | Apagón 28-A',
       '/trilema': 'Trilema Energético | Apagón 28-A',
+      '/galeria': 'Galería Forense — Figuras del TFG | Apagón 28-A',
     };
 
     if (customTitles[location.pathname]) {
@@ -538,6 +541,7 @@ const Layout: React.FC = () => {
               <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
               <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
               <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
+              <Route path="/galeria" element={<PageWrapper><ForensicGallery /></PageWrapper>} />
               <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
               <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
               <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
