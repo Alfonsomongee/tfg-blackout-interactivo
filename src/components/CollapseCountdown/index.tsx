@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NextChapter from '../NextChapter';
 
 const COLLAPSE_EVENTS = [
   { seconds: 0, time: '12:32:00', event: 'Sistema en estado "Normal" según EAS. Oscilaciones contenidas tras mallado. REE no declara Alerta.', type: 'context', mwLost: 0, freq: 50.00, tension: 418 },
@@ -821,6 +822,7 @@ export function CollapseCountdown() {
           ))}
         </div>
       </div>
+      <NextChapter path="/causal" label="Cadena Causal" desc="Las 5 fases del colapso" />
     </div>
   );
 }

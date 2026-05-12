@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
+import NextChapter from '../NextChapter';
 
 const ABSORPTION_CONTEXT = [
   { label: 'Absorción disponible normal', value: 3.3, color: 'var(--nominal)', note: 'Antes del mallado y despacho reducido' },
@@ -257,6 +258,7 @@ export default function ReactiveBalance() {
       }}>
         Fuente: Fig. 5.6 — Informe IIT-ICAI / Compass Lexecon / AELEC [5]
       </p>
+      <NextChapter path="/trilema" label="Trilema Energético" desc="La vulnerabilidad de la transición" />
     </div>
   );
 }

@@ -146,6 +146,7 @@ export default function TribunalFAQ() {
                     <button
                       onClick={() => setOpenQ(isOpen ? null : key)}
                       aria-expanded={isOpen}
+                      aria-controls={`faq-panel-${key}`}
                       aria-label={`${isOpen ? 'Colapsar' : 'Expandir'} pregunta: ${item.q}`}
                       style={{
                         width: '100%', padding: '1rem', textAlign: 'left',
@@ -168,10 +169,14 @@ export default function TribunalFAQ() {
                     </button>
 
                     {isOpen && (
-                      <div className="accordion-content" style={{
-                        padding: '0 1rem 1rem',
-                        borderTop: '1px solid var(--border)',
-                      }}>
+                      <div 
+                        id={`faq-panel-${key}`}
+                        role="region"
+                        className="accordion-content" 
+                        style={{
+                          padding: '0 1rem 1rem',
+                          borderTop: '1px solid var(--border)',
+                        }}>
                       <p style={{
                         fontSize: '0.8125rem', color: 'var(--text-secondary)',
                         lineHeight: 1.8, margin: '0 0 0.75rem',

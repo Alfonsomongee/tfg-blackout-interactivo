@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import NextChapter from '../NextChapter';
 
 const DIVERGENCES = [
   {
@@ -213,8 +214,10 @@ export default function DivergenceTable() {
               overflow: 'hidden',
             }}>
               <button
+                id={`divergence-btn-${div.id}`}
                 onClick={() => setOpenId(openId === div.id ? null : div.id)}
                 aria-expanded={openId === div.id}
+                aria-controls={`divergence-panel-${div.id}`}
                 style={{
                   width: '100%', padding: '1rem 1.25rem',
                   background: openId === div.id
@@ -247,12 +250,17 @@ export default function DivergenceTable() {
               </button>
 
               {openId === div.id && (
-                <div className="accordion-content" style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                  gap: '0',
-                  borderTop: '1px solid var(--border)',
-                }}>
+                <div 
+                  id={`divergence-panel-${div.id}`}
+                  role="region"
+                  aria-labelledby={`divergence-btn-${div.id}`}
+                  className="accordion-content" 
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '0',
+                    borderTop: '1px solid var(--border)',
+                  }}>
                   {Object.values(div.positions).map((pos, i) => (
                     <div key={i} style={{
                       padding: '1.25rem',
@@ -367,6 +375,7 @@ export default function DivergenceTable() {
           </div>
         </div>
       )}
+      <NextChapter path="/reactiva" label="Balance Q-V" desc="El déficit de reactiva zonal" />
     </div>
   );
 }

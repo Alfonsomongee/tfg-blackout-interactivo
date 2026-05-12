@@ -266,10 +266,89 @@ export default function Hero() {
         </a>
       </div>
 
+      {/* GUÍA DE DEFENSA */}
+      <div style={{
+        marginTop: '3rem',
+        padding: '1.25rem 1.5rem',
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 'var(--radius-md)',
+        maxWidth: '680px',
+      }}>
+        <p style={{
+          margin: '0 0 1rem',
+          fontSize: '0.6875rem',
+          fontFamily: 'var(--font-mono)',
+          color: 'rgba(255,255,255,0.4)',
+          letterSpacing: '0.12em',
+        }}>
+          GUÍA DE DEFENSA — RECORRIDO EN 15 MINUTOS
+        </p>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '0.75rem',
+        }}>
+          {[
+            { step: '01', label: '90 Segundos', desc: 'El colapso en tiempo real', path: '/countdown', color: 'var(--alarm)' },
+            { step: '02', label: 'Cadena Causal', desc: 'Las 5 fases del colapso', path: '/causal', color: 'var(--warning)' },
+            { step: '03', label: 'Divergencias', desc: '5 ejes irreconciliables', path: '/divergencias', color: 'var(--accent-blue)' },
+            { step: '04', label: 'Balance Q-V', desc: 'El déficit de −0,6 GVAr', path: '/reactiva', color: 'var(--warning)' },
+            { step: '05', label: 'Trilema', desc: 'La solución estructural', path: '/trilema', color: 'var(--nominal)' },
+          ].map((item, i) => (
+            <button
+              key={i}
+              onClick={() => navigate(item.path)}
+              style={{
+                background: 'transparent',
+                border: `1px solid rgba(255,255,255,0.06)`,
+                borderLeft: `2px solid ${item.color}`,
+                borderRadius: 'var(--radius-sm)',
+                padding: '0.625rem 0.875rem',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.background =
+                  'rgba(255,255,255,0.04)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.background =
+                  'transparent';
+              }}>
+              <p style={{
+                margin: '0 0 0.125rem',
+                fontSize: '0.6875rem',
+                fontFamily: 'var(--font-mono)',
+                color: item.color,
+              }}>
+                {item.step}
+              </p>
+              <p style={{
+                margin: '0 0 0.125rem',
+                fontSize: '0.8125rem',
+                fontWeight: 500,
+                color: 'rgba(255,255,255,0.85)',
+              }}>
+                {item.label}
+              </p>
+              <p style={{
+                margin: 0,
+                fontSize: '0.6875rem',
+                color: 'rgba(255,255,255,0.35)',
+              }}>
+                {item.desc}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Bottom info bar */}
       <div style={{
-        position: 'absolute',
-        bottom: '2rem', left: 'clamp(1.5rem, 5vw, 5rem)',
+        position: 'relative',
+        marginTop: '3rem',
         right: 'clamp(1.5rem, 5vw, 5rem)',
         display: 'flex',
         justifyContent: 'space-between',

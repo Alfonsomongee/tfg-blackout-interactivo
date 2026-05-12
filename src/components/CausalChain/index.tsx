@@ -1,3 +1,4 @@
+import NextChapter from '../NextChapter';
 
 const CHAIN_STEPS = [
   {
@@ -171,6 +172,7 @@ export default function CausalChain() {
           La vulnerabilidad fue estructural, no accidental.
         </p>
       </div>
+      <NextChapter path="/divergencias" label="Divergencias Irreconciliables" desc="Las 5 posturas académicas" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import NextChapter from '../NextChapter';
 
 const RECOVERY_EVENTS = [
   {
@@ -334,6 +335,7 @@ export default function BlackStartTimeline() {
           suficiente de la recuperación. — Cap. 4, TFG.
         </p>
       </div>
+      <NextChapter path="/simulator" label="Simulador de Contingencias" desc="Interactúa con la estabilidad del sistema" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import NextChapter from '../NextChapter';
 
 const TRIANGLE_POINTS = {
   descarbonizacion: { x: 350, y: 50 },
@@ -247,6 +248,7 @@ export default function EnergyTrilemma() {
       }}>
         Fuente: Fig. 9.1 — Elaboración propia / TFG
       </p>
+      <NextChapter path="/black-start" label="Black-Start (Reposición)" desc="El proceso de reconstrucción del sistema" />
     </div>
   );
 }

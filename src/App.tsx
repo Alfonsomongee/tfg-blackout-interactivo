@@ -291,8 +291,11 @@ const Layout: React.FC = () => {
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="text-text-secondary hover:text-text-primary focus:outline-none"
+          aria-label="Abrir menú de navegación"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="sidebar-nav"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             {mobileMenuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -372,7 +375,7 @@ const Layout: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-col gap-1 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
+          <nav id="sidebar-nav" className="flex flex-col gap-1 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
             {NAV_GROUPS.map((group, gIdx) => (
               <div key={gIdx} className="mb-4">
                 <div style={{
@@ -458,9 +461,9 @@ const Layout: React.FC = () => {
                 RESOLUCIÓN FORENSE: SEPARACIÓN DE SISTEMA (28 ABRIL 2025)
               </span>
             </div>
-            <h1 className="text-lg font-black text-text-primary tracking-tight font-serif m-0 leading-tight">
+            <div role="heading" aria-level={2} className="text-lg font-black text-text-primary tracking-tight font-serif m-0 leading-tight">
               Investigación de Estabilidad Dinámica e Inercia en la Península Ibérica
-            </h1>
+            </div>
           </div>
 
           {/* Core publication telemetries */}
