@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import TooltipTerm from '../TooltipTerm';
+import NextChapter from '../NextChapter';
 
 const EVENTS = [
   {time: 0, label: '12:03:00', event: 'Inicio maniobra mallado', severity: 'info'},
@@ -9,8 +10,9 @@ const EVENTS = [
   {time: 1440, label: '12:27:00', event: 'Tensión Carmona 388 kV', severity: 'alarm'},
   {time: 1740, label: '12:32:00', event: 'Oscilación 0,63 Hz', severity: 'alarm'},
   {time: 1757, label: '12:32:57', event: 'Disparo raíz Granada', severity: 'alarm'},
-  {time: 1801, label: '12:33:21', event: 'Cero de tensión', severity: 'alarm'},
-  {time: 2010, label: '12:36:30', event: 'Fin del colapso', severity: 'critical'},
+  {time: 1801, label: '12:33:21', event: 'Pérdida de sincronismo — protecciones OST abren Pirineos', severity: 'alarm'},
+  {time: 1810, label: '12:33:29', event: 'Cero de tensión absoluto (12:33:29.741 CEST)', severity: 'critical'},
+  {time: 2010, label: '12:36:30', event: 'Fin del colapso — 60M sin luz', severity: 'critical'},
 ];
 
 const generateChartData = () => {
@@ -208,6 +210,7 @@ export function TimelineNarrative() {
           ))}
         </div>
       </div>
+      <NextChapter path="/map" label="Mapa de Propagación" desc="Visualiza la cascada geográfica del colapso" />
     </div>
   );
 }
