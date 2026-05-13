@@ -9,6 +9,7 @@ import {
   Legend,
   Tooltip,
 } from 'recharts';
+import TooltipTerm from '../TooltipTerm';
 
 const AXES_DATA = [
   {
@@ -59,17 +60,17 @@ const DIVERGENCES = [
   {
     title: 'Origen de la Reactiva Capacitiva (Sobretensión)',
     reeView: 'Incumplimiento de la absorción inductiva exigida a plantas renovables bajo P.O. 7.4.',
-    icaiView: 'El operador inyectó de forma inadecuada >0,7 GVAr por mallado excesivo frente al límite físico real.',
+    icaiView: <><>El operador inyectó &gt;0,7 GVAr por mallado excesivo, reduciendo el </><TooltipTerm term="Margen de estabilidad">Margen de estabilidad</TooltipTerm> de Carmona.</>,
     status: 'Divergencia Matemática Absoluta',
   },
   {
     title: 'Desconexiones en Cascada del Parque IBR',
-    reeView: 'Comportamiento indebido e injustificado de relés locales de plantas renovables.',
+    reeView: <><>Desconexión indebida local de relés ante el </><TooltipTerm term="Disparo raíz">Disparo raíz</TooltipTerm> en Granada.</>,
     icaiView: 'Las plantas actuaron según el RD 413/2014; el transitorio del lazo de enganche (PLL) fue inevitable.',
     status: 'Conflicto Técnico-Regulatorio',
   },
   {
-    title: 'Criterio de Estabilidad N-1 Estático',
+    title: <><TooltipTerm term="Criterio N-1">Criterio N-1</TooltipTerm> de Estabilidad Estático</>,
     reeView: 'La red operaba en zona segura bajo la regla N-1 clásica de despacho diario.',
     icaiView: 'La regla N-1 estática clásica está obsoleta ante dinámicas de electrónica de potencia rápida.',
     status: 'Fallo de Doctrina de Operación',

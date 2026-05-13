@@ -1,24 +1,37 @@
 import NextChapter from '../NextChapter';
+import TooltipTerm from '../TooltipTerm';
 
 const CHAIN_STEPS = [
   {
     phase: 'FASE 1',
     title: 'Precondiciones',
-    items: ['82% IBR penetration', 'Demanda valle 25.2 GW', 'Inercia zonal baja'],
+    items: [
+      <><TooltipTerm term="Fase 0">Fase 0</TooltipTerm>: 82% IBR</>,
+      'Demanda valle 25.2 GW',
+      'Inercia zonal baja'
+    ],
     color: 'var(--warning)',
     icon: '⚠',
   },
   {
     phase: 'FASE 2',
     title: 'Oscilaciones forzadas',
-    items: ['Mallado REE inyecta Q', 'Oscilación 0,63 Hz', '1% amortiguamiento'],
+    items: [
+      'Mallado REE inyecta Q',
+      <><TooltipTerm term="Oscilación interárea">Oscilación 0,63 Hz</TooltipTerm></>,
+      '1% amortiguamiento'
+    ],
     color: 'var(--alarm)',
     icon: '⚡',
   },
   {
     phase: 'FASE 3',
     title: 'Mecanismo de fallo',
-    items: ['Contracción Q-V Carmona', 'Tap-Lag 418→244 kV', 'Saturación Ssc'],
+    items: [
+      'Contracción Q-V Carmona',
+      <><TooltipTerm term="Tap-Lag">Tap-Lag</TooltipTerm> 418→244 kV</>,
+      'Saturación Ssc'
+    ],
     color: 'var(--alarm)',
     icon: '🔴',
   },

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import NextChapter from '../NextChapter';
+import TooltipTerm from '../TooltipTerm';
 
 const TRIANGLE_POINTS = {
   descarbonizacion: { x: 350, y: 50 },
@@ -66,10 +67,10 @@ export default function EnergyTrilemma() {
         El trilema de la transición energética
       </h2>
       <p className="t-body" style={{ maxWidth: '620px', marginBottom: '2.5rem' }}>
-        La transición energética exige maximizar simultáneamente
-        Descarbonización, Estabilidad y Coste contenido. El 28-A
-        demostró el coste de optimizar uno en detrimento de los otros dos.
-        Cada agente sitúa su posición en un punto distinto del trilema.
+        La transición hacia una red basada en <TooltipTerm term="IBR">IBR</TooltipTerm> exige maximizar simultáneamente 
+        Descarbonización, Estabilidad y Coste. La integración masiva de <TooltipTerm term="HVDC">HVDC</TooltipTerm> y 
+        generación renovable sin control de tensión adecuado provocó el fallo del 28-A. Cada agente 
+        sitúa su solución en un punto distinto del trilema.
       </p>
 
       <div style={{
@@ -235,7 +236,7 @@ export default function EnergyTrilemma() {
           El 28 de abril de 2025 no fue el fracaso de las renovables.
           Fue el coste medible de optimizar la descarbonización sin
           actualizar simultáneamente las herramientas de estabilidad.
-          El Grid-Forming obligatorio (NC RfG 2.0) es la única tecnología
+          El Grid-Forming (<TooltipTerm term="GFM">GFM</TooltipTerm>) obligatorio (NC RfG 2.0) es la única tecnología
           que permite avanzar en los tres vértices del trilema sin
           sacrificar ninguno. — Cap. 9.1, TFG.
         </p>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useInView } from '../../hooks/useInView';
 import NextChapter from '../NextChapter';
+import TooltipTerm from '../TooltipTerm';
 
 const ABSORPTION_CONTEXT = [
   { label: 'Absorción disponible normal', value: 3.3, color: 'var(--nominal)', note: 'Antes del mallado y despacho reducido' },
@@ -31,10 +32,10 @@ export default function ReactiveBalance() {
         fontFamily: 'var(--font-serif)', fontSize: '1.5rem',
         fontWeight: 400, color: 'var(--text-primary)', marginBottom: '0.5rem',
       }}>
-        El balance de reactiva que hizo inevitable el colapso
+        La física de la tensión y el colapso
       </h2>
       <p className="t-body" style={{ maxWidth: '620px', marginBottom: '2.5rem' }}>
-        A las 12:30 CEST, la zona sur del sistema tenía 4,10 GVAr
+        A las 12:30 CEST, el <TooltipTerm term="Margen Q-V">Margen Q-V</TooltipTerm> zonal del sistema mostraba 4,10 GVAr
         de generación capacitiva y solo 0,20 GVAr de capacidad de
         absorción. El déficit de −0,60 GVAr era matemáticamente
         insalvable con independencia del comportamiento de los generadores.
@@ -242,10 +243,11 @@ export default function ReactiveBalance() {
         }}>
           El déficit de −0,60 GVAr es la prueba cuantitativa central del
           informe ICAI: incluso si la totalidad de los generadores privados
-          hubiera cumplido el P.O. 7.4 al pie de la letra, el colapso
-          habría ocurrido igualmente. El argumento del Gobierno presupone
-          que los 3,50 GVAr de absorción teórica estaban disponibles;
-          el informe ICAI demuestra que solo 0,20 GVAr lo estaban.
+          hubiera cumplido el P.O. 7.4 al pie de la letra, el colapso de estabilidad{' '}
+          <TooltipTerm term="Q-V">Q-V</TooltipTerm> habría ocurrido igualmente,
+          vulnerando flagrantemente el <TooltipTerm term="Criterio N-1">Criterio N-1</TooltipTerm>.
+          El argumento del Gobierno presupone que los 3,50 GVAr de absorción teórica
+          estaban disponibles; el informe ICAI demuestra que solo 0,20 GVAr lo estaban.
           — Fig. 5.6, TFG / Informe IIT-ICAI.
         </p>
       </div>

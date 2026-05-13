@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import TooltipTerm from '../TooltipTerm';
 
 const EVENTS = [
   {time: 0, label: '12:03:00', event: 'Inicio maniobra mallado', severity: 'info'},
@@ -63,9 +64,10 @@ export function TimelineNarrative() {
                   color:'var(--text-primary)', marginBottom:'0.5rem'}}>
         Cronología interactiva del colapso
       </h2>
-      <p className="t-body" style={{maxWidth:'600px', marginBottom:'2rem'}}>
-        Reproductor: presiona Play para ver el colapso de 22 segundos acelerado a 30 segundos.
-        Los gráficos se actualizan en tiempo real.
+      <p className="t-body" style={{maxWidth:'650px', marginBottom:'2rem', lineHeight: 1.6}}>
+        Reproductor interactivo basado en telemetría en tiempo real del <TooltipTerm term="SCADA">SCADA</TooltipTerm> de REE.
+        Presione Play para ver cómo la pérdida de <TooltipTerm term="Inercia Síncrona">Inercia Síncrona</TooltipTerm> ante
+        la alta penetración de tecnología <TooltipTerm term="IBR">IBR</TooltipTerm> condujo al descontrol de tensión y frecuencia.
       </p>
 
       {/* PLAYER */}

@@ -1,4 +1,5 @@
 import AnimatedMetric from '../AnimatedMetric';
+import TooltipTerm from '../TooltipTerm';
 
 export default function ExecutiveBrief() {
   return (
@@ -74,7 +75,7 @@ export default function ExecutiveBrief() {
                 </span>
               </div>
               <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
-                El mallado masivo inyectó <strong className="text-accent font-bold">&gt;0,7 GVAr</strong> capacitivos frente a apenas <strong className="text-alert-red font-bold">0,2 GVAr</strong> de capacidad de absorción inductiva real disponible. Este desbalance desató una sobretensión lineal en cadena.
+                El mallado masivo inyectó <strong className="text-accent font-bold">&gt;0,7 GVAr</strong> capacitivos frente a apenas <strong className="text-alert-red font-bold">0,2 GVAr</strong> de capacidad de absorción inductiva real disponible. Este desbalance desató la sobretensión lineal que caracterizó la <TooltipTerm term="Fase 1">Fase 1</TooltipTerm> del incidente.
               </p>
             </div>
 
@@ -87,7 +88,7 @@ export default function ExecutiveBrief() {
                 </span>
               </div>
               <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
-                La directriz reglamentaria <strong className="text-text-primary font-bold">P.O. 7.4</strong> restringía legalmente al 82% de la potencia activa acoplada (inversores) regular tensión dinámicamente, obligándolas a operar a factor de potencia estático constante.
+                La directriz reglamentaria <strong className="text-text-primary font-bold">P.O. 7.4</strong> restringía legalmente al 82% de la potencia activa acoplada (inversores) regular tensión dinámicamente, impidiendo contener la <TooltipTerm term="Fase 2">Fase 2</TooltipTerm> de desconexión masiva en cascada.
               </p>
             </div>
 
@@ -100,7 +101,7 @@ export default function ExecutiveBrief() {
                 </span>
               </div>
               <p className="text-xs text-text-secondary leading-relaxed font-sans select-text">
-                El algoritmo estático tradicional de seguridad <strong className="text-text-primary font-bold">N-1</strong> clasificó el sistema en estado "Seguro" minutos previos al desastre, ignorando la susceptibilidad a transitorios rápidos ante fallas de tensión.
+                El algoritmo estático tradicional de seguridad <strong className="text-text-primary font-bold">N-1</strong> clasificó el sistema en estado "Seguro" minutos previos al desastre, lo que condujo inevitablemente a la pérdida de sincronismo y separación física de la <TooltipTerm term="Fase 3">Fase 3</TooltipTerm>.
               </p>
             </div>
 

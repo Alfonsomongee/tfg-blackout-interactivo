@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import NextChapter from '../NextChapter';
+import TooltipTerm from '../TooltipTerm';
 
 const DIVERGENCES = [
   {
@@ -18,7 +19,11 @@ const DIVERGENCES = [
         label: 'ICAI / AELEC',
         color: 'var(--alarm)',
         symbol: '●',
-        text: 'El mallado de 11 líneas en vacío inyectó 1,05–2,4 GVAr capacitivos por Efecto Ferranti, contrayendo el margen Q-V de Carmona un 57% (2.964 → 1.268 MW). El colapso era matemáticamente inevitable antes de que fallara ninguna planta.',
+        text: (
+          <>
+            El mallado de 11 líneas en vacío inyectó 1,05–2,4 GVAr capacitivos por Efecto Ferranti, contrayendo el <TooltipTerm term="margen Q-V">margen Q-V</TooltipTerm> de Carmona un 57% (2.964 → 1.268 MW). El colapso era matemáticamente inevitable antes de que fallara ninguna planta.
+          </>
+        ),
         verdict: 'Fallo del operador (mallado)',
       },
       entsoe: {
@@ -151,7 +156,7 @@ const CONSENSUS = [
   { text: 'El UFLS agravó el colapso al eliminar sumideros de reactiva', all: true },
   { text: 'Las protecciones OST de los Pirineos actuaron correctamente', all: true },
   { text: 'La normativa IBR (P.O. 7.4 / RD 413/2014) era insuficiente', all: true },
-  { text: 'El Criterio N−1 estático es incapaz de anticipar colapsos dinámicos', all: true },
+  { text: <>El <TooltipTerm term="Criterio N-1">Criterio N-1</TooltipTerm> estático es incapaz de anticipar colapsos dinámicos</>, all: true },
 ];
 
 export default function DivergenceTable() {
@@ -321,7 +326,7 @@ export default function DivergenceTable() {
             }}>
               Las posiciones de REE e ICAI no son mutuamente excluyentes
               en términos termodinámicos: ambos factores contribuyeron
-              a la saturación Q-V. Lo que sí son excluyentes es su
+              a la saturación <TooltipTerm term="Q-V">Q-V</TooltipTerm>. Lo que sí son excluyentes es su
               implicación jurídica: determinan sobre quién recae la
               responsabilidad económica del colapso. La ambigüedad no es
               un accidente analítico — es el resultado predecible de operar
