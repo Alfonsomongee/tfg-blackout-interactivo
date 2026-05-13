@@ -26,6 +26,11 @@ const FAQ = [
         a: 'Maniobra del operador que conecta circuitos de la red de transporte para reforzar la topología ante oscilaciones. ICAI sostiene que entre las 12:03 y 12:25 CEST, el mallado inyectó entre 1,05 y 2,4 GVAr de reactiva capacitiva — el "tsunami" que saturó los márgenes Q-V. REE argumenta que fue una medida protocolizada y necesaria. Esta es la divergencia central del caso.',
         ref: 'Cap. 5.1 vs 5.3',
       },
+      {
+        q: '¿Por qué se tardaron 19 horas en restaurar un sistema que colapsó en 33 segundos?',
+        a: 'La asimetría colapso/reposición es intrínseca a la física del sistema: destruir sincronismo requiere solo superar un umbral de estabilidad (proceso en cascada autoacelerado), pero reconstruirlo exige re-energizar cada isla de forma controlada, verificar sincronismo de fase, frecuencia y tensión antes de reconectar. Además, el 82% de la generación (IBR) era Grid-Following: físicamente incapaz de generar la onda de tensión inicial sin red externa. Solo las máquinas síncronas (hidro, CCGT, nuclear) podían arrancar en negro, y su disponibilidad era limitada en la zona sur.',
+        ref: 'Cap. 4 — Black Start',
+      },
     ],
   },
   {
@@ -88,6 +93,11 @@ const FAQ = [
         q: '¿Cuál es la principal lección para el resto de Europa?',
         a: 'Que el paradigma de operación centralizada — un operador con visibilidad SCADA a 400 kV, criterio N-1 estático y despacho por mercado horario — fue diseñado para redes dominadas por masas síncronas. En una red donde el 82% de la generación responde en milisegundos mediante PLL, ese paradigma ha alcanzado los límites de su capacidad de gestión. El 28-A no fue un accidente ibérico; fue el primer blackout europeo a gran escala causado por inestabilidad capacitiva en red de baja inercia. Puede repetirse en cualquier sistema europeo con alta penetración IBR.',
         ref: 'Cap. 9 — Conclusiones',
+      },
+      {
+        q: '¿Cuál fue el coste económico estimado del apagón?',
+        a: 'Las estimaciones preliminares sitúan el impacto económico directo en el rango de 1.600–5.000 M€, dependiendo de la metodología utilizada (coste de energía no suministrada vs. impacto en PIB). Solo la compensación por energía no suministrada (ENS) regulada asciende a ~45 M€. El coste real incluye pérdidas industriales, alimentarias, sanitarias y de transporte que aún están siendo cuantificadas. Esta cifra refuerza la urgencia de las reformas propuestas en el Cap. 7: el coste de prevención (PMUs + Grid-Forming + compensadores) es una fracción del coste de un segundo incidente.',
+        ref: 'Cap. 7.3 — Análisis coste-beneficio',
       },
     ],
   },
