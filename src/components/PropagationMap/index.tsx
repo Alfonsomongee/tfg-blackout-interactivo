@@ -247,7 +247,7 @@ const PropagationMapContent = function PropagationMap() {
                 stroke={isAfterT(80) ? 'var(--alert-red)' : 'var(--accent)'}
                 strokeWidth="2.5"
                 strokeDasharray={isAfterT(80) ? '0' : '4,3'}
-                className={isAfterT(80) ? '' : 'flow-active'}
+                className={`glow-line ${isAfterT(80) ? '' : 'flow-active'}`}
               />
 
               {/* HVDC INELFE-1 */}
@@ -255,7 +255,7 @@ const PropagationMapContent = function PropagationMap() {
                 d="M 370,70 L 370,15"
                 stroke={isAfterT(80) ? 'var(--alert-red)' : isAfterT(32) ? 'var(--alert-orange)' : 'var(--accent-cyan)'}
                 strokeWidth="4"
-                className={isAfterT(80) ? '' : 'flow-active'}
+                className={`glow-line ${isAfterT(80) ? '' : 'flow-active'}`}
                 fill="none"
               />
 
@@ -267,7 +267,7 @@ const PropagationMapContent = function PropagationMap() {
                 y2="445"
                 stroke={isAfterT(80) ? 'var(--alert-red)' : 'var(--alert-orange)'}
                 strokeWidth="3"
-                className={isAfterT(80) ? '' : 'flow-active'}
+                className={`glow-line ${isAfterT(80) ? '' : 'flow-active'}`}
               />
 
               {/* ONDA DE PROPAGACIÓN CONCÉNTRICA DESDE GRANADA */}
@@ -311,6 +311,7 @@ const PropagationMapContent = function PropagationMap() {
                 cy="280"
                 r="6"
                 fill={isAfterT(70) ? 'var(--alert-red)' : 'var(--alert-orange)'}
+                className={isAfterT(70) ? 'critical-node' : ''}
                 stroke="var(--bg-primary)"
                 strokeWidth="1.5"
               />
@@ -322,6 +323,7 @@ const PropagationMapContent = function PropagationMap() {
                 cy="365"
                 r="6.5"
                 fill={isAfterT(77) ? 'var(--alert-red)' : isAfterT(70) ? 'var(--alert-orange)' : 'var(--border-main)'}
+                className={isAfterT(70) ? 'critical-node' : ''}
                 stroke="var(--bg-primary)"
                 strokeWidth="1.5"
               />
@@ -333,7 +335,7 @@ const PropagationMapContent = function PropagationMap() {
                 cy="350"
                 r={isAfterT(75) && !isAfterT(100) ? 8 : 6}
                 fill={isAfterT(75) ? 'var(--alert-red)' : 'var(--border-main)'}
-                className={isAfterT(75) && !isAfterT(100) ? 'pulse-red' : ''}
+                className={isAfterT(75) && !isAfterT(100) ? 'pulse-red critical-node' : isAfterT(75) ? 'critical-node' : ''}
                 stroke="var(--bg-primary)"
                 strokeWidth="1.5"
               />

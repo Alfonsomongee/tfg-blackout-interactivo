@@ -179,6 +179,7 @@ const ResponsibilityRadarContent = function ResponsibilityRadar() {
                     fill={inst.color}
                     fillOpacity={0.05}
                     strokeWidth={2}
+                    className="glow-line"
                   />
                 ))}
                 <Tooltip content={<CustomTooltip />} />
@@ -214,6 +215,7 @@ const ResponsibilityRadarContent = function ResponsibilityRadar() {
                         fill={inst.color}
                         fillOpacity={0.08}
                         strokeWidth={1.5}
+                        className="glow-line"
                       />
                     </RadarChart>
                   </ResponsiveContainer>

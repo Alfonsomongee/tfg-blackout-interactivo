@@ -489,6 +489,38 @@ export default function CausalChain() {
             transform: scale(1.2);
           }
         }
+
+        /* NEW: GLOW EFFECTS */
+        @keyframes glow-pulse {
+          0%, 100% {
+            filter: drop-shadow(0 0 6px rgba(46, 110, 193, 0.5));
+          }
+          50% {
+            filter: drop-shadow(0 0 12px rgba(46, 110, 193, 0.8));
+          }
+        }
+
+        .glow-line {
+          stroke: var(--accent-blue);
+          stroke-width: 2;
+          filter: drop-shadow(0 0 6px rgba(46, 110, 193, 0.5));
+          animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        .critical-node {
+          fill: var(--alarm);
+          filter: drop-shadow(0 0 8px rgba(255, 32, 32, 0.6));
+          animation: critical-pulse 0.8s ease-in-out infinite;
+        }
+
+        @keyframes critical-pulse {
+          0%, 100% {
+            filter: drop-shadow(0 0 8px rgba(255, 32, 32, 0.6));
+          }
+          50% {
+            filter: drop-shadow(0 0 16px rgba(255, 32, 32, 0.9));
+          }
+        }
       `}</style>
     </div>
   );

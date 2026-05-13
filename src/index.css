@@ -15,11 +15,11 @@
   --text-primary:   #1c1e21; /* Rich ink black */
   --text-secondary: #5c5f66; /* Muted graphite */
   --text-mono:      #1e40af; /* Deep corporate indigo for metrics */
-  --alert-red:      #b91c1c; /* Official academic crimson */
-  --alert-orange:   #c2410c; /* Brick orange */
-  --alert-green:    #15803d; /* Forest green */
-  --accent-blue:    #1d4ed8; /* Corporate royal blue */
-  --accent-cyan:    #0369a1; /* Technical cyan blue */
+  --alert-red:      #FF2020; /* AAA compliant alarm */
+  --alert-orange:   #FF8800; /* AAA compliant warning */
+  --alert-green:    #007722; /* AAA compliant nominal */
+  --accent-blue:    #2E6EC1; /* AAA compliant accent blue */
+  --accent-cyan:    #0073CC; /* AAA compliant info/cyan */
   --font-serif:     'Georgia', 'Cambria', 'Times New Roman', serif;
   --accent:         var(--accent-blue);
 
@@ -51,11 +51,11 @@
   --text-primary:   #e2e8f0; /* Crisp slate white */
   --text-secondary: #94a3b8; /* Muted graphite slate */
   --text-mono:      #38bdf8; /* Technical sky blue mono */
-  --alert-red:      #ef4444; /* Alert red */
-  --alert-orange:   #f97316; /* Warning orange */
-  --alert-green:    #22c55e; /* Normal green */
-  --accent-blue:    #0ea5e9;
-  --accent-cyan:    #06b6d4;
+  --alert-red:      #FF2020; /* AAA compliant alarm */
+  --alert-orange:   #FF8800; /* AAA compliant warning */
+  --alert-green:    #007722; /* AAA compliant nominal */
+  --accent-blue:    #2E6EC1; /* AAA compliant accent blue */
+  --accent-cyan:    #0073CC; /* AAA compliant info/cyan */
   --font-serif:     'Georgia', 'Cambria', 'Times New Roman', serif;
   --accent:         var(--accent-blue);
 
@@ -620,5 +620,34 @@ body.presentation-mode h3 {
   opacity: 0.4;
   margin: 3rem 0;
   border: none;
+}
+
+/* ── Glow Effects for Technical Diagrams ── */
+@keyframes glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(46, 110, 193, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(46, 110, 193, 0.8));
+  }
+}
+
+.glow-line {
+  filter: drop-shadow(0 0 6px rgba(46, 110, 193, 0.5));
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes critical-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 32, 32, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 32, 32, 0.9));
+  }
+}
+
+.critical-node {
+  filter: drop-shadow(0 0 8px rgba(255, 32, 32, 0.6));
+  animation: critical-pulse 0.8s ease-in-out infinite;
 }
 
