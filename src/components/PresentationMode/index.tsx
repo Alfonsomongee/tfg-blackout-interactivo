@@ -6,7 +6,7 @@ const PRESENTATION_PAGES = [
   '/radar', '/compare', '/divergencias', '/reactiva', '/polarimetro', '/causal', '/black-start',
   '/fracturas', '/consenso', '/narrativa-mediatica', '/simulator',
   '/roadmap', '/dossier', '/lexicon', '/metodologia', '/reforms', '/trilema',
-  '/veredicto', '/tribunal'
+  '/veredicto', '/tribunal', '/galeria'
 ];
 
 export function PresentationMode() {
@@ -103,7 +103,7 @@ export function PresentationMode() {
       setIsActive(true);
       document.body.classList.add('presentation-mode');
       document.documentElement.requestFullscreen().catch(() => {
-        console.log('Fullscreen no disponible');
+        // Fullscreen API not available — silently degrade
       });
     };
 

@@ -397,6 +397,9 @@ export default function ForensicGallery() {
       {/* MODAL LIGHTBOX */}
       {selected && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Imagen ampliada: ${selected.title}`}
           onClick={() => setSelected(null)}
           style={{
             position: 'fixed', inset: 0,

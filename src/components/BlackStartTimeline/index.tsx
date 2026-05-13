@@ -206,6 +206,8 @@ export default function BlackStartTimeline() {
             }} />
 
             <button
+              aria-expanded={expanded === `ev-${i}`}
+              aria-controls={`timeline-panel-${i}`}
               onClick={() => setExpanded(expanded === `ev-${i}` ? null : `ev-${i}`)}
               style={{
                 flex: 1, textAlign: 'left', background: 'var(--bg-surface)',
@@ -236,7 +238,10 @@ export default function BlackStartTimeline() {
               </div>
 
               {expanded === `ev-${i}` && (
-                <p style={{
+                <p
+                  id={`timeline-panel-${i}`}
+                  role="region"
+                  style={{
                   margin: '0.75rem 0 0', fontSize: '0.8125rem',
                   color: 'var(--text-secondary)', lineHeight: 1.7,
                   borderTop: '1px solid var(--border)', paddingTop: '0.75rem',
