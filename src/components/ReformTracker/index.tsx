@@ -101,6 +101,7 @@ const REFORMS = [
 ];
 
 import { useState } from 'react';
+import NextChapter from '../NextChapter';
 
 const REFORM_HISTORY = [
   {
@@ -454,6 +455,7 @@ export default function ReformTracker() {
 
         </div>
       )}
+      <NextChapter path="/trilema" label="Trilema Energético" desc="La vulnerabilidad estructural de la transición" />
     </div>
   );
 }

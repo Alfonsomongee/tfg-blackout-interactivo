@@ -1,5 +1,6 @@
 import AnimatedMetric from '../AnimatedMetric';
 import TooltipTerm from '../TooltipTerm';
+import NextChapter from '../NextChapter';
 
 export default function ExecutiveBrief() {
   return (
@@ -154,6 +155,7 @@ export default function ExecutiveBrief() {
       <footer className="mt-6 border-t border-main/40 pt-4 text-center text-[10px] text-text-secondary/70 font-mono uppercase tracking-wider">
         INFORMES ANALIZADOS: REE (JUNIO 2025) · REPORTE TÉCNICO ICAI (MAYO 2025) · ENTSO-E ICS REPORT (ABRIL 2025) · COMITÉ CIENTÍFICO MITECO
       </footer>
+      <NextChapter path="/contexto-energetico" label="Contexto Energético" desc="El estado del sistema eléctrico ibérico antes del 28-A" />
     </div>
   );
 }

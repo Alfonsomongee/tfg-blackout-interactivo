@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import LazyImage from '../LazyImage';
+import NextChapter from '../NextChapter';
 
 const GALLERY_IMAGES = [
   // ─── TIER 1: FÍSICAS DEL COLAPSO ───
@@ -498,6 +499,7 @@ export default function ForensicGallery() {
           </div>
         </div>
       )}
+      <NextChapter path="/lexicon" label="Glosario Técnico" desc="Definiciones precisas de cada término" />
     </div>
   );
 }

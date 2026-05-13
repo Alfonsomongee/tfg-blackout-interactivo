@@ -1,4 +1,5 @@
 
+import NextChapter from '../NextChapter';
 
 interface VerdictSection {
   num: number;
@@ -106,6 +107,7 @@ export default function ForensicVerdict() {
           </div>
         ))}
       </div>
+      <NextChapter path="/tribunal" label="FAQ Tribunal" desc="15 preguntas preparadas para la defensa" />
     </div>
   );
 }

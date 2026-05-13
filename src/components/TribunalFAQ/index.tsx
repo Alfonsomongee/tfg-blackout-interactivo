@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import NextChapter from '../NextChapter';
 
 const FAQ = [
   {
@@ -198,6 +199,7 @@ export default function TribunalFAQ() {
         </div>
       ))}
       </div>
+      <NextChapter path="/galeria" label="Galería Forense" desc="Las figuras clave del análisis" />
     </div>
   );
 }
