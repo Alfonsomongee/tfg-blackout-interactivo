@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LazyImage from '../LazyImage';
 
 const GALLERY_IMAGES = [
   // ─── TIER 1: FÍSICAS DEL COLAPSO ───
@@ -298,57 +299,20 @@ export default function ForensicGallery() {
               (e.currentTarget as HTMLElement).style.boxShadow = 'none';
             }}>
 
-            {/* IMAGEN con placeholder elegante */}
-            <div style={{
-              width: '100%', height: '200px',
-              background: 'var(--bg-raised)',
-              position: 'relative', overflow: 'hidden',
-              borderBottom: '1px solid var(--border)',
-            }}>
-              <img
+            {/* IMAGEN CON LazyImage */}
+            <div style={{ position: 'relative' }}>
+              <LazyImage
                 src={img.src}
                 alt={img.title}
-                loading="lazy"
-                style={{
-                  width: '100%', height: '100%',
-                  objectFit: 'cover',
-                  transition: 'transform 0.3s ease',
+                containerStyle={{
+                  width: '100%',
+                  height: '200px',
+                  borderBottom: '1px solid var(--border)',
                 }}
-                onError={(e) => {
-                  // Placeholder si la imagen no existe todavía
-                  const target = e.currentTarget;
-                  target.style.display = 'none';
-                  const placeholder = target.nextSibling as HTMLElement;
-                  if (placeholder) placeholder.style.display = 'flex';
+                style={{
+                  objectFit: 'cover',
                 }}
               />
-              {/* Placeholder */}
-              <div style={{
-                display: 'none',
-                position: 'absolute', inset: 0,
-                flexDirection: 'column',
-                alignItems: 'center', justifyContent: 'center',
-                gap: '0.5rem',
-                background: 'var(--bg-raised)',
-              }}>
-                <p style={{
-                  fontSize: '0.6875rem',
-                  fontFamily: 'var(--font-mono)',
-                  color: 'var(--text-muted)',
-                  textAlign: 'center',
-                  padding: '0 1rem',
-                }}>
-                  {img.figure}
-                </p>
-                <p style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--text-muted)',
-                  textAlign: 'center',
-                  padding: '0 1rem',
-                }}>
-                  Imagen pendiente de carga
-                </p>
-              </div>
 
               {/* Badge tier 1 */}
               {img.tier === 1 && (
@@ -361,6 +325,7 @@ export default function ForensicGallery() {
                   fontFamily: 'var(--font-mono)',
                   color: 'var(--alarm)',
                   border: '1px solid var(--alarm)',
+                  zIndex: 2,
                 }}>
                   CLAVE
                 </div>
@@ -451,27 +416,24 @@ export default function ForensicGallery() {
             }}>
 
             {/* Imagen grande */}
-            <div style={{
-              background: 'var(--bg-raised)',
-              borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0',
-              overflow: 'hidden', maxHeight: '60vh',
-              display: 'flex', alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <img
-                src={selected.src}
-                alt={selected.title}
-                style={{
-                  maxWidth: '100%', maxHeight: '60vh',
-                  objectFit: 'contain',
-                }}
-                onError={e => {
-                  (e.currentTarget as HTMLImageElement).src = '';
-                  (e.currentTarget as HTMLImageElement).alt =
-                    'Imagen pendiente de carga';
-                }}
-              />
-            </div>
+            <LazyImage
+              src={selected.src}
+              alt={selected.title}
+              containerStyle={{
+                background: 'var(--bg-raised)',
+                borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0',
+                overflow: 'hidden',
+                maxHeight: '60vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '60vh',
+                objectFit: 'contain',
+              }}
+            />
 
             {/* Metadata */}
             <div style={{ padding: '1.5rem 2rem' }}>
