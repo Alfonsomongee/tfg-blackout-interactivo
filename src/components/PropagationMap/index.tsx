@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // Definitions of timestamps and events
 const TIMELINE_EVENTS = [
@@ -53,7 +53,7 @@ const TIMELINE_EVENTS = [
   },
 ];
 
-export default function PropagationMap() {
+const PropagationMapContent = function PropagationMap() {
   const [sliderValue, setSliderValue] = useState<number>(0);
 
   // Find the current active timeline event
@@ -387,4 +387,6 @@ export default function PropagationMap() {
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(PropagationMapContent);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 const TERMS = [
   {
@@ -188,25 +188,29 @@ const CATEGORIES = [
   { id: 'red', label: 'Infraestructura' },
 ];
 
-export default function TechLexicon() {
+const TechLexiconContent = function TechLexicon() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [activeCategory, setActiveCategory] = useState<string>('todos');
   const [selectedTermId, setSelectedTermId] = useState<string | null>(null);
 
   // Filter terms logic
-  const filteredTerms = TERMS.filter((item) => {
-    const matchesSearch =
-      item.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.full.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.definition.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredTerms = useMemo(() => {
+    return TERMS.filter((item) => {
+      const matchesSearch =
+        item.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.full.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.definition.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesCategory =
-      activeCategory === 'todos' || item.category === activeCategory;
+      const matchesCategory =
+        activeCategory === 'todos' || item.category === activeCategory;
 
-    return matchesSearch && matchesCategory;
-  });
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchTerm, activeCategory]);
 
-  const selectedTerm = TERMS.find((t) => t.id === selectedTermId);
+  const selectedTerm = useMemo(() => {
+    return TERMS.find((t) => t.id === selectedTermId);
+  }, [selectedTermId]);
 
   return (
     <div className="flex-grow flex flex-col justify-between text-text-primary font-sans animate-fade-in w-full">
@@ -379,4 +383,6 @@ export default function TechLexicon() {
       )}
     </div>
   );
-}
+};
+
+export default React.memo(TechLexiconContent);

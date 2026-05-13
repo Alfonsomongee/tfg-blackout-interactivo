@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import TooltipTerm from '../TooltipTerm';
 
 const FRACTURES = [
@@ -45,7 +45,7 @@ const FRACTURES = [
   },
 ];
 
-export default function ThreeFracturesVisualizer() {
+const ThreeFracturesVisualizerContent = function ThreeFracturesVisualizer() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
@@ -58,7 +58,7 @@ export default function ThreeFracturesVisualizer() {
       <p className="t-body" style={{maxWidth:'600px', marginBottom:'2rem'}}>
         El colapso del 28 de abril no fue un incidente fortuito sino la
         manifestación convergente de tres fracturas de gobernanza que
-        coexistían en el sistema eléctrico ibérico.
+        coexistían del sistema eléctrico ibérico.
       </p>
 
       <div style={{display:'grid', gridTemplateColumns:'1fr', gap:'1rem'}}>
@@ -139,4 +139,6 @@ export default function ThreeFracturesVisualizer() {
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(ThreeFracturesVisualizerContent);

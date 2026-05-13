@@ -122,7 +122,7 @@ const MATRIX_DATA: MatrixRow[] = [
   }
 ];
 
-export const DivergenceMatrix: React.FC = () => {
+const DivergenceMatrixContent: React.FC = () => {
   const consensusCount = MATRIX_DATA.filter(row => row.type === 'consensus').length;
   const divergenceCount = MATRIX_DATA.filter(row => row.type === 'divergence').length;
 
@@ -284,4 +284,5 @@ export const DivergenceMatrix: React.FC = () => {
   );
 };
 
+export const DivergenceMatrix = React.memo(DivergenceMatrixContent);
 export default DivergenceMatrix;

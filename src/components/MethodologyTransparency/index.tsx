@@ -1,5 +1,7 @@
 
 
+import React from 'react';
+
 const METHODOLOGY = {
   aiUsage: [
     {tool:'Claude (Anthropic)', purpose:'Estructuración de informes masivos, síntesis, extracción de narrativas', validation:'Contraste manual contra física de red y normativa oficial'},
@@ -31,7 +33,7 @@ const METHODOLOGY = {
   ],
 };
 
-export default function MethodologyTransparency() {
+const MethodologyTransparencyContent = function MethodologyTransparency() {
   return (
     <div style={{maxWidth:'1100px', margin:'0 auto', padding:'2.5rem 3rem'}}>
       <p className="t-subheading" style={{marginBottom:'0.5rem'}}>
@@ -179,4 +181,6 @@ export default function MethodologyTransparency() {
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(MethodologyTransparencyContent);

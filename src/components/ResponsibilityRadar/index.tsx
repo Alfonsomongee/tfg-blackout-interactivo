@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Radar,
   RadarChart,
@@ -84,7 +84,7 @@ const INSTITUTIONS = [
   { id: 'entsoe', name: 'ENTSO-E ICS', color: '#0369a1', dataKey: 'entsoe' },
 ];
 
-export default function ResponsibilityRadar() {
+const ResponsibilityRadarContent = function ResponsibilityRadar() {
   const [superimposed, setSuperimposed] = useState<boolean>(false);
   const [hoveredDescription, setHoveredDescription] = useState<string | null>(null);
 
@@ -259,4 +259,6 @@ export default function ResponsibilityRadar() {
       </div>
     </div>
   );
-}
+};
+
+export default React.memo(ResponsibilityRadarContent);
