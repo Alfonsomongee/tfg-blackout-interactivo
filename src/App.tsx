@@ -14,6 +14,7 @@ const TechLexicon = lazy(() => import('./components/TechLexicon'));
 const ReformTracker = lazy(() => import('./components/ReformTracker'));
 const NarrativeComparator = lazy(() => import('./components/NarrativeComparator'));
 const CausalChain = lazy(() => import('./components/CausalChain'));
+const CascadaVisualization = lazy(() => import('./components/CascadaVisualization'));
 const ThreeFracturesVisualizer = lazy(() => import('./components/ThreeFracturesVisualizer'));
 const ConsensusDivergenceVisualizer = lazy(() => import('./components/ConsensusDivergenceVisualizer'));
 const TechnologyRoadmap = lazy(() => import('./components/TechnologyRoadmap'));
@@ -77,6 +78,7 @@ const NAV_GROUPS = [
     title: 'Análisis Forense',
     items: [
       { to: '/countdown', label: '⏱ 90 Segundos (Tiempo Real)', type: 'core', icon: '⏱️' },
+      { to: '/cascada', label: 'Cascada de Colapso', type: 'core', icon: '🌊' },
       { to: '/timeline', label: 'Línea de Tiempo', type: 'core', icon: '⏳' },
       { to: '/map', label: 'Mapa Propagación', type: 'core', icon: '🗺️' },
       { to: '/matrix', label: 'Matriz Comparada', type: 'detalle', icon: '📊' },
@@ -133,6 +135,7 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     const customTitles: Record<string, string> = {
       '/countdown': '⏱ 90 Segundos — Colapso en Tiempo Real | Apagón 28-A',
+      '/cascada': 'Cascada de Colapso — Visualización Forense | Apagón 28-A',
       '/divergencias': 'Divergencias Irreconciliables | Apagón 28-A',
       '/reactiva': 'Balance de Reactiva | Apagón 28-A',
       '/trilema': 'Trilema Energético | Apagón 28-A',
@@ -523,6 +526,7 @@ const Layout: React.FC = () => {
               <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
               <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
               <Route path="/countdown" element={<PageWrapper><CollapseCountdown /></PageWrapper>} />
+              <Route path="/cascada" element={<PageWrapper><CascadaVisualization /></PageWrapper>} />
               <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
               <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
               <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
