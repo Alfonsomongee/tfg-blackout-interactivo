@@ -91,6 +91,7 @@ export function ContingencySimulator() {
   const [inertia,        setInertia]        = useState<number>(1.84);
   const [gridFormingPct, setGridFormingPct] = useState<number>(0);
   const [batteryMWh,     setBatteryMWh]     = useState<number>(0);
+  const [showVerdictModal, setShowVerdictModal] = useState<boolean>(false);
 
   const sim = useMemo(() => {
     const trajectory = buildFrequencyTrajectory(
@@ -108,6 +109,45 @@ export function ContingencySimulator() {
 
   const risk = riskLevel(sim.nadir);
 
+  // Determinar si hay temblor visceral en la UI
+  const isVisceralShaking = sim.nadir < 49.3;
+
+  // Generar veredicto oficial
+  const getVerdictDetails = () => {
+    if (gridFormingPct === 0 && batteryMWh === 0 && powerLoss >= 2000) {
+      return {
+        title: "ESCENARIO HISTÓRICO REAL (28 ABRIL 2025)",
+        grade: "DEFICIENTE — Colapso en Cascada Inevitable",
+        gradeColor: "text-alert-red bg-alert-red/10 border-alert-red",
+        text: `Configuración idéntica a la del apagón. La falta de inercia síncrona (H = ${inertia.toFixed(2)} s) y la ausencia total de inversores Grid-Forming provocaron un RoCoF inmanejable de ${sim.rocof.toFixed(4)} Hz/s. El nadir alcanzó ${sim.nadir.toFixed(2)} Hz, disparando los relés UFLS III y consumando el colapso de tensión peninsular.`
+      };
+    }
+    if (gridFormingPct >= 25) {
+      return {
+        title: "PROPUESTA DE INNOVACIÓN: INVERSORES GRID-FORMING",
+        grade: "SOBRESALIENTE — Operación Resiliente",
+        gradeColor: "text-alert-green bg-alert-green/10 border-alert-green",
+        text: `La inserción masiva de inversores con capacidad de formación de red (${gridFormingPct}%) añade un amortiguamiento dinámico crucial. Se logra estabilizar el nadir en ${sim.nadir.toFixed(2)} Hz, salvando el deslastre del escalón UFLS III (1.402 MW industriales) y garantizando la estabilidad transitoria del sistema.`
+      };
+    }
+    if (batteryMWh >= 500) {
+      return {
+        title: "PROPUESTA DE INNOVACIÓN: BESS DE RESPUESTA ULTRÁRRAPIDA",
+        grade: "MATRÍCULA DE HONOR — Mitigación Activa",
+        gradeColor: "text-accent bg-accent/10 border-accent",
+        text: `El despacho automatizado de Baterías de Almacenamiento (BESS con ${batteryMWh} MWh) inyecta potencia activa en milisegundos. Contrarresta de forma inmediata el desbalance inicial de ${powerLoss} MW, manteniendo la frecuencia en rangos seguros.`
+      };
+    }
+    return {
+      title: "DESPACHO OPERATIVO INTERMEDIO",
+      grade: "APROBADO — Alerta Operativa Contingente",
+      gradeColor: "text-alert-orange bg-alert-orange/10 border-alert-orange",
+      text: `La combinación de reservas inerciales y almacenamiento mitiga la pendiente teórica df/dt. Sin embargo, ante perturbaciones mayores en el nudo colector de Carmona, la red mantiene un margen de vulnerabilidad elevado.`
+    };
+  };
+
+  const verdict = getVerdictDetails();
+
   // Tooltip personalizado
   const CustomTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.length) return null;
@@ -124,16 +164,26 @@ export function ContingencySimulator() {
   };
 
   return (
-    <div className="flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full">
+    <div className={`flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full ${isVisceralShaking ? 'grid-tremor-active' : ''}`}>
       
       {/* Title area */}
-      <div className="border-b border-main pb-4 mb-2">
-        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
-          Simulador Dinámico de Contingencias (Balance de Frecuencia)
-        </h2>
-        <p className="text-xs text-text-secondary font-mono mt-1">
-          Capítulo III · Herramienta Interactiva de Integración Dinámica de la Inercia Peninsular
-        </p>
+      <div className="border-b border-main pb-4 mb-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+            Simulador Dinámico de Contingencias (Balance de Frecuencia)
+          </h2>
+          <p className="text-xs text-text-secondary font-mono mt-1">
+            Capítulo III · Herramienta Interactiva de Integración Dinámica de la Inercia Peninsular
+          </p>
+        </div>
+
+        {/* Botón de Emisión de Veredicto */}
+        <button
+          onClick={() => setShowVerdictModal(true)}
+          className="flex items-center gap-2 bg-accent text-white font-mono text-xs px-4 py-2.5 rounded hover:bg-accent-blue/90 shadow transition-all cursor-pointer font-bold tracking-wider uppercase border border-border-accent"
+        >
+          <span>⚖️ Emitir Veredicto Forense</span>
+        </button>
       </div>
 
       {/* D1. Cuadrícula de Métricas principales */}
@@ -171,6 +221,17 @@ export function ContingencySimulator() {
         </AnimatedMetric>
       </div>
 
+      {/* Banner de alerta visceral si hay temblor */}
+      {isVisceralShaking && (
+        <div className="bg-alert-red/15 border-2 border-alert-red p-4 rounded-lg flex items-center gap-4 animate-pulse">
+          <span className="text-2xl">⚠️</span>
+          <div>
+            <div className="font-mono text-xs font-bold text-alert-red uppercase tracking-wider">ALERTA DE INESTABILIDAD VISCERAL</div>
+            <p className="text-xs text-text-primary m-0 mt-0.5">La caída por debajo de 49.30 Hz está provocando temblores de tensión e inestabilidad asíncrona en toda la red peninsular.</p>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">
 
         {/* ── COLUMNA IZQUIERDA: Controles ─────────── */}
@@ -178,8 +239,9 @@ export function ContingencySimulator() {
 
           {/* Panel parámetros */}
           <div className="bg-secondary border border-main rounded-lg p-5 shadow-sm">
-            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5">
-              Parámetros de Entrada de Red
+            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5 flex justify-between items-center">
+              <span>Parámetros de Red</span>
+              <span className="text-[9px] bg-tertiary px-1.5 py-0.5 rounded text-text-primary">60 FPS Memoized</span>
             </div>
 
             {/* Slider: Pérdida MW */}
@@ -228,6 +290,19 @@ export function ContingencySimulator() {
               color="var(--border-accent)"
               hint="Reserva de energía de almacenamiento"
             />
+
+            {/* Reset button */}
+            <button
+              onClick={() => {
+                setPowerLoss(2000);
+                setInertia(1.84);
+                setGridFormingPct(0);
+                setBatteryMWh(0);
+              }}
+              className="w-full mt-2 py-2 bg-tertiary hover:bg-main/30 border border-main rounded font-mono text-[11px] text-text-secondary uppercase tracking-wider transition-colors cursor-pointer"
+            >
+              🔄 Restaurar Escenario Apagón
+            </button>
           </div>
 
           {/* Panel UFLS */}
@@ -339,6 +414,55 @@ export function ContingencySimulator() {
           </div>
         </div>
       </div>
+
+      {/* MODAL DE VEREDICTO FORENSE OFICIAL */}
+      {showVerdictModal && (
+        <div className="fixed inset-0 bg-primary/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-secondary border border-main rounded-xl p-6 max-w-2xl w-full shadow-2xl relative flex flex-col gap-5">
+            <div className="flex justify-between items-start border-b border-main pb-4">
+              <div>
+                <span className="font-mono text-[10px] text-border-accent uppercase font-bold tracking-widest block mb-1">// DICTAMEN OFICIAL DEL TRIBUNAL FORENSE</span>
+                <h3 className="font-serif text-xl font-bold text-text-primary m-0">{verdict.title}</h3>
+              </div>
+              <button 
+                onClick={() => setShowVerdictModal(false)}
+                className="text-text-secondary hover:text-text-primary text-xl font-bold cursor-pointer bg-tertiary px-2.5 py-1 rounded border border-main"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className={`p-4 rounded-lg border font-mono font-bold text-sm tracking-wide ${verdict.gradeColor}`}>
+              CALIFICACIÓN: {verdict.grade}
+            </div>
+
+            <p className="text-text-secondary font-sans leading-relaxed text-sm m-0">
+              {verdict.text}
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 bg-tertiary p-4 rounded-lg border border-main font-mono text-xs">
+              <div>
+                <span className="text-text-muted block text-[10px]">INERCIA SÍNCRONA CONFIGURADA:</span>
+                <span className="font-bold text-text-primary">{inertia.toFixed(2)} s</span>
+              </div>
+              <div>
+                <span className="text-text-muted block text-[10px]">AMORTIGUAMIENTO (GRID-FORMING):</span>
+                <span className="font-bold text-accent">{gridFormingPct}%</span>
+              </div>
+            </div>
+
+            <div className="border-t border-main pt-3 flex justify-end">
+              <button
+                onClick={() => setShowVerdictModal(false)}
+                className="bg-text-primary text-secondary font-mono text-xs px-5 py-2.5 rounded hover:opacity-90 transition-opacity font-bold uppercase tracking-wider cursor-pointer"
+              >
+                Cerrar Acta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
