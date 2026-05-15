@@ -9,7 +9,7 @@ export default function ShareButton() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Error al copiar el enlace:', err);
+      // Silently fail if clipboard API is unavailable
     }
   };
 
