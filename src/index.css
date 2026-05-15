@@ -651,3 +651,41 @@ body.presentation-mode h3 {
   animation: critical-pulse 0.8s ease-in-out infinite;
 }
 
+/* ── Visceral Grid Shaking & Brownout FX (Contingency Simulator FASE 3) ── */
+@keyframes grid-tremor {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); filter: brightness(1); }
+  20% { transform: translate(-2px, 1px) rotate(-0.25deg); filter: brightness(0.92); }
+  40% { transform: translate(1px, -2px) rotate(0.25deg); filter: brightness(1.05); }
+  60% { transform: translate(-3px, -1px) rotate(-0.1deg); filter: brightness(0.88); }
+  80% { transform: translate(2px, 2px) rotate(0.15deg); filter: brightness(0.95); }
+}
+
+.grid-tremor-active {
+  animation: grid-tremor 0.25s infinite ease-in-out;
+  pointer-events: auto;
+}
+
+/* ── Explorable Explanations Pill ── */
+.explorable-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  color: var(--accent-blue);
+  border: 1px dashed var(--accent-blue);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.explorable-pill:hover {
+  background: var(--accent-blue);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(46, 110, 193, 0.3);
+}
+
