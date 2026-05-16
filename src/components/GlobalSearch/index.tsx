@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface SearchItem {
-  type: 'term' | 'chapter' | 'event' | 'reform';
+  type: 'term' | 'chapter' | 'event' | 'reform' | 'interactive';
   label: string;
   subtitle: string;
   path: string;
@@ -46,6 +46,14 @@ const SEARCH_INDEX: SearchItem[] = [
   { type: 'reform', label: 'Actualización P.O. 7.4', subtitle: 'EN TRAMITACIÓN — reforma más urgente', path: '/reforms' },
   { type: 'reform', label: 'NC RfG 2.0 Grid-Forming', subtitle: 'PROPUESTO — Grid-Forming ≥1 MW obligatorio', path: '/reforms' },
   { type: 'reform', label: 'Derogación RD 413/2014', subtitle: 'IMPLEMENTADO — jun. 2025', path: '/reforms' },
+
+  // Interactive modules
+  { type: 'interactive', label: 'Quiz: ¿Quién dijo esto?', subtitle: '5 preguntas — identifica la institución de cada declaración', path: '/quiz-tribunal' },
+  { type: 'interactive', label: 'Datos del Colapso', subtitle: '12 métricas clave animadas del apagón del 28-A', path: '/data-cards' },
+  { type: 'interactive', label: 'Los 33 Segundos', subtitle: 'Control deslizante 0–33 s del colapso', path: '/timeline-moment' },
+  { type: 'interactive', label: 'Mapa de Impacto', subtitle: 'Distribución geográfica por zonas peninsulares', path: '/heat-map' },
+  { type: 'interactive', label: 'Gráfico de Inercia', subtitle: 'Evolución H del sistema — umbral ENTSO-E 5 s', path: '/inercia-graph' },
+  { type: 'interactive', label: 'Comparador Institucional', subtitle: 'Arrastra para ordenar por responsabilidad', path: '/comparador-arrastra' },
 ];
 
 interface GlobalSearchProps {
@@ -136,6 +144,8 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ onClose }) => {
         return 'bg-alert-orange/10 text-alert-orange border border-alert-orange/20';
       case 'reform':
         return 'bg-alert-green/10 text-alert-green border border-alert-green/20';
+      case 'interactive':
+        return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
     }
   };
 
@@ -145,6 +155,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ onClose }) => {
       case 'chapter': return 'CAPÍTULO';
       case 'event': return 'EVENTO';
       case 'reform': return 'REFORMA';
+      case 'interactive': return 'INTERACTIVO';
     }
   };
 

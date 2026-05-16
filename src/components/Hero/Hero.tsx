@@ -268,6 +268,57 @@ export default function Hero() {
         </a>
       </div>
 
+      {/* Tribunal quick access */}
+      <div style={{
+        marginTop: '2rem',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+        gap: '0.75rem',
+        maxWidth: '720px',
+      }}>
+        {[
+          { label: '⏱ 90 SEGUNDOS', desc: 'Colapso en tiempo real', path: '/countdown', color: 'var(--alarm)' },
+          { label: '🔗 CADENA CAUSAL', desc: 'Las 5 fases del colapso', path: '/causal', color: 'var(--warning)' },
+          { label: '🌊 CASCADA', desc: 'Visualización interactiva', path: '/cascada', color: 'var(--accent-blue)' },
+          { label: '⚖️ VEREDICTO', desc: 'Conclusión forense', path: '/veredicto', color: 'var(--nominal)' },
+        ].map((btn, i) => (
+          <button
+            key={i}
+            className="btn-spring"
+            onClick={() => navigate(btn.path)}
+            style={{
+              padding: '1rem',
+              background: 'rgba(255,255,255,0.03)',
+              border: `1px solid ${btn.color}40`,
+              borderTop: `2px solid ${btn.color}`,
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              textAlign: 'left',
+              color: 'white',
+            }}
+          >
+            <p style={{
+              margin: '0 0 0.25rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: btn.color,
+              letterSpacing: '0.04em',
+            }}>
+              {btn.label}
+            </p>
+            <p style={{
+              margin: 0,
+              fontSize: '0.6875rem',
+              color: 'rgba(255,255,255,0.45)',
+              fontFamily: 'var(--font-mono)',
+            }}>
+              {btn.desc}
+            </p>
+          </button>
+        ))}
+      </div>
+
       {/* GUÍA DE DEFENSA */}
       <div style={{
         marginTop: '3rem',

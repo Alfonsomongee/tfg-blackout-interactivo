@@ -1,19 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const PRESENTATION_PAGES = [
-  '/', '/brief', '/contexto-energetico', '/countdown', '/timeline', '/map', '/matrix',
+  '/', '/brief', '/contexto-energetico', '/countdown', '/cascada', '/timeline', '/map', '/matrix',
   '/radar', '/compare', '/divergencias', '/reactiva', '/polarimetro', '/causal', '/black-start',
   '/fracturas', '/consenso', '/narrativa-mediatica', '/simulator',
+  '/quiz-tribunal', '/data-cards', '/timeline-moment', '/heat-map', '/inercia-graph', '/comparador-arrastra',
   '/roadmap', '/dossier', '/lexicon', '/metodologia', '/reforms', '/trilema',
   '/veredicto', '/tribunal', '/galeria'
 ];
+
+const AUTO_PLAY_INTERVAL = 5000;
 
 export function PresentationMode() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentIndex = PRESENTATION_PAGES.indexOf(location.pathname);
   const [isActive, setIsActive] = useState(false);
+  const [autoPlay, setAutoPlay] = useState(false);
+  const currentIndexRef = useRef(currentIndex);
+  currentIndexRef.current = currentIndex;
 
   // Sync state with DOM and fullscreen events
   useEffect(() => {
@@ -33,6 +39,20 @@ export function PresentationMode() {
     };
   }, []);
 
+  // Auto-play timer
+  useEffect(() => {
+    if (!isActive || !autoPlay) return;
+    const timer = setInterval(() => {
+      const idx = currentIndexRef.current;
+      if (idx < PRESENTATION_PAGES.length - 1) {
+        navigate(PRESENTATION_PAGES[idx + 1]);
+      } else {
+        setAutoPlay(false);
+      }
+    }, AUTO_PLAY_INTERVAL);
+    return () => clearInterval(timer);
+  }, [isActive, autoPlay, navigate]);
+
   // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -41,18 +61,25 @@ export function PresentationMode() {
           document.exitFullscreen().catch(() => {});
         }
         setIsActive(false);
+        setAutoPlay(false);
         document.body.classList.remove('presentation-mode');
       }
-      
+
       // Only navigate if presentation mode is active
       if (!isActive) return;
 
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+      if (e.key === ' ') {
+        e.preventDefault();
+        setAutoPlay(p => !p);
+      }
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        setAutoPlay(false);
         if (currentIndex < PRESENTATION_PAGES.length - 1) {
           navigate(PRESENTATION_PAGES[currentIndex + 1]);
         }
       }
       if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+        setAutoPlay(false);
         if (currentIndex > 0) {
           navigate(PRESENTATION_PAGES[currentIndex - 1]);
         }
@@ -82,11 +109,11 @@ export function PresentationMode() {
       if (currentIndex < PRESENTATION_PAGES.length - 1) {
         navigate(PRESENTATION_PAGES[currentIndex + 1]);
       } else {
-        // If last page, exit presentation mode
         if (document.fullscreenElement) {
           document.exitFullscreen().catch(() => {});
         }
         setIsActive(false);
+        setAutoPlay(false);
         document.body.classList.remove('presentation-mode');
       }
     };
@@ -152,8 +179,10 @@ export function PresentationMode() {
         borderTop: '1px solid rgba(255,255,255,0.1)'
       }}>
         <span>Pág {currentIndex >= 0 ? currentIndex + 1 : '?'} / {PRESENTATION_PAGES.length} — {pageDisplay}</span>
-        <span>← → / CLICK para navegar | ESC para salir</span>
-        <span>MODO PRESENTACIÓN</span>
+        <span>← → navegar | SPACE {autoPlay ? 'pausar' : 'auto-play'} | ESC salir</span>
+        <span style={{ color: autoPlay ? 'var(--nominal)' : 'rgba(255,255,255,0.7)' }}>
+          {autoPlay ? '▶ AUTO-PLAY' : '⏸ MANUAL'}
+        </span>
       </div>
     );
   }

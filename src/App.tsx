@@ -30,6 +30,12 @@ const DivergenceTable = lazy(() => import('./components/DivergenceTable'));
 const ReactiveBalance = lazy(() => import('./components/ReactiveBalance'));
 const EnergyTrilemma = lazy(() => import('./components/EnergyTrilemma'));
 const ForensicGallery = lazy(() => import('./components/ForensicGallery'));
+const QuizTribunal = lazy(() => import('./components/QuizTribunal'));
+const DataCardsShowcase = lazy(() => import('./components/DataCardsShowcase'));
+const CollapseTimelineMoment = lazy(() => import('./components/CollapseTimelineMoment'));
+const SpainHeatmap = lazy(() => import('./components/SpainHeatmap'));
+const InertiaGraph = lazy(() => import('./components/InertiaGraph'));
+const InstitutionComparator = lazy(() => import('./components/InstitutionComparator'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -102,6 +108,17 @@ const NAV_GROUPS = [
     ]
   },
   {
+    title: 'Interactivo',
+    items: [
+      { to: '/quiz-tribunal', label: 'Quiz: ¿Quién dijo esto?', type: 'core', icon: '🎯' },
+      { to: '/data-cards', label: 'Datos del Colapso', type: 'core', icon: '📊' },
+      { to: '/timeline-moment', label: 'Los 33 Segundos', type: 'core', icon: '⏱️' },
+      { to: '/heat-map', label: 'Mapa de Impacto', type: 'core', icon: '🗺️' },
+      { to: '/inercia-graph', label: 'Gráfico de Inercia', type: 'core', icon: '📉' },
+      { to: '/comparador-arrastra', label: 'Comparador Institucional', type: 'core', icon: '⚖️' },
+    ]
+  },
+  {
     title: 'Garantía de Calidad',
     items: [
       { to: '/tribunal', label: 'FAQ Tribunal', type: 'core', icon: '⚖️' },
@@ -140,6 +157,12 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       '/reactiva': 'Balance de Reactiva | Apagón 28-A',
       '/trilema': 'Trilema Energético | Apagón 28-A',
       '/galeria': 'Galería Forense — Figuras del TFG | Apagón 28-A',
+      '/quiz-tribunal': 'Quiz Forense — ¿Quién dijo esto? | Apagón 28-A',
+      '/data-cards': 'Datos del Colapso — 12 Métricas Clave | Apagón 28-A',
+      '/timeline-moment': 'Los 33 Segundos del Colapso | Apagón 28-A',
+      '/heat-map': 'Mapa de Impacto por Zonas | Apagón 28-A',
+      '/inercia-graph': 'Gráfico de Inercia Síncrona | Apagón 28-A',
+      '/comparador-arrastra': 'Comparador Institucional | Apagón 28-A',
     };
 
     if (customTitles[location.pathname]) {
@@ -550,6 +573,12 @@ const Layout: React.FC = () => {
               <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
               <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
               <Route path="/tribunal" element={<PageWrapper><TribunalFAQ /></PageWrapper>} />
+              <Route path="/quiz-tribunal" element={<PageWrapper><QuizTribunal /></PageWrapper>} />
+              <Route path="/data-cards" element={<PageWrapper><DataCardsShowcase /></PageWrapper>} />
+              <Route path="/timeline-moment" element={<PageWrapper><CollapseTimelineMoment /></PageWrapper>} />
+              <Route path="/heat-map" element={<PageWrapper><SpainHeatmap /></PageWrapper>} />
+              <Route path="/inercia-graph" element={<PageWrapper><InertiaGraph /></PageWrapper>} />
+              <Route path="/comparador-arrastra" element={<PageWrapper><InstitutionComparator /></PageWrapper>} />
             </Routes>
           </Suspense>
         </main>
