@@ -651,6 +651,94 @@ body.presentation-mode h3 {
   animation: critical-pulse 0.8s ease-in-out infinite;
 }
 
+/* ──────────────────────────────────────────────────────────────────────────
+   PULIDO VISUAL PREMIUM — Glass / Hover Glow / Spring (theme-aware, sin JS)
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Glassmorphism: frosted surface that adapts to light/dark theme */
+.glass-panel {
+  background: color-mix(in srgb, var(--bg-surface) 70%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  transition: background var(--transition), box-shadow var(--transition);
+}
+.glass-panel:hover {
+  background: color-mix(in srgb, var(--bg-surface) 85%, transparent);
+  box-shadow: 0 8px 40px color-mix(in srgb, var(--info) 18%, transparent);
+}
+
+.card-hover {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.card-hover::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent-blue), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--info) 20%, transparent);
+}
+.card-hover:hover::before { opacity: 1; }
+
+.btn-spring {
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow var(--transition);
+}
+.btn-spring:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--info) 25%, transparent);
+}
+.btn-spring:active { transform: scale(0.96); }
+
+@keyframes electric-shimmer {
+  0%, 100% { background-position: 200% 0; }
+  50%      { background-position: -200% 0; }
+}
+.border-electric {
+  position: relative;
+  border-radius: var(--radius-lg);
+}
+.border-electric::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--alarm), var(--accent-blue));
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: electric-shimmer 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-reveal {
+  opacity: 0;
+  animation: heroReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* ── Visceral Grid Shaking & Brownout FX (Contingency Simulator FASE 3) ── */
 @keyframes grid-tremor {
   0%, 100% { transform: translate(0, 0) rotate(0deg); filter: brightness(1); }
@@ -665,7 +753,6 @@ body.presentation-mode h3 {
   pointer-events: auto;
 }
 
-/* ── Explorable Explanations Pill ── */
 .explorable-pill {
   display: inline-flex;
   align-items: center;
@@ -689,3 +776,7 @@ body.presentation-mode h3 {
   box-shadow: 0 2px 6px rgba(46, 110, 193, 0.3);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal { animation: none; opacity: 1; }
+  .border-electric::before { animation: none; }
+}

@@ -40,6 +40,10 @@ const ForensicTimeline = lazy(() => import('./components/ForensicTimeline'));
 const MixGeneracion = lazy(() => import('./components/MixGeneracion'));
 const MedidasPropuestas = lazy(() => import('./components/MedidasPropuestas'));
 const InterconexionViz = lazy(() => import('./components/InterconexionViz'));
+const TresNarrativas = lazy(() => import('./components/TresNarrativas'));
+const InerciaVulnerabilidad = lazy(() => import('./components/InerciaVulnerabilidad'));
+const GridFollowingViz = lazy(() => import('./components/GridFollowingViz'));
+const TapLagExplainer = lazy(() => import('./components/TapLagExplainer'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -124,7 +128,17 @@ const NAV_GROUPS = [
       { to: '/mix-generacion', label: 'Mix de Generación', type: 'core', icon: '⚡' },
       { to: '/medidas-propuestas', label: 'Medidas Propuestas', type: 'core', icon: '📋' },
       { to: '/interconexion', label: 'Interconexión ES-FR', type: 'core', icon: '🔌' },
+]
+  },
+  {
+    title: 'Análisis Comparativo',
+    items: [
+      { to: '/tres-narrativas', label: 'Tres Narrativas', type: 'core', icon: '⚖️' },
+      { to: '/inercia-vuln', label: 'Inercia del Sistema', type: 'core', icon: '🌀' },
+      { to: '/grid-following', label: 'IBR Grid-Following', type: 'core', icon: '⚡' },
+      { to: '/tap-lag', label: 'Fenómeno Tap-Lag', type: 'core', icon: '🔍' },
     ]
+  },
   },
   {
     title: 'Garantía de Calidad',
@@ -175,6 +189,10 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       '/mix-generacion': 'Mix de Generación 28-A — 82% Renovable | Apagón 28-A',
       '/medidas-propuestas': 'Medidas Propuestas — Plan Post-Colapso | Apagón 28-A',
       '/interconexion': 'Interconexión ES-FR — Flujo HVDC | Apagón 28-A',
+<Route path="/tres-narrativas" element={<PageWrapper><TresNarrativas /></PageWrapper>} />
+              <Route path="/inercia-vuln" element={<PageWrapper><InerciaVulnerabilidad /></PageWrapper>} />
+              <Route path="/grid-following" element={<PageWrapper><GridFollowingViz /></PageWrapper>} />
+              <Route path="/tap-lag" element={<PageWrapper><TapLagExplainer /></PageWrapper>} />
     };
 
     if (customTitles[location.pathname]) {
@@ -595,6 +613,10 @@ const Layout: React.FC = () => {
               <Route path="/mix-generacion" element={<PageWrapper><MixGeneracion /></PageWrapper>} />
               <Route path="/medidas-propuestas" element={<PageWrapper><MedidasPropuestas /></PageWrapper>} />
               <Route path="/interconexion" element={<PageWrapper><InterconexionViz /></PageWrapper>} />
+'/tres-narrativas': 'Tres Narrativas Institucionales — Análisis Comparativo | Apagón 28-A',
+      '/inercia-vuln': 'Inercia del Sistema y RoCoF — Vulnerabilidad 28-A | Apagón 28-A',
+      '/grid-following': 'IBR Grid-Following vs Grid-Forming | Apagón 28-A',
+      '/tap-lag': 'Fenómeno Tap-Lag — Tesis ICAI | Apagón 28-A',
             </Routes>
           </Suspense>
         </main>

@@ -12,7 +12,10 @@
       "Bash(git add *)",
       "Bash(git commit -m 'feat: premium visual polish - glass panels, cascada showcase, scroll progress glow *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git rebase *)",
+      "Bash(git stash *)"
     ]
   }
 }
