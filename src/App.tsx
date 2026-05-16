@@ -14,6 +14,7 @@ const TechLexicon = lazy(() => import('./components/TechLexicon'));
 const ReformTracker = lazy(() => import('./components/ReformTracker'));
 const NarrativeComparator = lazy(() => import('./components/NarrativeComparator'));
 const CausalChain = lazy(() => import('./components/CausalChain'));
+const CascadaVisualization = lazy(() => import('./components/CascadaVisualization'));
 const ThreeFracturesVisualizer = lazy(() => import('./components/ThreeFracturesVisualizer'));
 const ConsensusDivergenceVisualizer = lazy(() => import('./components/ConsensusDivergenceVisualizer'));
 const TechnologyRoadmap = lazy(() => import('./components/TechnologyRoadmap'));
@@ -29,6 +30,12 @@ const DivergenceTable = lazy(() => import('./components/DivergenceTable'));
 const ReactiveBalance = lazy(() => import('./components/ReactiveBalance'));
 const EnergyTrilemma = lazy(() => import('./components/EnergyTrilemma'));
 const ForensicGallery = lazy(() => import('./components/ForensicGallery'));
+const QuizTribunal = lazy(() => import('./components/QuizTribunal'));
+const DataCardsShowcase = lazy(() => import('./components/DataCardsShowcase'));
+const CollapseTimelineMoment = lazy(() => import('./components/CollapseTimelineMoment'));
+const SpainHeatmap = lazy(() => import('./components/SpainHeatmap'));
+const InertiaGraph = lazy(() => import('./components/InertiaGraph'));
+const InstitutionComparator = lazy(() => import('./components/InstitutionComparator'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -77,6 +84,7 @@ const NAV_GROUPS = [
     title: 'Análisis Forense',
     items: [
       { to: '/countdown', label: '⏱ 90 Segundos (Tiempo Real)', type: 'core', icon: '⏱️' },
+      { to: '/cascada', label: 'Cascada de Colapso', type: 'core', icon: '🌊' },
       { to: '/timeline', label: 'Línea de Tiempo', type: 'core', icon: '⏳' },
       { to: '/map', label: 'Mapa Propagación', type: 'core', icon: '🗺️' },
       { to: '/matrix', label: 'Matriz Comparada', type: 'detalle', icon: '📊' },
@@ -97,6 +105,17 @@ const NAV_GROUPS = [
     items: [
       { to: '/simulator', label: 'Simulador Físico', type: 'core', icon: '⚙️' },
       { to: '/roadmap', label: 'Hoja de Ruta', type: 'core', icon: '🗺️' },
+    ]
+  },
+  {
+    title: 'Interactivo',
+    items: [
+      { to: '/quiz-tribunal', label: 'Quiz: ¿Quién dijo esto?', type: 'core', icon: '🎯' },
+      { to: '/data-cards', label: 'Datos del Colapso', type: 'core', icon: '📊' },
+      { to: '/timeline-moment', label: 'Los 33 Segundos', type: 'core', icon: '⏱️' },
+      { to: '/heat-map', label: 'Mapa de Impacto', type: 'core', icon: '🗺️' },
+      { to: '/inercia-graph', label: 'Gráfico de Inercia', type: 'core', icon: '📉' },
+      { to: '/comparador-arrastra', label: 'Comparador Institucional', type: 'core', icon: '⚖️' },
     ]
   },
   {
@@ -133,10 +152,17 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     const customTitles: Record<string, string> = {
       '/countdown': '⏱ 90 Segundos — Colapso en Tiempo Real | Apagón 28-A',
+      '/cascada': 'Cascada de Colapso — Visualización Forense | Apagón 28-A',
       '/divergencias': 'Divergencias Irreconciliables | Apagón 28-A',
       '/reactiva': 'Balance de Reactiva | Apagón 28-A',
       '/trilema': 'Trilema Energético | Apagón 28-A',
       '/galeria': 'Galería Forense — Figuras del TFG | Apagón 28-A',
+      '/quiz-tribunal': 'Quiz Forense — ¿Quién dijo esto? | Apagón 28-A',
+      '/data-cards': 'Datos del Colapso — 12 Métricas Clave | Apagón 28-A',
+      '/timeline-moment': 'Los 33 Segundos del Colapso | Apagón 28-A',
+      '/heat-map': 'Mapa de Impacto por Zonas | Apagón 28-A',
+      '/inercia-graph': 'Gráfico de Inercia Síncrona | Apagón 28-A',
+      '/comparador-arrastra': 'Comparador Institucional | Apagón 28-A',
     };
 
     if (customTitles[location.pathname]) {
@@ -523,6 +549,7 @@ const Layout: React.FC = () => {
               <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
               <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
               <Route path="/countdown" element={<PageWrapper><CollapseCountdown /></PageWrapper>} />
+              <Route path="/cascada" element={<PageWrapper><CascadaVisualization /></PageWrapper>} />
               <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
               <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
               <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
@@ -546,6 +573,12 @@ const Layout: React.FC = () => {
               <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
               <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
               <Route path="/tribunal" element={<PageWrapper><TribunalFAQ /></PageWrapper>} />
+              <Route path="/quiz-tribunal" element={<PageWrapper><QuizTribunal /></PageWrapper>} />
+              <Route path="/data-cards" element={<PageWrapper><DataCardsShowcase /></PageWrapper>} />
+              <Route path="/timeline-moment" element={<PageWrapper><CollapseTimelineMoment /></PageWrapper>} />
+              <Route path="/heat-map" element={<PageWrapper><SpainHeatmap /></PageWrapper>} />
+              <Route path="/inercia-graph" element={<PageWrapper><InertiaGraph /></PageWrapper>} />
+              <Route path="/comparador-arrastra" element={<PageWrapper><InstitutionComparator /></PageWrapper>} />
             </Routes>
           </Suspense>
         </main>

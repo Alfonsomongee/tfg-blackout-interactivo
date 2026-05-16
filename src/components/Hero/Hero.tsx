@@ -114,19 +114,20 @@ export default function Hero() {
       }} />
 
       {/* Eyebrow */}
-      <p style={{
+      <p className="hero-reveal" style={{
         fontFamily: 'var(--font-mono)',
         fontSize: '0.6875rem',
         letterSpacing: '0.2em',
         color: 'rgba(255,255,255,0.35)',
         margin: '0 0 2rem',
         textTransform: 'uppercase',
+        animationDelay: '0.05s',
       }}>
         COMITÉ FORENSE · ETSI SEVILLA · 28 ABR 2025
       </p>
 
       {/* Headline */}
-      <h1 style={{
+      <h1 className="hero-reveal" style={{
         fontFamily: 'var(--font-serif)',
         fontSize: 'clamp(2rem, 5vw, 3.5rem)',
         fontWeight: 400,
@@ -135,6 +136,7 @@ export default function Hero() {
         maxWidth: '18ch',
         margin: '0 0 1rem',
         letterSpacing: '-0.01em',
+        animationDelay: '0.15s',
       }}>
         ¿Por qué colapsó la red eléctrica ibérica en{' '}
         <span style={{
@@ -148,13 +150,14 @@ export default function Hero() {
       </h1>
 
       {/* Subheadline */}
-      <p style={{
+      <p className="hero-reveal" style={{
         fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
         color: 'rgba(255,255,255,0.5)',
         maxWidth: '56ch',
         lineHeight: 1.7,
         margin: '0 0 3rem',
         fontFamily: 'var(--font-mono)',
+        animationDelay: '0.25s',
       }}>
         Análisis forense comparativo de las narrativas técnicas, regulatorias y
         operativas del apagón del 28 de abril de 2025. Cuatro informes.
@@ -162,12 +165,13 @@ export default function Hero() {
       </p>
 
       {/* Metrics grid */}
-      <div style={{
+      <div className="hero-reveal" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
         gap: '1rem',
         maxWidth: '800px',
         marginBottom: '3rem',
+        animationDelay: '0.35s',
       }}>
         {KEY_METRICS.map((m, i) => (
           <MetricCard
@@ -187,8 +191,9 @@ export default function Hero() {
       }} />
 
       {/* CTAs */}
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <div className="hero-reveal" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', animationDelay: '0.45s' }}>
         <button
+          className="btn-spring"
           onClick={() => navigate('/countdown')}
           style={{
             padding: '0.875rem 2rem',
@@ -201,10 +206,7 @@ export default function Hero() {
             fontFamily: 'var(--font-mono)',
             fontWeight: 500,
             letterSpacing: '0.05em',
-            transition: 'opacity 0.2s',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+          }}>
           INICIAR ANÁLISIS FORENSE →
         </button>
 
@@ -264,6 +266,57 @@ export default function Hero() {
           }}>
           ↓ DESCARGAR TFG (PDF)
         </a>
+      </div>
+
+      {/* Tribunal quick access */}
+      <div style={{
+        marginTop: '2rem',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+        gap: '0.75rem',
+        maxWidth: '720px',
+      }}>
+        {[
+          { label: '⏱ 90 SEGUNDOS', desc: 'Colapso en tiempo real', path: '/countdown', color: 'var(--alarm)' },
+          { label: '🔗 CADENA CAUSAL', desc: 'Las 5 fases del colapso', path: '/causal', color: 'var(--warning)' },
+          { label: '🌊 CASCADA', desc: 'Visualización interactiva', path: '/cascada', color: 'var(--accent-blue)' },
+          { label: '⚖️ VEREDICTO', desc: 'Conclusión forense', path: '/veredicto', color: 'var(--nominal)' },
+        ].map((btn, i) => (
+          <button
+            key={i}
+            className="btn-spring"
+            onClick={() => navigate(btn.path)}
+            style={{
+              padding: '1rem',
+              background: 'rgba(255,255,255,0.03)',
+              border: `1px solid ${btn.color}40`,
+              borderTop: `2px solid ${btn.color}`,
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              textAlign: 'left',
+              color: 'white',
+            }}
+          >
+            <p style={{
+              margin: '0 0 0.25rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: btn.color,
+              letterSpacing: '0.04em',
+            }}>
+              {btn.label}
+            </p>
+            <p style={{
+              margin: 0,
+              fontSize: '0.6875rem',
+              color: 'rgba(255,255,255,0.45)',
+              fontFamily: 'var(--font-mono)',
+            }}>
+              {btn.desc}
+            </p>
+          </button>
+        ))}
       </div>
 
       {/* GUÍA DE DEFENSA */}

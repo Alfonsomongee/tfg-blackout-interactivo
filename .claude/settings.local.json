@@ -4,7 +4,15 @@
       "Bash(npm run *)",
       "Bash(npx tsc *)",
       "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "mcp__Claude_in_Chrome__computer"
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(sort -t'│' -k2 -h -r)",
+      "Bash(echo \"TSC_EXIT:$?\")",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: premium visual polish - glass panels, cascada showcase, scroll progress glow *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
