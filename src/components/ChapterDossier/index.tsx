@@ -236,12 +236,9 @@ const CHAPTERS: Chapter[] = [
 ];
 
 function getDivergenceColor(score: number): string {
-  let hue = 140;
-  if (score <= 3) {
-    hue = 200 - (score * 20);
-  } else {
-    hue = Math.max(0, 60 - (score - 4) * 10);
-  }
+  const hue = score <= 3 
+    ? 200 - (score * 20) 
+    : Math.max(0, 60 - (score - 4) * 10);
   return `hsl(${hue}, 85%, 45%)`;
 }
 

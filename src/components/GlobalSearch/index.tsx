@@ -62,33 +62,26 @@ interface GlobalSearchProps {
 
 export const GlobalSearch: React.FC<GlobalSearchProps> = ({ onClose }) => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchItem[]>(SEARCH_INDEX);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const results = React.useMemo(() => {
+    if (!query.trim()) return SEARCH_INDEX;
+    const q = query.toLowerCase();
+    return SEARCH_INDEX.filter(
+      item =>
+        item.label.toLowerCase().includes(q) ||
+        item.subtitle.toLowerCase().includes(q) ||
+        item.type.toLowerCase().includes(q)
+    );
+  }, [query]);
+
   // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  // Filter results
-  useEffect(() => {
-    if (!query.trim()) {
-      setResults(SEARCH_INDEX);
-    } else {
-      const q = query.toLowerCase();
-      const filtered = SEARCH_INDEX.filter(
-        item =>
-          item.label.toLowerCase().includes(q) ||
-          item.subtitle.toLowerCase().includes(q) ||
-          item.type.toLowerCase().includes(q)
-      );
-      setResults(filtered);
-    }
-    setSelectedIndex(0);
-  }, [query]);
 
   // Click outside to close
   useEffect(() => {
@@ -177,7 +170,10 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ onClose }) => {
             className="flex-grow bg-transparent border-none text-text-primary placeholder:text-text-secondary/60 text-sm focus:outline-none focus:ring-0 font-sans"
             placeholder="Buscar término, capítulo, evento, reforma..."
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={e => {
+              setQuery(e.target.value);
+              setSelectedIndex(0);
+            }}
           />
           <span className="text-[10px] font-mono text-text-secondary bg-primary border border-main px-2 py-1 rounded">
             ESC

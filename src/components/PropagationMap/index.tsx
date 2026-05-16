@@ -8,7 +8,6 @@ const TIMELINE_EVENTS = [
     title: 'Operación Síncrona Nominal',
     description: 'La inercia síncrona ibérica opera dentro de márgenes estables. Penetración renovable del 82%. Tensiones de transporte en 401 kV de media.',
     systemStatus: 'nominal',
-    mvaLoad: 4200,
   },
   {
     t: 32,
@@ -16,7 +15,6 @@ const TIMELINE_EVENTS = [
     title: 'HVDC INELFE-1 Fijado en PMODE1',
     description: 'La interconexión de corriente continua entre España y Francia pasa de modo de emulación AC a consigna de exportación constante de 1.000 MW, eliminando su capacidad dinámica de amortiguamiento.',
     systemStatus: 'alert',
-    mvaLoad: 5800,
   },
   {
     t: 70,
@@ -24,7 +22,6 @@ const TIMELINE_EVENTS = [
     title: 'Escalada Linear de Tensión en Colectores',
     description: 'El mallado desbocado introduce una inyección capacitiva de >0,7 GVAr. Las tensiones inician una rampa destructiva que eleva la red de 400 kV a límites de alerta en el nudo de Carmona.',
     systemStatus: 'alert',
-    mvaLoad: 8900,
   },
   {
     t: 75,
@@ -32,7 +29,6 @@ const TIMELINE_EVENTS = [
     title: 'Disparo Raíz en Granada',
     description: 'Las protecciones de máxima tensión desconectan la subestación B de Granada a 244 kV (Tap-Lag invisible). Se inicia el colapso físico de reactiva. Una onda expansiva dinamoeléctrica avanza.',
     systemStatus: 'critical',
-    mvaLoad: 11200,
   },
   {
     t: 77,
@@ -40,7 +36,6 @@ const TIMELINE_EVENTS = [
     title: 'Desconexiones en Cascada (Sur & Centro)',
     description: 'La inestabilidad de tensión se propaga a Carmona y nudos del centro. Los relés UFLS deslastran carga de forma reactiva, agravando la sobretensión lineal ante la falta de sumideros inductivos.',
     systemStatus: 'critical',
-    mvaLoad: 14500,
   },
   {
     t: 80,
@@ -48,7 +43,6 @@ const TIMELINE_EVENTS = [
     title: 'Separación Europea (Relés OST)',
     description: 'Los relés de pérdida de sincronismo (Out-of-Step) disparan los enlaces transpirenaicos en Baixas-Vic, aislando la Península Ibérica para salvar la red continental. Marruecos se desconecta por subfrecuencia.',
     systemStatus: 'separation',
-    mvaLoad: 3100,
   },
   {
     t: 100,
@@ -56,7 +50,6 @@ const TIMELINE_EVENTS = [
     title: 'Cero de Tensión / Blackout Total',
     description: 'Toda la generación asíncrona (IBR) se desconecta debido a inestabilidad del PLL en red débil. Se consuma el blackout ibérico que afecta a ~60 millones de personas en España, Portugal y Marruecos.',
     systemStatus: 'blackout',
-    mvaLoad: 0,
   },
 ];
 
@@ -76,37 +69,17 @@ const PropagationMapContent = function PropagationMap() {
   // Map state styling helpers
   const isAfterT = (tVal: number) => sliderValue >= tVal;
 
-  // Cálculos dinámicos SCADA para grosor y velocidad de flujo
-  const getLineStress = () => {
-    if (isAfterT(100)) return { width: 1, color: 'var(--border-main)', dashSpeed: '0s', status: 'Vaciada / Desconectada' };
-    if (isAfterT(80)) return { width: 2, color: 'var(--alert-red)', dashSpeed: '0s', status: 'Apertura OST Transfronteriza' };
-    if (isAfterT(75)) return { width: 6, color: 'var(--alert-red)', dashSpeed: '0.2s', status: 'Sobrecarga Dinámica MVA Máxima' };
-    if (isAfterT(70)) return { width: 4.5, color: 'var(--alert-orange)', dashSpeed: '0.4s', status: 'Alerta de Sobretensión Capacitiva' };
-    if (isAfterT(32)) return { width: 3.5, color: 'var(--accent-cyan)', dashSpeed: '0.6s', status: 'Flujo Forzado PMODE1' };
-    return { width: 2.5, color: 'var(--alert-green)', dashSpeed: '1.2s', status: 'Flujo Nominal' };
-  };
-
-  const stress = getLineStress();
-
   return (
     <div className="flex-grow flex flex-col justify-between text-text-primary font-sans animate-fade-in w-full">
       
       {/* Header */}
-      <div className="border-b border-main pb-4 mb-4 flex justify-between items-start">
-        <div>
-          <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
-            Gemelo Digital SCADA: Propagación Topológica de Flujos
-          </h2>
-          <p className="text-xs text-text-secondary font-mono mt-1">
-            Capítulo III · Diagrama de Inestabilidad de Tensión Dinámica Transpeninsular Ibérica (28-A)
-          </p>
-        </div>
-
-        {/* Telemetría SCADA flotante */}
-        <div className="hidden sm:flex flex-col items-end bg-tertiary border border-main px-4 py-2 rounded-lg font-mono">
-          <span className="text-[9px] text-text-secondary uppercase">Estado del Enlace MVA:</span>
-          <span className="text-xs font-bold text-accent">{stress.status}</span>
-        </div>
+      <div className="border-b border-main pb-4 mb-4">
+        <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
+          Mapa Georreferenciado de Propagación del Colapso
+        </h2>
+        <p className="text-xs text-text-secondary font-mono mt-1">
+          Capítulo III · Diagrama de Inestabilidad de Tensión Dinámica Transpeninsular Ibérica (28-A)
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 items-stretch flex-grow">
@@ -177,9 +150,9 @@ const PropagationMapContent = function PropagationMap() {
                 </span>
               </div>
               <div>
-                <span className="text-text-secondary uppercase block text-[9px] mb-0.5">Flujo Carga MVA</span>
-                <span className={`font-bold ${isAfterT(75) && !isAfterT(100) ? 'text-alert-red' : 'text-accent'}`}>
-                  {activeEvent.mvaLoad.toLocaleString('es-ES')} MVA
+                <span className="text-text-secondary uppercase block text-[9px] mb-0.5">Inercia Peninsular</span>
+                <span className={`font-bold ${isAfterT(75) ? 'text-alert-red' : 'text-accent'}`}>
+                  {isAfterT(100) ? '0,00 s' : isAfterT(80) ? 'Separado' : isAfterT(75) ? '1,56 s' : '2,30 s'}
                 </span>
               </div>
             </div>
@@ -200,22 +173,19 @@ const PropagationMapContent = function PropagationMap() {
               {/* Estilos dinámicos embebidos */}
               <style>{`
                 .pulse-red { animation: pulseRed 1.2s infinite ease-in-out; }
-                .wave-expand { animation: waveExpand 1.5s infinite linear; }
-                .dynamic-flow { 
-                  stroke-dasharray: 8, 6; 
-                  animation: flowDash ${stress.dashSpeed} infinite linear; 
-                }
+                .wave-expand { animation: waveExpand 2s infinite linear; }
+                .flow-active { stroke-dasharray: 6, 4; animation: flowDash 0.8s infinite linear; }
                 .grid-line { stroke: var(--border-main); stroke-width: 0.5; stroke-opacity: 0.2; }
                 @keyframes pulseRed {
                   0%, 100% { r: 8; fill: var(--alert-red); filter: opacity(0.8); }
-                  50% { r: 14; fill: var(--alert-red); filter: opacity(1); }
+                  50% { r: 12; fill: var(--alert-red); filter: opacity(1); }
                 }
                 @keyframes waveExpand {
-                  0% { r: 6; opacity: 1; stroke-width: 2; }
-                  100% { r: 110; opacity: 0; stroke-width: 4; }
+                  0% { r: 6; opacity: 1; stroke-width: 1; }
+                  100% { r: 75; opacity: 0; stroke-width: 3; }
                 }
                 @keyframes flowDash {
-                  to { stroke-dashoffset: -20; }
+                  to { stroke-dashoffset: -10; }
                 }
               `}</style>
 
@@ -267,35 +237,25 @@ const PropagationMapContent = function PropagationMap() {
                 strokeLinejoin="round"
               />
 
-              {/* LÍNEAS DE TRANSPORTE Y FLUXOS REACTIVOS SCADA */}
-              {/* Línea Central Madrid - Sur */}
-              <path
-                d="M 250,365 L 285,220 L 350,70"
-                stroke={stress.color}
-                strokeWidth={stress.width}
-                className={`transition-all duration-300 ${isAfterT(100) ? '' : 'dynamic-flow'}`}
-                fill="none"
-              />
-
+              {/* LÍNEAS DE INTERCONEXIÓN */}
               {/* España-Francia AC */}
               <line
                 x1="350"
                 y1="70"
                 x2="350"
                 y2="15"
-                stroke={isAfterT(80) ? 'var(--border-main)' : stress.color}
-                strokeWidth={isAfterT(80) ? 1.5 : stress.width}
-                strokeDasharray={isAfterT(80) ? '4,4' : 'none'}
-                className={`transition-all duration-300 ${isAfterT(80) ? '' : 'dynamic-flow glow-line'}`}
+                stroke={isAfterT(80) ? 'var(--alert-red)' : 'var(--accent)'}
+                strokeWidth="2.5"
+                strokeDasharray={isAfterT(80) ? '0' : '4,3'}
+                className={`glow-line ${isAfterT(80) ? '' : 'flow-active'}`}
               />
 
               {/* HVDC INELFE-1 */}
               <path
                 d="M 370,70 L 370,15"
-                stroke={isAfterT(80) ? 'var(--border-main)' : isAfterT(32) ? 'var(--alert-orange)' : 'var(--accent-cyan)'}
-                strokeWidth={isAfterT(80) ? 2 : stress.width + 1}
-                strokeDasharray={isAfterT(80) ? '4,4' : 'none'}
-                className={`transition-all duration-300 ${isAfterT(80) ? '' : 'dynamic-flow glow-line'}`}
+                stroke={isAfterT(80) ? 'var(--alert-red)' : isAfterT(32) ? 'var(--alert-orange)' : 'var(--accent-cyan)'}
+                strokeWidth="4"
+                className={`glow-line ${isAfterT(80) ? '' : 'flow-active'}`}
                 fill="none"
               />
 
@@ -305,18 +265,21 @@ const PropagationMapContent = function PropagationMap() {
                 y1="410"
                 x2="220"
                 y2="445"
-                stroke={isAfterT(80) ? 'var(--border-main)' : isAfterT(70) ? 'var(--alert-red)' : 'var(--alert-orange)'}
-                strokeWidth={isAfterT(80) ? 1.5 : stress.width}
-                strokeDasharray={isAfterT(80) ? '4,4' : 'none'}
-                className={`transition-all duration-300 ${isAfterT(80) ? '' : 'dynamic-flow glow-line'}`}
+                stroke={isAfterT(80) ? 'var(--alert-red)' : 'var(--alert-orange)'}
+                strokeWidth="3"
+                className={`glow-line ${isAfterT(80) ? '' : 'flow-active'}`}
               />
 
               {/* ONDA DE PROPAGACIÓN CONCÉNTRICA DESDE GRANADA */}
-              {isAfterT(75) && !isAfterT(100) && (
-                <>
-                  <circle cx="320" cy="350" r="10" fill="none" stroke="var(--alert-red)" className="wave-expand" />
-                  <circle cx="320" cy="350" r="25" fill="none" stroke="var(--alert-red)" className="wave-expand" style={{ animationDelay: '0.4s' }} />
-                </>
+              {isAfterT(75) && !isAfterT(85) && (
+                <circle
+                  cx="320"
+                  cy="350"
+                  r="10"
+                  fill="none"
+                  stroke="var(--alert-red)"
+                  className="wave-expand"
+                />
               )}
 
               {/* FRANCIA Indicator */}
@@ -370,7 +333,7 @@ const PropagationMapContent = function PropagationMap() {
               <circle
                 cx="320"
                 cy="350"
-                r={isAfterT(75) && !isAfterT(100) ? 9 : 6}
+                r={isAfterT(75) && !isAfterT(100) ? 8 : 6}
                 fill={isAfterT(75) ? 'var(--alert-red)' : 'var(--border-main)'}
                 className={isAfterT(75) && !isAfterT(100) ? 'pulse-red critical-node' : isAfterT(75) ? 'critical-node' : ''}
                 stroke="var(--bg-primary)"

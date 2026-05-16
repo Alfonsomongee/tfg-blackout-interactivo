@@ -30,7 +30,10 @@ export default function AnimatedMetric({
   const counted = useCountUp(value, 1200, started, decimals);
 
   useEffect(() => {
-    if (inView) setStarted(true);
+    if (inView) {
+      const timer = setTimeout(() => setStarted(true), 0);
+      return () => clearTimeout(timer);
+    }
   }, [inView]);
 
   const fontSize = size === 'lg' ? '2.5rem' : size === 'sm' ? '1.5rem' : '2rem';

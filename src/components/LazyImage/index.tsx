@@ -22,17 +22,15 @@ export default function LazyImage({
   const [hasError, setHasError] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // INTERSECTION OBSERVER PARA LAZY LOAD
   useEffect(() => {
-    if (!containerRef.current) return;
+    const currentRef = containerRef.current;
+    if (!currentRef) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          if (containerRef.current) {
-            observer.unobserve(containerRef.current);
-          }
+          observer.unobserve(currentRef);
         }
       },
       {
@@ -40,12 +38,10 @@ export default function LazyImage({
       }
     );
 
-    observer.observe(containerRef.current);
+    observer.observe(currentRef);
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
+      observer.unobserve(currentRef);
     };
   }, []);
 

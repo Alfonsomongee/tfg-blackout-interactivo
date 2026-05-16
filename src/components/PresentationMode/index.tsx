@@ -19,7 +19,10 @@ export function PresentationMode() {
   const [isActive, setIsActive] = useState(false);
   const [autoPlay, setAutoPlay] = useState(false);
   const currentIndexRef = useRef(currentIndex);
-  currentIndexRef.current = currentIndex;
+  
+  useEffect(() => {
+    currentIndexRef.current = currentIndex;
+  }, [currentIndex]);
 
   // Sync state with DOM and fullscreen events
   useEffect(() => {

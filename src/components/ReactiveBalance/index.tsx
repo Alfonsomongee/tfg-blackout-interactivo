@@ -18,7 +18,10 @@ export default function ReactiveBalance() {
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
-    if (inView) setAnimated(true);
+    if (inView) {
+      const timer = setTimeout(() => setAnimated(true), 0);
+      return () => clearTimeout(timer);
+    }
   }, [inView]);
 
   const maxVal = 4.5;

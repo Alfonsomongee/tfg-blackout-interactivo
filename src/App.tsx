@@ -36,6 +36,10 @@ const CollapseTimelineMoment = lazy(() => import('./components/CollapseTimelineM
 const SpainHeatmap = lazy(() => import('./components/SpainHeatmap'));
 const InertiaGraph = lazy(() => import('./components/InertiaGraph'));
 const InstitutionComparator = lazy(() => import('./components/InstitutionComparator'));
+const ForensicTimeline = lazy(() => import('./components/ForensicTimeline'));
+const MixGeneracion = lazy(() => import('./components/MixGeneracion'));
+const MedidasPropuestas = lazy(() => import('./components/MedidasPropuestas'));
+const InterconexionViz = lazy(() => import('./components/InterconexionViz'));
 
 // Globals and layout components
 import GlobalSearch from './components/GlobalSearch';
@@ -116,6 +120,10 @@ const NAV_GROUPS = [
       { to: '/heat-map', label: 'Mapa de Impacto', type: 'core', icon: '🗺️' },
       { to: '/inercia-graph', label: 'Gráfico de Inercia', type: 'core', icon: '📉' },
       { to: '/comparador-arrastra', label: 'Comparador Institucional', type: 'core', icon: '⚖️' },
+      { to: '/forensic-timeline', label: 'Cronología Forense', type: 'core', icon: '⏱️' },
+      { to: '/mix-generacion', label: 'Mix de Generación', type: 'core', icon: '⚡' },
+      { to: '/medidas-propuestas', label: 'Medidas Propuestas', type: 'core', icon: '📋' },
+      { to: '/interconexion', label: 'Interconexión ES-FR', type: 'core', icon: '🔌' },
     ]
   },
   {
@@ -163,6 +171,10 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       '/heat-map': 'Mapa de Impacto por Zonas | Apagón 28-A',
       '/inercia-graph': 'Gráfico de Inercia Síncrona | Apagón 28-A',
       '/comparador-arrastra': 'Comparador Institucional | Apagón 28-A',
+      '/forensic-timeline': 'Cronología Forense — 26 Eventos Oficiales | Apagón 28-A',
+      '/mix-generacion': 'Mix de Generación 28-A — 82% Renovable | Apagón 28-A',
+      '/medidas-propuestas': 'Medidas Propuestas — Plan Post-Colapso | Apagón 28-A',
+      '/interconexion': 'Interconexión ES-FR — Flujo HVDC | Apagón 28-A',
     };
 
     if (customTitles[location.pathname]) {
@@ -579,6 +591,10 @@ const Layout: React.FC = () => {
               <Route path="/heat-map" element={<PageWrapper><SpainHeatmap /></PageWrapper>} />
               <Route path="/inercia-graph" element={<PageWrapper><InertiaGraph /></PageWrapper>} />
               <Route path="/comparador-arrastra" element={<PageWrapper><InstitutionComparator /></PageWrapper>} />
+              <Route path="/forensic-timeline" element={<PageWrapper><ForensicTimeline /></PageWrapper>} />
+              <Route path="/mix-generacion" element={<PageWrapper><MixGeneracion /></PageWrapper>} />
+              <Route path="/medidas-propuestas" element={<PageWrapper><MedidasPropuestas /></PageWrapper>} />
+              <Route path="/interconexion" element={<PageWrapper><InterconexionViz /></PageWrapper>} />
             </Routes>
           </Suspense>
         </main>
