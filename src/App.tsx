@@ -1,7 +1,10 @@
 import React, { useMemo, useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Hero from './components/Hero/Hero';
 import ExecutiveBrief from './components/ExecutiveBrief';
+import PageTransition from './components/PageTransition';
+import ToastProvider from './components/Notifications/ToastProvider';
 
 // Lazy-loaded page components
 const TimelineNarrative = lazy(() => import('./components/TimelineNarrative').then(m => ({ default: m.TimelineNarrative })));
@@ -201,19 +204,21 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, [breadcrumb, location.pathname]);
 
   return (
-    <div key={location.pathname} className="animate-fade-in flex-grow p-6 flex flex-col gap-6 max-w-7xl mx-auto w-full z-10">
-      {breadcrumb && (
-        <div className="flex items-center justify-between border-b border-main pb-3 mb-2" data-no-print>
-          <div className="flex items-center gap-2 font-mono text-[10px] text-text-muted uppercase tracking-wider">
-            <span>{breadcrumb.group}</span>
-            <span className="opacity-40">/</span>
-            <span className="text-text-secondary font-medium">{breadcrumb.item}</span>
+    <PageTransition key={location.pathname}>
+      <div className="flex-grow p-6 flex flex-col gap-6 max-w-7xl mx-auto w-full z-10">
+        {breadcrumb && (
+          <div className="flex items-center justify-between border-b border-main pb-3 mb-2" data-no-print>
+            <div className="flex items-center gap-2 font-mono text-[10px] text-text-muted uppercase tracking-wider">
+              <span>{breadcrumb.group}</span>
+              <span className="opacity-40">/</span>
+              <span className="text-text-secondary font-medium">{breadcrumb.item}</span>
+            </div>
+            <ShareButton />
           </div>
-          <ShareButton />
-        </div>
-      )}
-      {children}
-    </div>
+        )}
+        {children}
+      </div>
+    </PageTransition>
   );
 };
 
@@ -429,50 +434,52 @@ const Layout: React.FC = () => {
 
         <main className="flex-grow flex flex-col justify-start">
           <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<PageWrapper><Hero /></PageWrapper>} />
-              <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
-              <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
-              <Route path="/countdown" element={<PageWrapper><CollapseCountdown /></PageWrapper>} />
-              <Route path="/cascada" element={<PageWrapper><CascadaVisualization /></PageWrapper>} />
-              <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
-              <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
-              <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
-              <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
-              <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
-              <Route path="/divergencias" element={<PageWrapper><DivergenceTable /></PageWrapper>} />
-              <Route path="/reactiva" element={<PageWrapper><ReactiveBalance /></PageWrapper>} />
-              <Route path="/trilema" element={<PageWrapper><EnergyTrilemma /></PageWrapper>} />
-              <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
-              <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
-              <Route path="/black-start" element={<PageWrapper><BlackStartTimeline /></PageWrapper>} />
-              <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
-              <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
-              <Route path="/narrativa-mediatica" element={<PageWrapper><MediaNarrativeAnalysis /></PageWrapper>} />
-              <Route path="/veredicto" element={<PageWrapper><ForensicVerdict /></PageWrapper>} />
-              <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
-              <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
-              <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
-              <Route path="/galeria" element={<PageWrapper><ForensicGallery /></PageWrapper>} />
-              <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
-              <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
-              <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
-              <Route path="/tribunal" element={<PageWrapper><TribunalFAQ /></PageWrapper>} />
-              <Route path="/quiz-tribunal" element={<PageWrapper><QuizTribunal /></PageWrapper>} />
-              <Route path="/data-cards" element={<PageWrapper><DataCardsShowcase /></PageWrapper>} />
-              <Route path="/timeline-moment" element={<PageWrapper><CollapseTimelineMoment /></PageWrapper>} />
-              <Route path="/heat-map" element={<PageWrapper><SpainHeatmap /></PageWrapper>} />
-              <Route path="/inercia-graph" element={<PageWrapper><InertiaGraph /></PageWrapper>} />
-              <Route path="/comparador-arrastra" element={<PageWrapper><InstitutionComparator /></PageWrapper>} />
-              <Route path="/forensic-timeline" element={<PageWrapper><ForensicTimeline /></PageWrapper>} />
-              <Route path="/mix-generacion" element={<PageWrapper><MixGeneracion /></PageWrapper>} />
-              <Route path="/medidas-propuestas" element={<PageWrapper><MedidasPropuestas /></PageWrapper>} />
-              <Route path="/interconexion" element={<PageWrapper><InterconexionViz /></PageWrapper>} />
-              <Route path="/tres-narrativas" element={<PageWrapper><TresNarrativas /></PageWrapper>} />
-              <Route path="/inercia-vuln" element={<PageWrapper><InerciaVulnerabilidad /></PageWrapper>} />
-              <Route path="/grid-following" element={<PageWrapper><GridFollowingViz /></PageWrapper>} />
-              <Route path="/tap-lag" element={<PageWrapper><TapLagExplainer /></PageWrapper>} />
-            </Routes>
+            <AnimatePresence mode="wait">
+              <Routes>
+                <Route path="/" element={<PageWrapper><Hero /></PageWrapper>} />
+                <Route path="/brief" element={<PageWrapper><ExecutiveBrief /></PageWrapper>} />
+                <Route path="/contexto-energetico" element={<PageWrapper><EnergyContextVisualizer /></PageWrapper>} />
+                <Route path="/countdown" element={<PageWrapper><CollapseCountdown /></PageWrapper>} />
+                <Route path="/cascada" element={<PageWrapper><CascadaVisualization /></PageWrapper>} />
+                <Route path="/map" element={<PageWrapper><PropagationMap /></PageWrapper>} />
+                <Route path="/timeline" element={<PageWrapper><TimelineNarrative /></PageWrapper>} />
+                <Route path="/radar" element={<PageWrapper><ResponsibilityRadar /></PageWrapper>} />
+                <Route path="/matrix" element={<PageWrapper><DivergenceMatrix /></PageWrapper>} />
+                <Route path="/compare" element={<PageWrapper><NarrativeComparator /></PageWrapper>} />
+                <Route path="/divergencias" element={<PageWrapper><DivergenceTable /></PageWrapper>} />
+                <Route path="/reactiva" element={<PageWrapper><ReactiveBalance /></PageWrapper>} />
+                <Route path="/trilema" element={<PageWrapper><EnergyTrilemma /></PageWrapper>} />
+                <Route path="/polarimetro" element={<PageWrapper><PositionPolarimeter /></PageWrapper>} />
+                <Route path="/causal" element={<PageWrapper><CausalChain /></PageWrapper>} />
+                <Route path="/black-start" element={<PageWrapper><BlackStartTimeline /></PageWrapper>} />
+                <Route path="/fracturas" element={<PageWrapper><ThreeFracturesVisualizer /></PageWrapper>} />
+                <Route path="/consenso" element={<PageWrapper><ConsensusDivergenceVisualizer /></PageWrapper>} />
+                <Route path="/narrativa-mediatica" element={<PageWrapper><MediaNarrativeAnalysis /></PageWrapper>} />
+                <Route path="/veredicto" element={<PageWrapper><ForensicVerdict /></PageWrapper>} />
+                <Route path="/simulator" element={<PageWrapper><ContingencySimulator /></PageWrapper>} />
+                <Route path="/roadmap" element={<PageWrapper><TechnologyRoadmap /></PageWrapper>} />
+                <Route path="/dossier" element={<PageWrapper><ChapterDossier /></PageWrapper>} />
+                <Route path="/galeria" element={<PageWrapper><ForensicGallery /></PageWrapper>} />
+                <Route path="/lexicon" element={<PageWrapper><TechLexicon /></PageWrapper>} />
+                <Route path="/metodologia" element={<PageWrapper><MethodologyTransparency /></PageWrapper>} />
+                <Route path="/reforms" element={<PageWrapper><ReformTracker /></PageWrapper>} />
+                <Route path="/tribunal" element={<PageWrapper><TribunalFAQ /></PageWrapper>} />
+                <Route path="/quiz-tribunal" element={<PageWrapper><QuizTribunal /></PageWrapper>} />
+                <Route path="/data-cards" element={<PageWrapper><DataCardsShowcase /></PageWrapper>} />
+                <Route path="/timeline-moment" element={<PageWrapper><CollapseTimelineMoment /></PageWrapper>} />
+                <Route path="/heat-map" element={<PageWrapper><SpainHeatmap /></PageWrapper>} />
+                <Route path="/inercia-graph" element={<PageWrapper><InertiaGraph /></PageWrapper>} />
+                <Route path="/comparador-arrastra" element={<PageWrapper><InstitutionComparator /></PageWrapper>} />
+                <Route path="/forensic-timeline" element={<PageWrapper><ForensicTimeline /></PageWrapper>} />
+                <Route path="/mix-generacion" element={<PageWrapper><MixGeneracion /></PageWrapper>} />
+                <Route path="/medidas-propuestas" element={<PageWrapper><MedidasPropuestas /></PageWrapper>} />
+                <Route path="/interconexion" element={<PageWrapper><InterconexionViz /></PageWrapper>} />
+                <Route path="/tres-narrativas" element={<PageWrapper><TresNarrativas /></PageWrapper>} />
+                <Route path="/inercia-vuln" element={<PageWrapper><InerciaVulnerabilidad /></PageWrapper>} />
+                <Route path="/grid-following" element={<PageWrapper><GridFollowingViz /></PageWrapper>} />
+                <Route path="/tap-lag" element={<PageWrapper><TapLagExplainer /></PageWrapper>} />
+              </Routes>
+            </AnimatePresence>
           </Suspense>
         </main>
 
@@ -512,10 +519,12 @@ const Layout: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <Router>
-      <PresentationMode />
-      <Layout />
-    </Router>
+    <ToastProvider>
+      <Router>
+        <PresentationMode />
+        <Layout />
+      </Router>
+    </ToastProvider>
   );
 };
 

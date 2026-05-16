@@ -68,7 +68,7 @@ function MetricCard({
 
 export default function Hero() {
   const navigate = useNavigate();
-  const { ref, inView } = useInView(0.1);
+  const { ref, inView } = useInView({ threshold: 0.1 });
   const [seconds, setSeconds] = useState(0);
   const [metricsAnimated, setMetricsAnimated] = useState(false);
 

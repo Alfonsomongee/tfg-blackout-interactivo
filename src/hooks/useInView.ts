@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 
-export function useInView(threshold = 0.15) {
+interface UseInViewOptions {
+  threshold?: number;
+  triggerOnce?: boolean;
+  rootMargin?: string;
+}
+
+export function useInView(options: UseInViewOptions = {}) {
+  const { threshold = 0.15, triggerOnce = true, rootMargin = '0px' } = options;
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();
-      // If the element is already visible in the viewport, trigger immediately
       if (rect.top < window.innerHeight && rect.bottom > 0) {
         setInView(true);
         return;
@@ -18,14 +24,25 @@ export function useInView(threshold = 0.15) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.disconnect();
+          if (triggerOnce) observer.disconnect();
+        } else if (!triggerOnce) {
+          setInView(false);
         }
       },
-      { threshold }
+      { threshold, rootMargin }
     );
+
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [threshold]);
+  }, [threshold, triggerOnce, rootMargin]);
 
   return { ref, inView };
+}
+
+export function useInViewVariant(options: UseInViewOptions = {}) {
+  const { ref, inView } = useInView(options);
+  return {
+    ref,
+    variant: inView ? 'animate' : 'initial',
+  };
 }

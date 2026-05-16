@@ -103,7 +103,7 @@ function MetricCard({
 }
 
 export default function DataCardsShowcase() {
-  const { ref, inView } = useInView(0.1);
+  const { ref, inView } = useInView({ threshold: 0.1 });
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
