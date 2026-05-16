@@ -1,0 +1,105 @@
+[1mdiff --git a/src/index.css b/src/index.css[m
+[1mindex dec2a4c..42b6323 100644[m
+[1m--- a/src/index.css[m
+[1m+++ b/src/index.css[m
+[36m@@ -651,100 +651,3 @@[m [mbody.presentation-mode h3 {[m
+   animation: critical-pulse 0.8s ease-in-out infinite;[m
+ }[m
+ [m
+[31m-/* ──────────────────────────────────────────────────────────────────────────[m
+[31m-   PULIDO VISUAL PREMIUM — Glass / Hover Glow / Spring (theme-aware, sin JS)[m
+[31m-   ────────────────────────────────────────────────────────────────────────── */[m
+[31m-[m
+[31m-/* Glassmorphism: frosted surface that adapts to light/dark theme */[m
+[31m-.glass-panel {[m
+[31m-  background: color-mix(in srgb, var(--bg-surface) 70%, transparent);[m
+[31m-  backdrop-filter: blur(10px);[m
+[31m-  -webkit-backdrop-filter: blur(10px);[m
+[31m-  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);[m
+[31m-  border-radius: var(--radius-lg);[m
+[31m-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);[m
+[31m-  transition: background var(--transition), box-shadow var(--transition);[m
+[31m-}[m
+[31m-.glass-panel:hover {[m
+[31m-  background: color-mix(in srgb, var(--bg-surface) 85%, transparent);[m
+[31m-  box-shadow: 0 8px 40px color-mix(in srgb, var(--info) 18%, transparent);[m
+[31m-}[m
+[31m-[m
+[31m-/* Card hover glow with animated gradient border ring */[m
+[31m-.card-hover {[m
+[31m-  position: relative;[m
+[31m-  background: var(--bg-surface);[m
+[31m-  border: 1px solid var(--border);[m
+[31m-  border-radius: var(--radius-lg);[m
+[31m-  transition: box-shadow var(--transition), transform var(--transition);[m
+[31m-}[m
+[31m-.card-hover::before {[m
+[31m-  content: '';[m
+[31m-  position: absolute;[m
+[31m-  inset: -1px;[m
+[31m-  border-radius: var(--radius-lg);[m
+[31m-  padding: 1px;[m
+[31m-  background: linear-gradient(135deg, var(--accent-blue), transparent 60%);[m
+[31m-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);[m
+[31m-  -webkit-mask-composite: xor;[m
+[31m-  mask-composite: exclude;[m
+[31m-  opacity: 0;[m
+[31m-  transition: opacity var(--transition);[m
+[31m-  pointer-events: none;[m
+[31m-}[m
+[31m-.card-hover:hover {[m
+[31m-  transform: translateY(-2px);[m
+[31m-  box-shadow: 0 10px 28px color-mix(in srgb, var(--info) 20%, transparent);[m
+[31m-}[m
+[31m-.card-hover:hover::before { opacity: 1; }[m
+[31m-[m
+[31m-/* Spring-physics button: subtle overshoot on hover/active */[m
+[31m-.btn-spring {[m
+[31m-  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),[m
+[31m-              box-shadow var(--transition);[m
+[31m-}[m
+[31m-.btn-spring:hover {[m
+[31m-  transform: scale(1.04);[m
+[31m-  box-shadow: 0 8px 24px color-mix(in srgb, var(--info) 25%, transparent);[m
+[31m-}[m
+[31m-.btn-spring:active { transform: scale(0.96); }[m
+[31m-[m
+[31m-/* Animated electric gradient border (decorative, opt-in) */[m
+[31m-@keyframes electric-shimmer {[m
+[31m-  0%, 100% { background-position: 200% 0; }[m
+[31m-  50%      { background-position: -200% 0; }[m
+[31m-}[m
+[31m-.border-electric {[m
+[31m-  position: relative;[m
+[31m-  border-radius: var(--radius-lg);[m
+[31m-}[m
+[31m-.border-electric::before {[m
+[31m-  content: '';[m
+[31m-  position: absolute;[m
+[31m-  inset: 0;[m
+[31m-  border-radius: var(--radius-lg);[m
+[31m-  padding: 2px;[m
+[31m-  background: linear-gradient(90deg, var(--accent-blue), var(--alarm), var(--accent-blue));[m
+[31m-  background-size: 200% 100%;[m
+[31m-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);[m
+[31m-  -webkit-mask-composite: xor;[m
+[31m-  mask-composite: exclude;[m
+[31m-  animation: electric-shimmer 3s linear infinite;[m
+[31m-  pointer-events: none;[m
+[31m-}[m
+[31m-[m
+[31m-/* Hero staggered entrance — reveals up with sequential delay */[m
+[31m-@keyframes heroReveal {[m
+[31m-  from { opacity: 0; transform: translateY(20px); }[m
+[31m-  to   { opacity: 1; transform: translateY(0); }[m
+[31m-}[m
+[31m-.hero-reveal {[m
+[31m-  opacity: 0;[m
+[31m-  animation: heroReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;[m
+[31m-}[m
+[31m-[m
+[31m-@media (prefers-reduced-motion: reduce) {[m
+[31m-  .hero-reveal { animation: none; opacity: 1; }[m
+[31m-  .border-electric::before { animation: none; }[m
+[31m-}[m
+[31m-[m

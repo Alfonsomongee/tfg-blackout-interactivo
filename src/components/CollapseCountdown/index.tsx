@@ -30,7 +30,7 @@ export function CollapseCountdown() {
   const [showFinalScreen, setShowFinalScreen] = useState(false);
 
   // Keep references to prevent layout-blocking ticks
-  const timerRef = useRef<any>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Format Clock time cleanly
   const formatClockTime = (second: number) => {

@@ -83,12 +83,39 @@ const INSTITUTIONS = [
   { id: 'icai', name: 'ICAI / AELEC', color: '#c2410c', dataKey: 'icai' },
   { id: 'entsoe', name: 'ENTSO-E ICS', color: '#0369a1', dataKey: 'entsoe' },
 ];
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number;
+    color: string;
+    payload: {
+      subject: string;
+    };
+  }>;
+}
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-secondary border border-main p-3 rounded shadow-md font-mono text-[11px] space-y-1">
+        <p className="text-text-primary font-bold uppercase">{payload[0].payload.subject}</p>
+        {payload.map((p) => (
+          <p key={p.name} style={{ color: p.color }}>
+            {p.name}: <span className="font-bold">{p.value}/10</span>
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
 
 const ResponsibilityRadarContent = function ResponsibilityRadar() {
   const [superimposed, setSuperimposed] = useState<boolean>(false);
   const [hoveredDescription, setHoveredDescription] = useState<string | null>(null);
 
-  const handlePolarAngleHover = (item: any) => {
+  const handlePolarAngleHover = (item: { value: string }) => {
     const matched = AXES_DATA.find((axis) => axis.subject === item.value);
     if (matched) {
       setHoveredDescription(matched.description);
@@ -97,22 +124,6 @@ const ResponsibilityRadarContent = function ResponsibilityRadar() {
 
   const handlePolarAngleLeave = () => {
     setHoveredDescription(null);
-  };
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-secondary border border-main p-3 rounded shadow-md font-mono text-[11px] space-y-1">
-          <p className="text-text-primary font-bold uppercase">{payload[0].payload.subject}</p>
-          {payload.map((p: any) => (
-            <p key={p.name} style={{ color: p.color }}>
-              {p.name}: <span className="font-bold">{p.value}/10</span>
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
   };
 
   return (

@@ -85,6 +85,32 @@ function getUFLSLabelInfo(f: number): { label: string; color: string } {
   return { label: '[NOMINAL]', color: 'var(--nominal)' };
 }
 
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: {
+      t: number;
+      f: number;
+      zone: string;
+    };
+  }>;
+}
+
+// Tooltip personalizado
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  if (!active || !payload?.length) return null;
+  const d = payload[0].payload;
+  const uflsInfo = getUFLSLabelInfo(d.f);
+  return (
+    <div className="bg-secondary border border-main p-3 font-mono text-[11px] shadow-md rounded">
+      <div className="text-text-secondary">Instante t = {d.t} s</div>
+      <div className="text-accent font-bold">
+        Frecuencia f = {d.f.toFixed(4)} Hz <span className="text-[10px] px-1.5 py-0.5 rounded ml-1.5 border font-bold" style={{ color: uflsInfo.color, borderColor: uflsInfo.color, background: `${uflsInfo.color}10` }}>{uflsInfo.label}</span>
+      </div>
+    </div>
+  );
+};
+
 // ── Componente principal ────────────────────────────
 export function ContingencySimulator() {
   const [powerLoss,      setPowerLoss]      = useState<number>(2000);  // positivo → déficit MW
@@ -107,21 +133,6 @@ export function ContingencySimulator() {
   }, [powerLoss, inertia, gridFormingPct, batteryMWh]);
 
   const risk = riskLevel(sim.nadir);
-
-  // Tooltip personalizado
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (!active || !payload?.length) return null;
-    const d = payload[0].payload;
-    const uflsInfo = getUFLSLabelInfo(d.f);
-    return (
-      <div className="bg-secondary border border-main p-3 font-mono text-[11px] shadow-md rounded">
-        <div className="text-text-secondary">Instante t = {d.t} s</div>
-        <div className="text-accent font-bold">
-          Frecuencia f = {d.f.toFixed(4)} Hz <span className="text-[10px] px-1.5 py-0.5 rounded ml-1.5 border font-bold" style={{ color: uflsInfo.color, borderColor: uflsInfo.color, background: `${uflsInfo.color}10` }}>{uflsInfo.label}</span>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full">
