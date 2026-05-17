@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NextChapter from '../NextChapter';
+import LazyImage from '../LazyImage';
 
 type ViewMode = 'os' | 'real';
 
@@ -228,6 +229,32 @@ function TapLagExplainer() {
             </text>
           )}
         </svg>
+      </div>
+
+      {/* Geographic context map */}
+      <div style={{
+        marginBottom: '1.5rem',
+        padding: '1.5rem',
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-md)',
+        border: `1px solid var(--border-main)`
+      }}>
+        <p style={{
+          margin: '0 0 0.75rem',
+          fontSize: '0.875rem',
+          color: 'var(--text-muted)'
+        }}>
+          Contexto geográfico: Zona afectada en Andalucía
+        </p>
+        <LazyImage
+          src="/images/blackout-content/mapas/andalucia-zona-afectada.png"
+          alt="Mapa Andalucía mostrando zona afectada por el apagón 28-A"
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: 'var(--radius-md)'
+          }}
+        />
       </div>
 
       {/* Timeline of meshing */}

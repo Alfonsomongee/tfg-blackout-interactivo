@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NextChapter from '../NextChapter';
+import LazyImage from '../LazyImage';
 
 type Institution = 'gobierno' | 'icai' | 'entso';
 type Agreement = 'discrepa' | 'matiza' | 'coincide';
@@ -199,9 +200,19 @@ function TresNarrativas() {
             <p style={{ margin: '0 0 0.25rem', fontFamily: 'var(--font-mono)', fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)' }}>
               {inst.name}
             </p>
-            <p style={{ margin: 0, fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--text-muted)' }}>
+            <p style={{ margin: '0 0 0.75rem', fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--text-muted)' }}>
               Fuente: {inst.source}
             </p>
+            <LazyImage
+              src={`/images/blackout-content/medios/${inst.id}-narativa.png`}
+              alt={`Fuente: ${inst.source}`}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+                borderRadius: 'var(--radius-md)',
+                border: `1px solid ${inst.color}30`,
+              }}
+            />
           </button>
         ))}
       </div>

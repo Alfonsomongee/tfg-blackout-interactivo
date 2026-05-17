@@ -10,6 +10,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import NextChapter from '../NextChapter';
+import LazyImage from '../LazyImage';
 
 const H_DATA = [
   { year: '2010', hGlobal: 5.5, hSur: null },
@@ -117,6 +118,24 @@ function InerciaVulnerabilidad() {
             </p>
           </div>
         ))}
+      </div>
+
+      {/* Context image */}
+      <div style={{ marginBottom: '1.5rem' }}>
+        <p style={{ margin: '0 0 0.75rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+          Contexto: Evolución histórica de la frecuencia de red durante el evento 28-A
+        </p>
+        <LazyImage
+          src="/images/blackout-content/graficos-ree/frecuencia-timeline.png"
+          alt="Frecuencia del sistema 50Hz -> 47.5Hz durante el 28-A"
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-main)',
+            marginBottom: '1rem',
+          }}
+        />
       </div>
 
       {/* Evolution chart */}

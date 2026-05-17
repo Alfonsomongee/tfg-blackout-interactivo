@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCountUp } from '../../hooks/useCountUp';
 import { useInView } from '../../hooks/useInView';
+import LazyImage from '../LazyImage';
 
 const KEY_METRICS = [
   { value: 60, unit: 'M', label: 'personas sin suministro', decimals: 0 },
@@ -163,6 +164,28 @@ export default function Hero() {
         operativas del apagón del 28 de abril de 2025. Cuatro informes.
         Tres versiones irreconciliables.
       </p>
+
+      {/* Hero image */}
+      <div className="hero-reveal" style={{
+        maxWidth: '100%',
+        borderRadius: 'var(--radius-lg)',
+        overflow: 'hidden',
+        marginBottom: '3rem',
+        animationDelay: '0.3s',
+        border: '1px solid rgba(255,255,255,0.1)',
+      }}>
+        <LazyImage
+          src="/images/blackout-content/medios/hero-apagon-28a.png"
+          alt="Apagón 28-A: Caos en el sistema eléctrico español"
+          style={{
+            width: '100%',
+            height: 'auto',
+            maxHeight: '400px',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+      </div>
 
       {/* Metrics grid */}
       <div className="hero-reveal" style={{
