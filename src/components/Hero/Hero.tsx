@@ -4,6 +4,7 @@ import { useCountUp } from '../../hooks/useCountUp';
 import { useInView } from '../../hooks/useInView';
 import LazyImage from '../LazyImage';
 import ReadingRoutes from '../ReadingRoutes';
+import { GuidedTourBanner } from '../GuidedTourBanner';
 
 const KEY_METRICS = [
   { value: 60, unit: 'M', label: 'personas sin suministro', decimals: 0 },
@@ -209,6 +210,9 @@ export default function Hero() {
 
       {/* Reading Routes */}
       <ReadingRoutes />
+
+      {/* Guided Tour */}
+      <GuidedTourBanner />
 
       {/* Divider */}
       <div style={{

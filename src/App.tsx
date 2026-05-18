@@ -58,6 +58,10 @@ import ShareButton from './components/ShareButton';
 import ReadingProgress from './components/ReadingProgress';
 import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
+import { ModuleProgress } from './components/ModuleProgress';
+import { LoadingSkeleton } from './components/LoadingSkeleton';
+import { GlossaryFloating } from './components/GlossaryFloating';
+import { ModuleNavigation } from './components/ModuleNavigation';
 import { useStore } from './hooks/useStore';
 
 function PageLoader() {
@@ -400,6 +404,7 @@ const Layout: React.FC = () => {
       </aside>
 
       <div className="flex-grow flex flex-col min-h-screen lg:pl-64 pt-14 lg:pt-1">
+        <LoadingSkeleton />
         <header className="border-b border-main bg-primary/90 backdrop-blur-md px-6 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 z-25 relative">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
@@ -437,6 +442,7 @@ const Layout: React.FC = () => {
 
         <main className="flex-grow flex flex-col justify-start">
           {location.pathname !== '/' && <MethodologyBanner />}
+          <ModuleProgress />
           <Suspense fallback={<PageLoader />}>
             <AnimatePresence mode="wait">
               <Routes>
@@ -515,8 +521,11 @@ const Layout: React.FC = () => {
           <FooterSimple />
         )}
 
+        <ModuleNavigation />
+
         {searchOpen && <GlobalSearch onClose={() => setSearchOpen(false)} />}
         <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
+        <GlossaryFloating />
       </div>
     </div>
   );

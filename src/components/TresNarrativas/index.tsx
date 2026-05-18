@@ -139,9 +139,9 @@ const AGREEMENT_CONFIG: Record<Agreement, { label: string; color: string }> = {
 };
 
 const IMAGE_MAP: Record<Institution, string> = {
-  gobierno: 'elpais-apagon-noticia.png',
-  icai: 'impacto-ciudadano-oscuridad.jpg',
-  entso: 'rtve-colapso-reportaje.jpeg',
+  gobierno: 'gobierno-redeia.png',
+  icai: 'icai-sector.png',
+  entso: 'entso-e.png',
 };
 
 function TresNarrativas() {

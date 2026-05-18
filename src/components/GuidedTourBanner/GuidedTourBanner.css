@@ -1,0 +1,310 @@
+.guided-tour-banner {
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(34, 211, 238, 0.05) 100%
+  );
+  border: 2px solid var(--accent-blue);
+  border-radius: var(--radius-lg);
+  margin: 1.5rem 0;
+  overflow: hidden;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.tour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: rgba(59, 130, 246, 0.05);
+  border-bottom: 1px solid var(--accent-blue);
+}
+
+.tour-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.tour-icon {
+  font-size: 1.25rem;
+}
+
+.tour-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.tour-close:hover {
+  color: var(--accent-blue);
+}
+
+/* Content */
+.tour-content {
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Step indicators */
+.tour-steps {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.step-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-indicator:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.step-indicator.active {
+  border-color: var(--accent-blue);
+  background-color: var(--accent-blue);
+  color: white;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
+
+.step-indicator.completed {
+  background-color: var(--nominal);
+  border-color: var(--nominal);
+  color: white;
+}
+
+/* Step content */
+.tour-step-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.step-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.step-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.step-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Controls */
+.step-controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.step-button {
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.step-button:hover:not(:disabled) {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.step-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.step-button.cta {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+  min-width: 150px;
+}
+
+.step-button.cta:hover:not(:disabled) {
+  background-color: var(--accent-blue);
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Progress dots */
+.tour-progress {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--border);
+  transition: all 0.2s ease;
+}
+
+.progress-dot.active {
+  background-color: var(--accent-blue);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .guided-tour-banner {
+    margin: 1rem 0;
+    border-radius: var(--radius-md);
+  }
+
+  .tour-header {
+    padding: 0.875rem 1rem;
+  }
+
+  .tour-title {
+    font-size: 0.875rem;
+  }
+
+  .tour-content {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+
+  .step-indicator {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+
+  .step-icon {
+    font-size: 2.5rem;
+  }
+
+  .step-title {
+    font-size: 1rem;
+  }
+
+  .step-description {
+    font-size: 0.8125rem;
+  }
+
+  .step-controls {
+    gap: 0.5rem;
+  }
+
+  .step-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+  }
+
+  .step-button.cta {
+    min-width: 130px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tour-steps {
+    gap: 0.5rem;
+  }
+
+  .step-indicator {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+
+  .step-icon {
+    font-size: 2rem;
+  }
+
+  .step-title {
+    font-size: 0.9375rem;
+  }
+
+  .step-description {
+    font-size: 0.75rem;
+  }
+
+  .step-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .step-button {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .step-button.cta {
+    min-width: unset;
+    order: 2;
+  }
+
+  .step-button.prev {
+    order: 1;
+  }
+
+  .step-button.next {
+    order: 3;
+  }
+}
