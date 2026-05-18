@@ -138,6 +138,12 @@ const AGREEMENT_CONFIG: Record<Agreement, { label: string; color: string }> = {
   coincide: { label: '🟢 COINCIDE', color: 'var(--nominal)' },
 };
 
+const IMAGE_MAP: Record<Institution, string> = {
+  gobierno: 'gobierno-redeia.png',
+  icai: 'icai-sector.png',
+  entso: 'entso-e.png',
+};
+
 function TresNarrativas() {
   const [expandedRow, setExpandedRow] = useState<string | null>('d1');
   const [focusInstitution, setFocusInstitution] = useState<Institution | null>(null);
@@ -204,7 +210,7 @@ function TresNarrativas() {
               Fuente: {inst.source}
             </p>
             <LazyImage
-              src={`/images/blackout-content/medios/${inst.id}-narativa.png`}
+              src={`/images/blackout-content/medios/${IMAGE_MAP[inst.id]}`}
               alt={`Fuente: ${inst.source}`}
               style={{
                 maxWidth: '100%',
