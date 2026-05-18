@@ -42,35 +42,41 @@
 }
 
 .dark {
-  /* Dark Editorial Theme - Forensic Monograph Console */
-  --bg-primary:     #0a0e17; /* Deep midnight */
-  --bg-secondary:   #111625; /* Navy slate card background */
-  --bg-tertiary:    #182035; /* Dark steel background for inputs */
-  --border-main:    #1e314f; /* Steel slate border */
-  --border-accent:  #38bdf8; /* Technical sky blue border */
-  --text-primary:   #e2e8f0; /* Crisp slate white */
-  --text-secondary: #94a3b8; /* Muted graphite slate */
-  --text-mono:      #38bdf8; /* Technical sky blue mono */
-  --alert-red:      #FF2020; /* AAA compliant alarm */
-  --alert-orange:   #FF8800; /* AAA compliant warning */
-  --alert-green:    #007722; /* AAA compliant nominal */
-  --accent-blue:    #2E6EC1; /* AAA compliant accent blue */
-  --accent-cyan:    #0073CC; /* AAA compliant info/cyan */
+  /* Pitch Black Forensic Console — Antigravity Edition */
+  --bg-primary:     #000000; /* Pitch Black absoluto */
+  --bg-secondary:   #111111; /* Tarjetas Bento */
+  --bg-tertiary:    #1a1a1a; /* Hover/active states */
+  --border-main:    rgba(255,255,255,0.1); /* Subtle white borders */
+  --border-accent:  #22d3ee; /* Cyan accent border */
+  --text-primary:   #ffffff; /* Blanco puro */
+  --text-secondary: #d1d5db; /* Gris ligero */
+  --text-mono:      #22d3ee; /* Cyan para métricas */
+  --alert-red:      #ef4444; /* Alerta crítica (parpadeante) */
+  --alert-orange:   #f97316; /* Riesgo medio, RoCoF acelerando */
+  --alert-green:    #22c55e; /* Estable, Black Start OK */
+  --accent-blue:    #3b82f6; /* Azul acción */
+  --accent-cyan:    #22d3ee; /* Datos OK, frecuencia normal */
   --font-serif:     'Georgia', 'Cambria', 'Times New Roman', serif;
-  --accent:         var(--accent-blue);
+  --accent:         var(--accent-cyan);
+
+  /* ── Nuevas variables semánticas Bento ── */
+  --accent-critical: #ef4444;
+  --accent-normal:   #22d3ee;
+  --accent-warning:  #f97316;
+  --accent-success:  #22c55e;
 
   /* ── Aliases para sistema de tokens unificado ── */
   --bg-base:        var(--bg-primary);
   --bg-surface:     var(--bg-secondary);
   --bg-raised:      var(--bg-tertiary);
   --border:         var(--border-main);
-  --border-subtle:  var(--border-main);
-  --text-muted:     var(--text-secondary);
+  --border-subtle:  rgba(255,255,255,0.08);
+  --text-muted:     #9ca3af;
   --font-mono:      'JetBrains Mono', 'IBM Plex Mono', monospace;
   --nominal:        var(--alert-green);
   --warning:        var(--alert-orange);
   --alarm:          var(--alert-red);
-  --info:           var(--accent-blue);
+  --info:           var(--accent-cyan);
   --radius-sm:      4px;
   --radius-md:      6px;
   --radius-lg:      8px;
@@ -780,3 +786,159 @@ body.presentation-mode h3 {
   .hero-reveal { animation: none; opacity: 1; }
   .border-electric::before { animation: none; }
 }
+
+/* ════════════════════════════════════════════════
+   BENTO GRID SYSTEM
+   ════════════════════════════════════════════════ */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .bento-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .bento-grid { grid-template-columns: 1fr; }
+}
+
+.bento-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-card:hover {
+  border-color: rgba(255,255,255,0.2);
+}
+
+.dark .bento-card:hover {
+  box-shadow: 0 0 0 1px rgba(34,211,238,0.15), 0 4px 24px rgba(0,0,0,0.6);
+}
+
+/* Column spans */
+.bento-col-1 { grid-column: span 1; }
+.bento-col-2 { grid-column: span 2; }
+.bento-col-3 { grid-column: span 3; }
+.bento-col-4 { grid-column: span 4; }
+.bento-col-5 { grid-column: span 5; }
+.bento-col-6 { grid-column: span 6; }
+
+/* Row spans */
+.bento-row-1 { grid-row: span 1; }
+.bento-row-2 { grid-row: span 2; }
+.bento-row-3 { grid-row: span 3; }
+.bento-row-4 { grid-row: span 4; }
+
+@media (max-width: 768px) {
+  [class*="bento-col-"] { grid-column: span 2; }
+  .bento-col-1 { grid-column: span 1; }
+}
+@media (max-width: 480px) {
+  [class*="bento-col-"] { grid-column: span 1; }
+}
+
+/* Bento card accent borders (top strip) */
+.bento-accent-critical { border-top: 2px solid var(--accent-critical, #ef4444); }
+.bento-accent-normal   { border-top: 2px solid var(--accent-normal, #22d3ee); }
+.bento-accent-warning  { border-top: 2px solid var(--accent-warning, #f97316); }
+.bento-accent-success  { border-top: 2px solid var(--accent-success, #22c55e); }
+.bento-accent-blue     { border-top: 2px solid var(--accent-blue, #3b82f6); }
+
+/* Bento metric display */
+.bento-metric {
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.bento-metric-critical { color: var(--accent-critical, #ef4444); }
+.bento-metric-normal   { color: var(--accent-normal, #22d3ee); }
+.bento-metric-warning  { color: var(--accent-warning, #f97316); }
+.bento-metric-success  { color: var(--accent-success, #22c55e); }
+
+.bento-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Glassmorphism header (dark mode) */
+.glass-header {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.light .glass-header,
+:root:not(.dark) .glass-header {
+  background: rgba(252, 251, 247, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Critical alert pulse animation */
+@keyframes alert-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.alert-pulse {
+  animation: alert-pulse 1.2s ease-in-out infinite;
+}
+
+.bento-metric-critical.alert-pulse {
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+}
+
+/* Glow effects for dark mode metrics */
+.dark .bento-metric-normal {
+  text-shadow: 0 0 30px rgba(34, 211, 238, 0.3);
+}
+.dark .bento-metric-critical {
+  text-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+}
+
+/* ════════════════════════════════════════════════
+   PITCH BLACK DARK MODE OVERRIDES
+   ════════════════════════════════════════════════ */
+
+.dark body {
+  background: #000000;
+  color-scheme: dark;
+}
+
+.dark .tech-grid {
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark .document-stamp {
+  color: var(--accent-normal);
+  border-color: var(--accent-normal);
+}
+
+.dark ::-webkit-scrollbar-track { background: #111111; }
+.dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgba(34,211,238,0.4); }

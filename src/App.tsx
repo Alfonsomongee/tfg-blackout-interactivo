@@ -364,7 +364,7 @@ const Layout: React.FC = () => {
         </div>
       )}
 
-      <aside className="hidden lg:flex flex-col w-64 bg-secondary border-r border-main fixed top-1 bottom-0 left-0 z-40 p-6 justify-between overflow-y-auto">
+      <aside className="hidden lg:flex flex-col w-64 bg-secondary border-r border-main fixed top-0 bottom-0 left-0 z-40 p-6 justify-between overflow-y-auto" style={{ borderRight: '1px solid var(--border-subtle)' }}>
         <div className="space-y-6">
           <div className="border-b border-main pb-5 flex flex-col gap-3">
             <div className="flex items-center justify-between gap-2">
@@ -405,7 +405,7 @@ const Layout: React.FC = () => {
 
       <div className="flex-grow flex flex-col min-h-screen lg:pl-64 pt-14 lg:pt-1">
         <LoadingSkeleton />
-        <header className="border-b border-main bg-primary/90 backdrop-blur-md px-6 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 z-25 relative">
+        <header className="glass-header border-b border-main px-6 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 z-25 relative sticky top-0">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="text-[9px] font-black font-mono bg-tertiary text-accent border border-main px-2 py-0.5 rounded tracking-wide uppercase">INFORME TÉCNICO OFICIAL</span>
