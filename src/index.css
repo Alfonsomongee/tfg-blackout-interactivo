@@ -816,7 +816,17 @@ body.presentation-mode h3 {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+/* Min heights for card sizes */
+.bento-card.bento-col-1 { min-height: 160px; }
+.bento-card.bento-col-2 { min-height: 180px; }
+.bento-card.bento-col-2.bento-row-2 { min-height: 320px; }
+.bento-card.bento-col-4 { min-height: 240px; }
+.bento-card.bento-col-6 { min-height: auto; }
 
 .bento-card:hover {
   border-color: rgba(255,255,255,0.2);
@@ -857,6 +867,11 @@ body.presentation-mode h3 {
 
 /* Bento metric display */
 .bento-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   font-family: var(--font-mono);
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 600;
@@ -865,6 +880,7 @@ body.presentation-mode h3 {
   font-variant-numeric: tabular-nums;
   line-height: 1;
   color: var(--text-primary);
+  text-align: center;
 }
 
 .bento-metric-critical { color: var(--accent-critical, #ef4444); }

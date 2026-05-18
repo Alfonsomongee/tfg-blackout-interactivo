@@ -63,7 +63,7 @@ export const BentoMetric: React.FC<BentoMetricProps> = ({
   const pulseClass = pulse ? 'alert-pulse' : '';
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '0.5rem' }}>
       <span className="bento-label">{label}</span>
       <div className={`bento-metric ${variantClass} ${pulseClass}`}>
         {value}
