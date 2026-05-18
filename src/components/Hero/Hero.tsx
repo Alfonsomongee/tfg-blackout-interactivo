@@ -175,8 +175,8 @@ export default function Hero() {
         border: '1px solid rgba(255,255,255,0.1)',
       }}>
         <LazyImage
-          src="/images/blackout-content/medios/hero-apagon-28a.png"
-          alt="Apagón 28-A: Caos en el sistema eléctrico español"
+          src="/images/blackout-content/medios/hero-gran-via-apagada.jpg"
+          alt="Apagón 28-A: Gran Vía de Madrid en oscuridad total"
           style={{
             width: '100%',
             height: 'auto',

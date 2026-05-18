@@ -232,27 +232,52 @@ function TapLagExplainer() {
       </div>
 
       {/* Geographic context map */}
-      <div style={{
-        marginBottom: '1.5rem',
-        padding: '1.5rem',
-        backgroundColor: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-md)',
-        border: `1px solid var(--border-main)`
-      }}>
-        <p style={{
-          margin: '0 0 0.75rem',
-          fontSize: '0.875rem',
-          color: 'var(--text-muted)'
-        }}>
-          Contexto geográfico: Zona afectada en Andalucía
+      {/* Geographic context maps */}
+      <div style={{ marginBottom: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+        <div>
+          <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Andalucía vista por satélite NASA (Black Marble): oscuridad del apagón
+          </p>
+          <LazyImage
+            src="/images/blackout-content/mapas/nasa-black-marble-andalucia.png"
+            alt="Vista satelital NASA Black Marble de Andalucía durante el apagón"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+            }}
+          />
+        </div>
+        <div>
+          <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Zona afectada geográficamente en Andalucía
+          </p>
+          <LazyImage
+            src="/images/blackout-content/mapas/andalucia-zona-afectada.png"
+            alt="Mapa detallado de Andalucía con zona afectada resaltada"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+            }}
+          />
+        </div>
+      </div>
+
+      <div style={{ marginBottom: '1.5rem' }}>
+        <p style={{ margin: '0 0 0.75rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+          Cascada de apagón a nivel europeo: interconexiones críticas
         </p>
         <LazyImage
-          src="/images/blackout-content/mapas/andalucia-zona-afectada.png"
-          alt="Mapa Andalucía mostrando zona afectada por el apagón 28-A"
+          src="/images/blackout-content/mapas/europa-cascada-apagon.png"
+          alt="Mapa de Europa mostrando cascada del apagón en interconexiones"
           style={{
             maxWidth: '100%',
             height: 'auto',
-            borderRadius: 'var(--radius-md)'
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border)',
           }}
         />
       </div>

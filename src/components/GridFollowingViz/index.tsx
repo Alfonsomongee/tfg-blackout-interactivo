@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NextChapter from '../NextChapter';
+import LazyImage from '../LazyImage';
 
 type GenType = 'sincrono' | 'gfl' | 'gfm';
 type SimState = 'idle' | 'running' | 'done';
@@ -270,6 +271,56 @@ function GridFollowingViz() {
         <p style={{ margin: '0.5rem 0 0', fontFamily: 'var(--font-mono)', fontSize: '0.5625rem', color: 'var(--text-muted)' }}>
           Análisis forense — TFG Alfonso Monge Díaz-Ángel · Fuente: Comité 28-A / ENTSO-E
         </p>
+      </div>
+
+      {/* Technical graphics */}
+      <div style={{ marginBottom: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+        <div>
+          <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Distribución de generación el 28-A: 82% IBR-GFL en peligro
+          </p>
+          <LazyImage
+            src="/images/blackout-content/graficos-ree/generacion-distribucion-28a.png"
+            alt="Distribución de generación por tipo: síncrona vs IBR-GFL vs IBR-GFM"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+            }}
+          />
+        </div>
+        <div>
+          <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Arquitectura de transmisión eléctrica en España
+          </p>
+          <LazyImage
+            src="/images/blackout-content/graficos-ree/red-transmision-españa.png"
+            alt="Red de transmisión eléctrica de España: puntos críticos"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+            }}
+          />
+        </div>
+      </div>
+
+      <div style={{ marginBottom: '2rem' }}>
+        <p style={{ margin: '0 0 0.75rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+          Cascada de fallos: desconexión secuencial de generación por sobretensión
+        </p>
+        <LazyImage
+          src="/images/blackout-content/graficos-ree/cascada-fallos-cronograma.png"
+          alt="Cronograma de fallos en cascada durante el colapso"
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border)',
+          }}
+        />
       </div>
 
       <NextChapter

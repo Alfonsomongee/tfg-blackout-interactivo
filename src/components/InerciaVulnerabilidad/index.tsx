@@ -120,19 +120,52 @@ function InerciaVulnerabilidad() {
         ))}
       </div>
 
-      {/* Context image */}
+      {/* Context images */}
+      <div style={{ marginBottom: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+        <div>
+          <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Caída de frecuencia: 50 Hz → 47,5 Hz en 40 segundos
+          </p>
+          <LazyImage
+            src="/images/blackout-content/graficos-ree/frecuencia-caida-40seg.png"
+            alt="Caída de frecuencia durante el colapso 28-A"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+            }}
+          />
+        </div>
+        <div>
+          <p style={{ margin: '0 0 0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Evolución demanda vs. generación
+          </p>
+          <LazyImage
+            src="/images/blackout-content/graficos-ree/consumo-demanda-antes-despues.png"
+            alt="Consumo y demanda antes y después del apagón"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+            }}
+          />
+        </div>
+      </div>
+
       <div style={{ marginBottom: '1.5rem' }}>
         <p style={{ margin: '0 0 0.75rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          Contexto: Evolución histórica de la frecuencia de red durante el evento 28-A
+          Constante de inercia H del sistema: 2,3 s (global) vs. 1,4 s (zona sur)
         </p>
         <LazyImage
-          src="/images/blackout-content/graficos-ree/frecuencia-timeline.png"
-          alt="Frecuencia del sistema 50Hz -> 47.5Hz durante el 28-A"
+          src="/images/blackout-content/graficos-ree/inercia-sistema-h-2-3.png"
+          alt="Inercia del sistema H = 2,3 segundos"
           style={{
             maxWidth: '100%',
             height: 'auto',
             borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-main)',
+            border: '1px solid var(--border)',
             marginBottom: '1rem',
           }}
         />
