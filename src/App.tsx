@@ -57,6 +57,7 @@ import ReadingProgress from './components/ReadingProgress';
 import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
 import { GlossaryFloating } from './components/GlossaryFloating';
+import { ModuleNavigation } from './components/ModuleNavigation';
 import { useStore } from './hooks/useStore';
 
 function PageLoader() {
@@ -510,6 +511,8 @@ const Layout: React.FC = () => {
         ) : (
           <FooterSimple />
         )}
+
+        <ModuleNavigation />
 
         {searchOpen && <GlobalSearch onClose={() => setSearchOpen(false)} />}
         <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
