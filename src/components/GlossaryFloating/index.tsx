@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { GLOSSARY, GlossaryTerm } from './glossaryData';
+import { GLOSSARY } from './glossaryData';
+import type { GlossaryTerm } from './glossaryData';
 import './GlossaryFloating.css';
 
 export const GlossaryFloating: React.FC = () => {

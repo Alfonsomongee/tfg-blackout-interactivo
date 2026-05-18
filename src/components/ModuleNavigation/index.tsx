@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MODULES_SEQUENCE, getModuleByPath, getPreviousModule, getNextModule } from '../../config/modulesConfig';
+import { getModuleByPath, getPreviousModule, getNextModule } from '../../config/modulesConfig';
 import './ModuleNavigation.css';
 
 export const ModuleNavigation: React.FC = () => {
@@ -8,8 +8,8 @@ export const ModuleNavigation: React.FC = () => {
   const navigate = useNavigate();
 
   const currentModule = getModuleByPath(location.pathname);
-  const previousModule = currentModule ? getPreviousModule(currentModule.order) : null;
-  const nextModule = currentModule ? getNextModule(currentModule.order) : null;
+  const previousModule = currentModule ? getPreviousModule(currentModule.path) : null;
+  const nextModule = currentModule ? getNextModule(currentModule.path) : null;
 
   // Keyboard shortcuts: Arrow keys for navigation
   useEffect(() => {
