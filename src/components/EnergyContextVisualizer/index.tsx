@@ -55,9 +55,9 @@ export default function EnergyContextVisualizer() {
   ] as const;
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 select-text">
+    <div className="flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full select-text">
       {/* HEADER SECTION */}
-      <div className="border-b border-main pb-4 mb-6">
+      <div className="border-b border-main pb-4 mb-2">
         <p className="t-subheading text-[10px] uppercase font-mono tracking-widest text-text-secondary block mb-1">
           Cap. 2 — Contexto energético
         </p>
@@ -70,7 +70,7 @@ export default function EnergyContextVisualizer() {
       </div>
 
       {/* TABS */}
-      <div className="flex gap-2 mb-6 flex-wrap border-b border-main/20 pb-3">
+      <div className="flex gap-2 flex-wrap border-b border-main/20 pb-3">
         {tabs.map(tab => (
           <button
             key={tab.id}

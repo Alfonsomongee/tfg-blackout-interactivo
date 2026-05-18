@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import AnimatedMetric from '../AnimatedMetric';
+import { BentoGrid, BentoCard, BentoMetric } from '../BentoLayout';
 import {
   ComposedChart,
   Line,
@@ -136,7 +136,7 @@ export function ContingencySimulator() {
 
   return (
     <div className="flex-grow p-1 animate-fade-in flex flex-col gap-6 w-full">
-      
+
       {/* Title area */}
       <div className="border-b border-main pb-4 mb-2">
         <h2 className="font-serif text-2xl font-bold text-text-primary tracking-tight">
@@ -147,128 +147,52 @@ export function ContingencySimulator() {
         </p>
       </div>
 
-      {/* D1. Cuadrícula de Métricas principales */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-        <AnimatedMetric
-          value={sim.rocof}
-          decimals={4}
-          unit=" Hz/s"
-          label="ROCOF Inicial (df/dt)"
-          color="var(--accent-blue)"
-        />
-        <AnimatedMetric
-          value={sim.nadir}
-          decimals={4}
-          unit=" Hz"
-          label="Nadir de Frecuencia"
-          color={risk.color}
-        />
-        <AnimatedMetric
-          value={sim.tNadir}
-          decimals={2}
-          unit=" s"
-          label="Tiempo al Nadir"
-          color="var(--text-primary)"
-        />
-        <AnimatedMetric
-          label="Nivel de Riesgo"
-          color={risk.color}
-        >
-          <div style={{ margin: '0 0 0.25rem' }}>
-            <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', padding: '4px 10px' }}>
+      {/* BentoGrid Layout */}
+      <BentoGrid>
+        {/* Frecuencia (2x2 critical) */}
+        <BentoCard cols={2} rows={2} accent="critical">
+          <BentoMetric
+            label="Frecuencia (Nadir)"
+            value={sim.nadir.toFixed(4)}
+            unit="Hz"
+            variant="critical"
+            pulse={sim.nadir < 49.3}
+          />
+        </BentoCard>
+
+        {/* RoCoF (1x1 warning) */}
+        <BentoCard cols={1} accent="warning">
+          <BentoMetric
+            label="RoCoF (df/dt)"
+            value={sim.rocof.toFixed(4)}
+            unit="Hz/s"
+            variant="warning"
+          />
+        </BentoCard>
+
+        {/* Inercia (1x1 normal) */}
+        <BentoCard cols={1} accent="normal">
+          <BentoMetric
+            label="Inercia del Sistema"
+            value={inertia.toFixed(2)}
+            unit="s"
+            variant="normal"
+          />
+        </BentoCard>
+
+        {/* Nivel de Riesgo (1x1) */}
+        <BentoCard cols={1} accent={risk.badgeClass === 'badge-alarm' ? 'critical' : 'warning'}>
+          <div className="flex flex-col justify-center items-center h-full">
+            <div className="text-xs text-text-secondary mb-2">Nivel de Riesgo</div>
+            <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', padding: '4px 10px' }}>
               {risk.label}
             </span>
           </div>
-        </AnimatedMetric>
-      </div>
+        </BentoCard>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">
+        {/* Gráfico (4x2) */}
+        <BentoCard cols={4} rows={2} accent="normal">
 
-        {/* ── COLUMNA IZQUIERDA: Controles ─────────── */}
-        <div className="flex flex-col gap-6">
-
-          {/* Panel parámetros */}
-          <div className="bg-secondary border border-main rounded-lg p-5 shadow-sm">
-            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5">
-              Parámetros de Entrada de Red
-            </div>
-
-            {/* Slider: Pérdida MW */}
-            <SliderField
-              label="Pérdida de generación"
-              unit="MW"
-              value={powerLoss}
-              min={200} max={15000} step={100}
-              onChange={setPowerLoss}
-              displayValue={powerLoss.toLocaleString('es-ES')}
-              color="var(--alert-red)"
-            />
-
-            {/* Slider: Inercia */}
-            <SliderField
-              label="Inercia del sistema (H)"
-              unit="s"
-              value={inertia}
-              min={0.5} max={5.0} step={0.1}
-              onChange={setInertia}
-              displayValue={inertia.toFixed(2)}
-              color="var(--accent-cyan)"
-              hint={`Norm: 3,84s | Cb: 1,84s | Sur: 1,30s`}
-            />
-
-            {/* Slider: Grid-Forming */}
-            <SliderField
-              label="Inversores Grid-Forming"
-              unit="%"
-              value={gridFormingPct}
-              min={0} max={80} step={1}
-              onChange={setGridFormingPct}
-              displayValue={`${gridFormingPct}%`}
-              color="var(--alert-green)"
-              hint="0% = Escenario histórico 28/04"
-            />
-
-            {/* Slider: BESS */}
-            <SliderField
-              label="Baterías de Respuesta Rápida"
-              unit="MWh"
-              value={batteryMWh}
-              min={0} max={2000} step={50}
-              onChange={setBatteryMWh}
-              displayValue={`${batteryMWh.toLocaleString('es-ES')}`}
-              color="var(--border-accent)"
-              hint="Reserva de energía de almacenamiento"
-            />
-          </div>
-
-          {/* Panel UFLS */}
-          <div className="bg-secondary border border-main rounded-lg p-5 shadow-sm">
-            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-4">
-              Escalones de Deslastre (UFLS)
-            </div>
-            {UFLS.map(stage => {
-              const active = sim.nadir <= stage.hz;
-              return (
-                <div key={stage.hz} className="flex justify-between items-center py-2.5 border-b border-main/30 last:border-0">
-                  <span className={`font-mono text-xs ${active ? 'text-alert-red font-bold' : 'text-text-secondary'}`} style={{ fontFamily: 'var(--font-mono)' }}>
-                    {stage.hz} Hz → {stage.mw.toLocaleString('es-ES')} MW
-                  </span>
-                  <span className={`text-[9px] font-mono px-2 py-0.5 rounded tracking-wider border ${
-                    active 
-                      ? 'bg-alert-red/15 border-alert-red text-alert-red font-bold' 
-                      : 'bg-tertiary border-main text-text-secondary'
-                  }`} style={{ fontFamily: 'var(--font-mono)' }}>
-                    {active ? 'DISPARADO' : 'SOPORTADO'}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── COLUMNA DERECHA: Gráfico ──────────────── */}
-        <div className="bg-secondary border border-main rounded-lg p-6 shadow-sm flex flex-col justify-between">
-          
           <div>
             <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase mb-4">
               Ecuación Teórica del Oscilador Síncrono (Swing Equation)
@@ -348,8 +272,90 @@ export function ContingencySimulator() {
           <div className="border-t border-main/50 pt-4 text-xs text-text-secondary font-serif italic text-center select-text">
             Figura 7.1: Evolución dinámica de la frecuencia del sistema peninsular ante la contingencia parametrizada (Pérdida de Generación y Amortiguamiento).
           </div>
-        </div>
-      </div>
+        </BentoCard>
+
+        {/* Sliders (6x1 full width) */}
+        <BentoCard cols={6} accent="normal">
+          <div className="flex flex-col gap-6">
+            <div>
+              <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5">
+                Parámetros de Entrada de Red
+              </div>
+
+              {/* Slider: Pérdida MW */}
+              <SliderField
+                label="Pérdida de generación"
+                unit="MW"
+                value={powerLoss}
+                min={200} max={15000} step={100}
+                onChange={setPowerLoss}
+                displayValue={powerLoss.toLocaleString('es-ES')}
+                color="var(--alert-red)"
+              />
+
+              {/* Slider: Inercia */}
+              <SliderField
+                label="Inercia del sistema (H)"
+                unit="s"
+                value={inertia}
+                min={0.5} max={5.0} step={0.1}
+                onChange={setInertia}
+                displayValue={inertia.toFixed(2)}
+                color="var(--accent-cyan)"
+                hint={`Norm: 3,84s | Cb: 1,84s | Sur: 1,30s`}
+              />
+
+              {/* Slider: Grid-Forming */}
+              <SliderField
+                label="Inversores Grid-Forming"
+                unit="%"
+                value={gridFormingPct}
+                min={0} max={80} step={1}
+                onChange={setGridFormingPct}
+                displayValue={`${gridFormingPct}%`}
+                color="var(--alert-green)"
+                hint="0% = Escenario histórico 28/04"
+              />
+
+              {/* Slider: BESS */}
+              <SliderField
+                label="Baterías de Respuesta Rápida"
+                unit="MWh"
+                value={batteryMWh}
+                min={0} max={2000} step={50}
+                onChange={setBatteryMWh}
+                displayValue={`${batteryMWh.toLocaleString('es-ES')}`}
+                color="var(--border-accent)"
+                hint="Reserva de energía de almacenamiento"
+              />
+            </div>
+
+            {/* Panel UFLS */}
+            <div className="border-t border-main/50 pt-5">
+              <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-4">
+                Escalones de Deslastre (UFLS)
+              </div>
+              {UFLS.map(stage => {
+                const active = sim.nadir <= stage.hz;
+                return (
+                  <div key={stage.hz} className="flex justify-between items-center py-2.5 border-b border-main/30 last:border-0">
+                    <span className={`font-mono text-xs ${active ? 'text-alert-red font-bold' : 'text-text-secondary'}`} style={{ fontFamily: 'var(--font-mono)' }}>
+                      {stage.hz} Hz → {stage.mw.toLocaleString('es-ES')} MW
+                    </span>
+                    <span className={`text-[9px] font-mono px-2 py-0.5 rounded tracking-wider border ${
+                      active
+                        ? 'bg-alert-red/15 border-alert-red text-alert-red font-bold'
+                        : 'bg-tertiary border-main text-text-secondary'
+                    }`} style={{ fontFamily: 'var(--font-mono)' }}>
+                      {active ? 'DISPARADO' : 'SOPORTADO'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </BentoCard>
+      </BentoGrid>
     </div>
   );
 }

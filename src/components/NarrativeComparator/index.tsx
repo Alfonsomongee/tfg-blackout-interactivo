@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BentoGrid, BentoCard } from '../BentoLayout';
 
 interface Narrative {
   label: string;
@@ -581,11 +582,11 @@ export const NarrativeComparator: React.FC = () => {
               </div>
             )}
 
-            {/* Parallel 3-Column Grid of Narratives */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
+            {/* Parallel 3-Column Grid of Narratives (BentoGrid) */}
+            <BentoGrid>
               
               {/* Column 1: Government / REE */}
-              <div className="bg-tertiary/40 border border-main rounded-lg p-5 flex flex-col justify-between relative overflow-hidden">
+              <BentoCard cols={2} rows={2} accent="normal">
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 border-b border-main/50 pb-2.5 mb-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-alert-red block"></span>
@@ -624,10 +625,10 @@ export const NarrativeComparator: React.FC = () => {
                     {currentEvent.narratives.gov.verdict}
                   </span>
                 </div>
-              </div>
+              </BentoCard>
 
               {/* Column 2: ICAI / AELEC */}
-              <div className="bg-tertiary/40 border border-main rounded-lg p-5 flex flex-col justify-between relative overflow-hidden">
+              <BentoCard cols={2} rows={2} accent="warning">
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 border-b border-main/50 pb-2.5 mb-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-alert-orange block"></span>
@@ -666,10 +667,10 @@ export const NarrativeComparator: React.FC = () => {
                     {currentEvent.narratives.icai.verdict}
                   </span>
                 </div>
-              </div>
+              </BentoCard>
 
               {/* Column 3: ENTSO-E */}
-              <div className="bg-tertiary/40 border border-main rounded-lg p-5 flex flex-col justify-between relative overflow-hidden">
+              <BentoCard cols={2} rows={2} accent="normal">
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 border-b border-main/50 pb-2.5 mb-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-accent block"></span>
@@ -708,9 +709,9 @@ export const NarrativeComparator: React.FC = () => {
                     {currentEvent.narratives.entso.verdict}
                   </span>
                 </div>
-              </div>
+              </BentoCard>
 
-            </div>
+            </BentoGrid>
           </div>
 
           {/* Academic Footer footnote */}
