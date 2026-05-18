@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Hero from './components/Hero/Hero';
 import ExecutiveBrief from './components/ExecutiveBrief';
@@ -50,7 +50,8 @@ const GridFollowingViz = lazy(() => import('./components/GridFollowingViz'));
 const TapLagExplainer = lazy(() => import('./components/TapLagExplainer'));
 const Testimonios = lazy(() => import('./components/Testimonios'));
 
-import GlobalSearch from './components/GlobalSearch';
+import { CommandPalette } from './components/CommandPalette';
+import { Breadcrumbs } from './components/Breadcrumbs';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
@@ -63,6 +64,10 @@ import { LoadingSkeleton } from './components/LoadingSkeleton';
 import { GlossaryFloating } from './components/GlossaryFloating';
 import { ModuleNavigation } from './components/ModuleNavigation';
 import { useStore } from './hooks/useStore';
+
+function getAllNavItems(navGroups: typeof NAV_GROUPS) {
+  return navGroups.flatMap(group => group.items);
+}
 
 function PageLoader() {
   return (
@@ -229,41 +234,12 @@ const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const SidebarLink: React.FC<{
-  item: { to: string; label: string; type: string; icon: string };
-  onClick?: () => void;
-}> = ({ item, onClick }) => {
-  const isCore = item.type === 'core';
-  return (
-    <NavLink
-      to={item.to}
-      onClick={onClick}
-      className={({ isActive }) => {
-        const baseClass = "flex items-center gap-2.5 px-3.5 py-2 font-mono uppercase tracking-wider transition-all duration-200 cursor-pointer text-left border-l-2";
-        const typeClass = isCore
-          ? "text-[11px] font-bold border-transparent text-text-primary/90 bg-primary/5 hover:bg-primary/20 hover:text-text-primary mb-1 rounded-sm"
-          : "text-[10px] text-text-secondary pl-6 border-transparent hover:text-text-primary mb-0.5";
-        const activeClass = isActive
-          ? isCore
-            ? "active bg-raised border-accent text-text-primary font-black"
-            : "active bg-raised/50 border-accent/60 text-text-primary font-bold pl-7"
-          : "border-transparent";
-        return `${baseClass} ${typeClass} ${activeClass}`;
-      }}
-    >
-      <span className="opacity-80 font-normal">{item.icon}</span>
-      <span>{item.label}</span>
-    </NavLink>
-  );
-};
-
 const Layout: React.FC = () => {
   const { zoneVoltages, tourRunning, setTourRunning } = useStore();
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+  const [theme] = useState<'light' | 'dark'>(() => {
     const stored = localStorage.getItem('theme');
     return stored === 'light' ? 'light' : 'dark';
   });
@@ -330,80 +306,7 @@ const Layout: React.FC = () => {
       
       <div className="h-1 w-full bg-gradient-to-r from-accent via-accent-cyan to-alert-red fixed top-0 left-0 right-0 z-50"></div>
 
-      <header className="lg:hidden h-14 bg-secondary border-b border-main flex justify-between items-center px-4 fixed top-1 left-0 right-0 z-40">
-        <div className="flex items-center gap-3">
-          <img src="/images/logo-etsi.png" alt="Logo ETSI" onError={(e) => { e.currentTarget.style.display = 'none'; }} className="h-8 w-auto object-contain select-none" />
-          <div className="flex flex-col">
-            <span className="document-stamp w-fit">ENTSO-E TFG</span>
-            <span className="text-[10px] font-serif font-bold tracking-tight text-text-primary mt-0.5">Análisis Blackout</span>
-          </div>
-        </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-text-secondary hover:text-text-primary focus:outline-none" aria-label="Abrir menú" aria-expanded={mobileMenuOpen} aria-controls="sidebar-nav">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            {mobileMenuOpen ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
-          </svg>
-        </button>
-      </header>
-
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-15 bg-primary/95 z-30 flex flex-col p-6 gap-2 overflow-y-auto">
-          {NAV_GROUPS.map((group, gIdx) => (
-            <div key={gIdx} className="mb-4">
-              <div style={{ padding: '0.5rem 1rem 0.25rem', fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>// {group.title}</div>
-              <div className="flex flex-col gap-0.5">
-                {group.items.map((item, iIdx) => (<SidebarLink key={iIdx} item={item} onClick={() => setMobileMenuOpen(false)} />))}
-              </div>
-            </div>
-          ))}
-          <button onClick={() => { setSearchOpen(true); setMobileMenuOpen(false); }} className="flex items-center gap-3 w-full px-4 py-3 rounded text-[11px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary uppercase tracking-widest mt-4">
-            <span>🔍 BUSCAR... [CTRL+K]</span>
-          </button>
-          <button onClick={() => { setTheme(theme === 'light' ? 'dark' : 'light'); setMobileMenuOpen(false); }} className="flex items-center gap-3 w-full px-4 py-3 rounded text-[11px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary uppercase tracking-widest mt-2">
-            {theme === 'light' ? '🌙 TEMA: CONSOLA' : '☀️ TEMA: IMPRESO'}
-          </button>
-        </div>
-      )}
-
-      <aside className="hidden lg:flex flex-col w-64 bg-secondary border-r border-main fixed top-0 bottom-0 left-0 z-40 p-6 justify-between overflow-y-auto" style={{ borderRight: '1px solid var(--border-subtle)' }}>
-        <div className="space-y-6">
-          <div className="border-b border-main pb-5 flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-2">
-              <span className="document-stamp">ENTSO-E / REE</span>
-              <img src="/images/logo-etsi.png" alt="Logo ETSI" onError={(e) => { e.currentTarget.style.display = 'none'; }} className="h-10 w-auto object-contain select-none opacity-90 hover:opacity-100 transition-opacity" />
-            </div>
-            <div>
-              <h1 className="text-sm font-bold text-text-primary uppercase tracking-wider font-mono m-0 leading-tight">COMITÉ FORENSE</h1>
-              <span className="text-[9px] text-text-secondary font-mono block mt-1">ESTUDIO DE ESTABILIDAD SINCRONA</span>
-            </div>
-          </div>
-          <nav id="sidebar-nav" className="flex flex-col gap-1 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
-            {NAV_GROUPS.map((group, gIdx) => (
-              <div key={gIdx} className="mb-4">
-                <div style={{ padding: '0.5rem 1rem 0.25rem', fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>// {group.title}</div>
-                <div className="flex flex-col gap-0.5">
-                  {group.items.map((item, iIdx) => (<SidebarLink key={iIdx} item={item} />))}
-                </div>
-              </div>
-            ))}
-            <button onClick={() => setSearchOpen(true)} className="flex items-center gap-2.5 px-3.5 py-3 rounded text-[10px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary hover:bg-primary uppercase tracking-widest mt-2 transition-all">
-              <svg className="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              <span className="flex-grow text-left">Buscar...</span>
-              <span className="text-[8px] font-mono opacity-60 bg-secondary border border-main px-1 py-0.5 rounded">⌘K</span>
-            </button>
-          </nav>
-          <div className="border-t border-main pt-4">
-            <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded text-[10px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary transition-all duration-200 uppercase tracking-wider">
-              {theme === 'light' ? (<><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0112 21a9.003 9.003 0 008.354-5.646z" /></svg><span>MODO CONSOLA</span></>) : (<><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /></svg><span>MODO IMPRESO</span></>)}
-            </button>
-          </div>
-        </div>
-        <div className="border-t border-main pt-4">
-          <span className="text-[9px] text-text-secondary font-mono uppercase block tracking-wider">SISTEMA: US_ETSI_2026</span>
-          <span className="text-[9px] text-text-secondary/70 font-mono block">Alfonso Monge Díaz-Ángel</span>
-        </div>
-      </aside>
-
-      <div className="flex-grow flex flex-col min-h-screen lg:pl-64 pt-14 lg:pt-1">
+      <div className="flex-grow flex flex-col min-h-screen pt-14 lg:pt-1">
         <LoadingSkeleton />
         <header className="glass-header border-b border-main px-6 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 z-25 relative sticky top-0">
           <div>
@@ -439,6 +342,8 @@ const Layout: React.FC = () => {
             </div>
           </div>
         </header>
+
+        <Breadcrumbs />
 
         <main className="flex-grow flex flex-col justify-start">
           {location.pathname !== '/' && <MethodologyBanner />}
@@ -523,7 +428,7 @@ const Layout: React.FC = () => {
 
         <ModuleNavigation />
 
-        {searchOpen && <GlobalSearch onClose={() => setSearchOpen(false)} />}
+        <CommandPalette isOpen={searchOpen} onClose={() => setSearchOpen(false)} navItems={getAllNavItems(NAV_GROUPS)} />
         <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
         <GlossaryFloating />
       </div>
