@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { BentoGrid, BentoCard, BentoMetric } from '../BentoLayout';
 import {
   ComposedChart,
   Line,
@@ -147,215 +146,194 @@ export function ContingencySimulator() {
         </p>
       </div>
 
-      {/* BentoGrid Layout */}
-      <BentoGrid>
-        {/* Frecuencia (2x2 critical) */}
-        <BentoCard cols={2} rows={2} accent="critical">
-          <BentoMetric
-            label="Frecuencia (Nadir)"
-            value={sim.nadir.toFixed(4)}
-            unit="Hz"
-            variant="critical"
-            pulse={sim.nadir < 49.3}
-          />
-        </BentoCard>
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-4 gap-6 mb-8">
+        {/* Frecuencia */}
+        <div className="flex flex-col justify-center items-center">
+          <span className="text-text-secondary text-xs mb-2">Frecuencia (Nadir)</span>
+          <div className={`text-4xl font-bold font-mono ${sim.nadir < 49.3 ? 'text-alarm animate-pulse' : 'text-accent-cyan'}`}>
+            {sim.nadir.toFixed(4)}
+          </div>
+          <span className="text-text-muted text-xs mt-2">Hz</span>
+        </div>
 
-        {/* RoCoF (1x1 warning) */}
-        <BentoCard cols={1} accent="warning">
-          <BentoMetric
-            label="RoCoF (df/dt)"
-            value={sim.rocof.toFixed(4)}
-            unit="Hz/s"
-            variant="warning"
-          />
-        </BentoCard>
+        {/* RoCoF */}
+        <div className="flex flex-col justify-center items-center">
+          <span className="text-text-secondary text-xs mb-2">RoCoF (df/dt)</span>
+          <div className="text-4xl font-bold font-mono text-warning">
+            {sim.rocof.toFixed(4)}
+          </div>
+          <span className="text-text-muted text-xs mt-2">Hz/s</span>
+        </div>
 
-        {/* Inercia (1x1 normal) */}
-        <BentoCard cols={1} accent="normal">
-          <BentoMetric
-            label="Inercia del Sistema"
-            value={inertia.toFixed(2)}
+        {/* Inercia */}
+        <div className="flex flex-col justify-center items-center">
+          <span className="text-text-secondary text-xs mb-2">Inercia del Sistema</span>
+          <div className="text-4xl font-bold font-mono text-accent-cyan">
+            {inertia.toFixed(2)}
+          </div>
+          <span className="text-text-muted text-xs mt-2">s</span>
+        </div>
+
+        {/* Risk Level */}
+        <div className="flex flex-col justify-center items-center">
+          <span className="text-text-secondary text-xs mb-2">Nivel de Riesgo</span>
+          <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', padding: '4px 10px' }}>
+            {risk.label}
+          </span>
+        </div>
+      </div>
+
+      {/* Chart Section */}
+      <div className="mb-8">
+        <div>
+          <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase mb-4">
+            Ecuación Teórica del Oscilador Síncrono (Swing Equation)
+          </div>
+
+          <div className="latex-equation flex justify-center items-center gap-1.5 py-4 my-6 bg-tertiary border-l-4 border-accent rounded-r font-serif text-lg relative select-text">
+            <span className="italic">df</span>
+            <span className="mx-0.5">/</span>
+            <span className="italic">dt</span>
+            <span className="mx-2">=</span>
+            <div className="flex flex-col items-center justify-center text-xs mx-1">
+              <span className="border-b border-text-primary pb-0.5 px-2 italic">&Delta;P</span>
+              <span className="pt-0.5 px-2 font-mono">2 &middot; H &middot; S<sub>base</sub></span>
+            </div>
+            <span className="mx-1">&middot;</span>
+            <span className="italic">f<sub>0</sub></span>
+            <span className="absolute right-6 font-mono text-xs text-text-secondary italic" style={{ fontFamily: 'var(--font-mono)' }}>(Ecuación 3.1)</span>
+          </div>
+        </div>
+
+        <div className="my-6">
+          <ResponsiveContainer width="100%" height={380}>
+            <ComposedChart
+              data={sim.trajectory}
+              margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" strokeOpacity={0.5} />
+              <XAxis
+                dataKey="t"
+                stroke="var(--border)"
+                tick={{ fill: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}
+                label={{ value: 'Tiempo transcurrido (s)', position: 'insideBottomRight', offset: -5, fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+              />
+              <YAxis
+                domain={[47.0, 50.3]}
+                stroke="var(--border)"
+                tick={{ fill: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}
+                label={{ value: 'Frecuencia de Red (Hz)', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+              />
+              <Tooltip content={<CustomTooltip />} />
+
+              <Area
+                type="monotone"
+                dataKey="f"
+                fill="var(--alarm)"
+                fillOpacity={0.04}
+                stroke="none"
+                baseValue={47.0}
+              />
+
+              <ReferenceLine y={50.0} stroke="var(--border)" strokeDasharray="4 4" label={{ value: '50,0 Hz — nominal', fill: 'var(--text-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+              <ReferenceLine y={49.5} stroke="var(--warning)" strokeDasharray="3 3" label={{ value: '49,50 Hz (UFLS I)', fill: 'var(--warning)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+              <ReferenceLine y={49.3} stroke="var(--alarm)" strokeDasharray="3 3" label={{ value: '49,30 Hz (UFLS II)', fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+              <ReferenceLine y={49.0} stroke="var(--alarm)" strokeWidth={1} strokeDasharray="3 3" label={{ value: '49,00 Hz (UFLS III - Disparo)', fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+
+              <ReferenceLine x={sim.tNadir} stroke="var(--alarm)" strokeWidth={1} strokeDasharray="4 4" label={{ value: `Nadir: ${sim.nadir.toFixed(4)} Hz`, fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)', position: 'top' }} />
+
+              <Line
+                type="monotone"
+                dataKey="f"
+                stroke="var(--info)"
+                strokeWidth={1.5}
+                dot={false}
+                isAnimationActive={false}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="border-t border-main/50 pt-4 text-xs text-text-secondary font-serif italic text-center select-text">
+          Figura 7.1: Evolución dinámica de la frecuencia del sistema peninsular ante la contingencia parametrizada (Pérdida de Generación y Amortiguamiento).
+        </div>
+      </div>
+
+      {/* Sliders Section */}
+      <div className="flex flex-col gap-6">
+        <div>
+          <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5">
+            Parámetros de Entrada de Red
+          </div>
+
+          <SliderField
+            label="Pérdida de generación"
+            unit="MW"
+            value={powerLoss}
+            min={200} max={15000} step={100}
+            onChange={setPowerLoss}
+            displayValue={powerLoss.toLocaleString('es-ES')}
+            color="var(--alert-red)"
+          />
+
+          <SliderField
+            label="Inercia del sistema (H)"
             unit="s"
-            variant="normal"
+            value={inertia}
+            min={0.5} max={5.0} step={0.1}
+            onChange={setInertia}
+            displayValue={inertia.toFixed(2)}
+            color="var(--accent-cyan)"
+            hint={`Norm: 3,84s | Cb: 1,84s | Sur: 1,30s`}
           />
-        </BentoCard>
 
-        {/* Nivel de Riesgo (1x1) */}
-        <BentoCard cols={1} accent={risk.badgeClass === 'badge-alarm' ? 'critical' : 'warning'}>
-          <div className="flex flex-col justify-center items-center h-full">
-            <div className="text-xs text-text-secondary mb-2">Nivel de Riesgo</div>
-            <span className={`badge ${risk.badgeClass}`} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', padding: '4px 10px' }}>
-              {risk.label}
-            </span>
+          <SliderField
+            label="Inversores Grid-Forming"
+            unit="%"
+            value={gridFormingPct}
+            min={0} max={80} step={1}
+            onChange={setGridFormingPct}
+            displayValue={`${gridFormingPct}%`}
+            color="var(--alert-green)"
+            hint="0% = Escenario histórico 28/04"
+          />
+
+          <SliderField
+            label="Baterías de Respuesta Rápida"
+            unit="MWh"
+            value={batteryMWh}
+            min={0} max={2000} step={50}
+            onChange={setBatteryMWh}
+            displayValue={`${batteryMWh.toLocaleString('es-ES')}`}
+            color="var(--border-accent)"
+            hint="Reserva de energía de almacenamiento"
+          />
+        </div>
+
+        <div className="border-t border-main/50 pt-5">
+          <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-4">
+            Escalones de Deslastre (UFLS)
           </div>
-        </BentoCard>
-
-        {/* Gráfico (4x2) */}
-        <BentoCard cols={4} rows={2} accent="normal">
-
-          <div>
-            <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase mb-4">
-              Ecuación Teórica del Oscilador Síncrono (Swing Equation)
-            </div>
-
-            {/* LaTeX Equation rendered elegantly in HTML */}
-            <div className="latex-equation flex justify-center items-center gap-1.5 py-4 my-6 bg-tertiary border-l-4 border-accent rounded-r font-serif text-lg relative select-text">
-              <span className="italic">df</span>
-              <span className="mx-0.5">/</span>
-              <span className="italic">dt</span>
-              <span className="mx-2">=</span>
-              <div className="flex flex-col items-center justify-center text-xs mx-1">
-                <span className="border-b border-text-primary pb-0.5 px-2 italic">&Delta;P</span>
-                <span className="pt-0.5 px-2 font-mono">2 &middot; H &middot; S<sub>base</sub></span>
+          {UFLS.map(stage => {
+            const active = sim.nadir <= stage.hz;
+            return (
+              <div key={stage.hz} className="flex justify-between items-center py-2.5 border-b border-main/30 last:border-0">
+                <span className={`font-mono text-xs ${active ? 'text-alert-red font-bold' : 'text-text-secondary'}`} style={{ fontFamily: 'var(--font-mono)' }}>
+                  {stage.hz} Hz → {stage.mw.toLocaleString('es-ES')} MW
+                </span>
+                <span className={`text-[9px] font-mono px-2 py-0.5 rounded tracking-wider border ${
+                  active
+                    ? 'bg-alert-red/15 border-alert-red text-alert-red font-bold'
+                    : 'bg-tertiary border-main text-text-secondary'
+                }`} style={{ fontFamily: 'var(--font-mono)' }}>
+                  {active ? 'DISPARADO' : 'SOPORTADO'}
+                </span>
               </div>
-              <span className="mx-1">&middot;</span>
-              <span className="italic">f<sub>0</sub></span>
-              <span className="absolute right-6 font-mono text-xs text-text-secondary italic" style={{ fontFamily: 'var(--font-mono)' }}>(Ecuación 3.1)</span>
-            </div>
-          </div>
-
-          {/* Gráfico Recharts */}
-          <div className="my-6">
-            <ResponsiveContainer width="100%" height={380}>
-              <ComposedChart
-                data={sim.trajectory}
-                margin={{ top: 10, right: 10, left: -15, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-subtle)" strokeOpacity={0.5} />
-                <XAxis
-                  dataKey="t"
-                  stroke="var(--border)"
-                  tick={{ fill: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}
-                  label={{ value: 'Tiempo transcurrido (s)', position: 'insideBottomRight', offset: -5, fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
-                />
-                <YAxis
-                  domain={[47.0, 50.3]}
-                  stroke="var(--border)"
-                  tick={{ fill: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11 }}
-                  label={{ value: 'Frecuencia de Red (Hz)', angle: -90, position: 'insideLeft', fill: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
-                />
-                <Tooltip content={<CustomTooltip />} />
-
-                {/* Área roja bajo 49,5 Hz */}
-                <Area
-                  type="monotone"
-                  dataKey="f"
-                  fill="var(--alarm)"
-                  fillOpacity={0.04}
-                  stroke="none"
-                  baseValue={47.0}
-                />
-
-                {/* Líneas de referencia técnica */}
-                <ReferenceLine y={50.0} stroke="var(--border)" strokeDasharray="4 4" label={{ value: '50,0 Hz — nominal', fill: 'var(--text-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
-                <ReferenceLine y={49.5} stroke="var(--warning)" strokeDasharray="3 3" label={{ value: '49,50 Hz (UFLS I)', fill: 'var(--warning)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
-                <ReferenceLine y={49.3} stroke="var(--alarm)" strokeDasharray="3 3" label={{ value: '49,30 Hz (UFLS II)', fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
-                <ReferenceLine y={49.0} stroke="var(--alarm)" strokeWidth={1} strokeDasharray="3 3" label={{ value: '49,00 Hz (UFLS III - Disparo)', fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
-
-                {/* Línea de referencia vertical en el nadir */}
-                <ReferenceLine x={sim.tNadir} stroke="var(--alarm)" strokeWidth={1} strokeDasharray="4 4" label={{ value: `Nadir: ${sim.nadir.toFixed(4)} Hz`, fill: 'var(--alarm)', fontSize: 10, fontFamily: 'var(--font-mono)', position: 'top' }} />
-
-                {/* Curva principal */}
-                <Line
-                  type="monotone"
-                  dataKey="f"
-                  stroke="var(--info)"
-                  strokeWidth={1.5}
-                  dot={false}
-                  isAnimationActive={false}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Pie de figura formal */}
-          <div className="border-t border-main/50 pt-4 text-xs text-text-secondary font-serif italic text-center select-text">
-            Figura 7.1: Evolución dinámica de la frecuencia del sistema peninsular ante la contingencia parametrizada (Pérdida de Generación y Amortiguamiento).
-          </div>
-        </BentoCard>
-
-        {/* Sliders (6x1 full width) */}
-        <BentoCard cols={6} accent="normal">
-          <div className="flex flex-col gap-6">
-            <div>
-              <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-5">
-                Parámetros de Entrada de Red
-              </div>
-
-              {/* Slider: Pérdida MW */}
-              <SliderField
-                label="Pérdida de generación"
-                unit="MW"
-                value={powerLoss}
-                min={200} max={15000} step={100}
-                onChange={setPowerLoss}
-                displayValue={powerLoss.toLocaleString('es-ES')}
-                color="var(--alert-red)"
-              />
-
-              {/* Slider: Inercia */}
-              <SliderField
-                label="Inercia del sistema (H)"
-                unit="s"
-                value={inertia}
-                min={0.5} max={5.0} step={0.1}
-                onChange={setInertia}
-                displayValue={inertia.toFixed(2)}
-                color="var(--accent-cyan)"
-                hint={`Norm: 3,84s | Cb: 1,84s | Sur: 1,30s`}
-              />
-
-              {/* Slider: Grid-Forming */}
-              <SliderField
-                label="Inversores Grid-Forming"
-                unit="%"
-                value={gridFormingPct}
-                min={0} max={80} step={1}
-                onChange={setGridFormingPct}
-                displayValue={`${gridFormingPct}%`}
-                color="var(--alert-green)"
-                hint="0% = Escenario histórico 28/04"
-              />
-
-              {/* Slider: BESS */}
-              <SliderField
-                label="Baterías de Respuesta Rápida"
-                unit="MWh"
-                value={batteryMWh}
-                min={0} max={2000} step={50}
-                onChange={setBatteryMWh}
-                displayValue={`${batteryMWh.toLocaleString('es-ES')}`}
-                color="var(--border-accent)"
-                hint="Reserva de energía de almacenamiento"
-              />
-            </div>
-
-            {/* Panel UFLS */}
-            <div className="border-t border-main/50 pt-5">
-              <div className="text-text-secondary text-[10px] font-mono tracking-widest uppercase border-b border-main/50 pb-3 mb-4">
-                Escalones de Deslastre (UFLS)
-              </div>
-              {UFLS.map(stage => {
-                const active = sim.nadir <= stage.hz;
-                return (
-                  <div key={stage.hz} className="flex justify-between items-center py-2.5 border-b border-main/30 last:border-0">
-                    <span className={`font-mono text-xs ${active ? 'text-alert-red font-bold' : 'text-text-secondary'}`} style={{ fontFamily: 'var(--font-mono)' }}>
-                      {stage.hz} Hz → {stage.mw.toLocaleString('es-ES')} MW
-                    </span>
-                    <span className={`text-[9px] font-mono px-2 py-0.5 rounded tracking-wider border ${
-                      active
-                        ? 'bg-alert-red/15 border-alert-red text-alert-red font-bold'
-                        : 'bg-tertiary border-main text-text-secondary'
-                    }`} style={{ fontFamily: 'var(--font-mono)' }}>
-                      {active ? 'DISPARADO' : 'SOPORTADO'}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </BentoCard>
-      </BentoGrid>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

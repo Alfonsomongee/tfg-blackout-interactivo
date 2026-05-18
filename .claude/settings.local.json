@@ -17,7 +17,8 @@
       "Bash(git rebase *)",
       "Bash(git stash *)",
       "PowerShell(Get-Process -Name node -ErrorAction SilentlyContinue)",
-      "PowerShell(Stop-Process -Force)"
+      "PowerShell(Stop-Process -Force)",
+      "mcp__Claude_in_Chrome__browser_batch"
     ]
   }
 }
