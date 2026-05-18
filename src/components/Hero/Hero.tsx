@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCountUp } from '../../hooks/useCountUp';
 import { useInView } from '../../hooks/useInView';
 import LazyImage from '../LazyImage';
+import ReadingRoutes from '../ReadingRoutes';
 
 const KEY_METRICS = [
   { value: 60, unit: 'M', label: 'personas sin suministro', decimals: 0 },
@@ -205,6 +206,9 @@ export default function Hero() {
           />
         ))}
       </div>
+
+      {/* Reading Routes */}
+      <ReadingRoutes />
 
       {/* Divider */}
       <div style={{

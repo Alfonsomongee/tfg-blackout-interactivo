@@ -5,6 +5,7 @@ import Hero from './components/Hero/Hero';
 import ExecutiveBrief from './components/ExecutiveBrief';
 import PageTransition from './components/PageTransition';
 import ToastProvider from './components/Notifications/ToastProvider';
+import { MethodologyBanner } from './components/MethodologyBanner';
 
 // Lazy-loaded page components
 const TimelineNarrative = lazy(() => import('./components/TimelineNarrative').then(m => ({ default: m.TimelineNarrative })));
@@ -47,6 +48,7 @@ const TresNarrativas = lazy(() => import('./components/TresNarrativas'));
 const InerciaVulnerabilidad = lazy(() => import('./components/InerciaVulnerabilidad'));
 const GridFollowingViz = lazy(() => import('./components/GridFollowingViz'));
 const TapLagExplainer = lazy(() => import('./components/TapLagExplainer'));
+const Testimonios = lazy(() => import('./components/Testimonios'));
 
 import GlobalSearch from './components/GlobalSearch';
 import GuidedTour from './components/GuidedTour';
@@ -139,6 +141,7 @@ const NAV_GROUPS = [
       { to: '/inercia-vuln', label: 'Inercia del Sistema', type: 'core', icon: '🌀' },
       { to: '/grid-following', label: 'IBR Grid-Following', type: 'core', icon: '⚡' },
       { to: '/tap-lag', label: 'Fenómeno Tap-Lag', type: 'core', icon: '🔍' },
+      { to: '/testimonios', label: 'Testimonios del 28-A', type: 'detalle', icon: '💬' },
     ]
   },
   {
@@ -433,6 +436,7 @@ const Layout: React.FC = () => {
         </header>
 
         <main className="flex-grow flex flex-col justify-start">
+          {location.pathname !== '/' && <MethodologyBanner />}
           <Suspense fallback={<PageLoader />}>
             <AnimatePresence mode="wait">
               <Routes>
@@ -478,6 +482,7 @@ const Layout: React.FC = () => {
                 <Route path="/inercia-vuln" element={<PageWrapper><InerciaVulnerabilidad /></PageWrapper>} />
                 <Route path="/grid-following" element={<PageWrapper><GridFollowingViz /></PageWrapper>} />
                 <Route path="/tap-lag" element={<PageWrapper><TapLagExplainer /></PageWrapper>} />
+                <Route path="/testimonios" element={<PageWrapper><Testimonios /></PageWrapper>} />
               </Routes>
             </AnimatePresence>
           </Suspense>
