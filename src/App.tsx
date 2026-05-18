@@ -56,6 +56,7 @@ import ShareButton from './components/ShareButton';
 import ReadingProgress from './components/ReadingProgress';
 import BackToTop from './components/BackToTop';
 import ScrollToTop from './components/ScrollToTop';
+import { GlossaryFloating } from './components/GlossaryFloating';
 import { useStore } from './hooks/useStore';
 
 function PageLoader() {
@@ -512,6 +513,7 @@ const Layout: React.FC = () => {
 
         {searchOpen && <GlobalSearch onClose={() => setSearchOpen(false)} />}
         <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
+        <GlossaryFloating />
       </div>
     </div>
   );
