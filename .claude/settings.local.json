@@ -15,7 +15,13 @@
       "Bash(git push *)",
       "Bash(git fetch *)",
       "Bash(git rebase *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "Bash(cd C:/Users/aphmo/Proyectos/tfg-blackout-interactivo && pwd)",
+      "PowerShell(xcopy $source $dest /Y /S /I)",
+      "PowerShell($dest = \"public\\\\images\\\\blackout-content\\\\\")",
+      "Bash(git checkout *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.kdnuggets.com)"
     ]
   }
 }
