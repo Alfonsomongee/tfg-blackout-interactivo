@@ -52,6 +52,7 @@ const Testimonios = lazy(() => import('./components/Testimonios'));
 
 import { CommandPalette } from './components/CommandPalette';
 import { Breadcrumbs } from './components/Breadcrumbs';
+import { ModulesGrid } from './components/ModulesGrid';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
@@ -303,7 +304,8 @@ const Layout: React.FC = () => {
       <ScrollToTop />
       <ReadingProgress />
       <BackToTop />
-      
+      <ModulesGrid />
+
       <div className="h-1 w-full bg-gradient-to-r from-accent via-accent-cyan to-alert-red fixed top-0 left-0 right-0 z-50"></div>
 
       <div className="flex-grow flex flex-col min-h-screen pt-14 lg:pt-1">
