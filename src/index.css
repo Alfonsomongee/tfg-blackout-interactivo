@@ -958,3 +958,153 @@ body.presentation-mode h3 {
 .dark ::-webkit-scrollbar-track { background: #111111; }
 .dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
 .dark ::-webkit-scrollbar-thumb:hover { background: rgba(34,211,238,0.4); }
+
+/* ═══════════════════════════════════════════════════
+   CONSOLE MODE — Estética terminal retro CRT
+   ═══════════════════════════════════════════════════ */
+.console-mode,
+.console-mode body {
+  --cm-bg:      #020f02;
+  --cm-green:   #00e000;
+  --cm-bright:  #00ff41;
+  --cm-dim:     #007700;
+  --cm-amber:   #ffb000;
+  --cm-cyan:    #00ffcc;
+  --cm-border:  #00aa00;
+
+  background:   var(--cm-bg) !important;
+  color:        var(--cm-green) !important;
+  font-family:  'Geist Mono', 'Courier New', monospace !important;
+}
+
+/* Override dark theme variables inside console mode */
+.console-mode {
+  --bg-primary:    var(--cm-bg);
+  --bg-secondary:  #041004;
+  --bg-tertiary:   #071407;
+  --border-main:   rgba(0,200,0,0.2);
+  --border-accent: var(--cm-green);
+  --text-primary:  var(--cm-bright);
+  --text-secondary:var(--cm-green);
+  --text-muted:    var(--cm-dim);
+  --text-mono:     var(--cm-cyan);
+  --accent-cyan:   var(--cm-cyan);
+  --accent-blue:   var(--cm-cyan);
+  --alert-red:     #ff4444;
+  --alert-green:   var(--cm-bright);
+  --alert-orange:  var(--cm-amber);
+}
+
+/* Scanlines overlay — CRT effect */
+.console-mode::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.06) 0px,
+    rgba(0,0,0,0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Phosphor glow on text */
+.console-mode h1,
+.console-mode h2,
+.console-mode h3 {
+  color: var(--cm-bright) !important;
+  text-shadow: 0 0 8px rgba(0,255,65,0.4) !important;
+  font-family: 'Geist Mono', 'Courier New', monospace !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.console-mode p,
+.console-mode span,
+.console-mode li,
+.console-mode td,
+.console-mode th {
+  color: var(--cm-green) !important;
+  font-family: 'Geist Mono', 'Courier New', monospace !important;
+}
+
+/* Header: terminal prompt prefix */
+.console-mode header {
+  background: #000 !important;
+  border-bottom: 1px solid var(--cm-border) !important;
+}
+
+/* Buttons: terminal style */
+.console-mode button:not([data-no-console]) {
+  background: transparent !important;
+  color: var(--cm-green) !important;
+  border-color: var(--cm-border) !important;
+  font-family: 'Geist Mono', monospace !important;
+  border-radius: 0 !important;
+}
+.console-mode button:hover:not([data-no-console]) {
+  background: var(--cm-green) !important;
+  color: #000 !important;
+}
+
+/* Cards/borders */
+.console-mode [class*="border"],
+.console-mode [class*="rounded"] {
+  border-radius: 0 !important;
+  border-color: rgba(0,180,0,0.3) !important;
+}
+
+/* Sidebar in console mode */
+.console-mode aside {
+  background: #000 !important;
+  border-right-color: var(--cm-border) !important;
+}
+
+/* Cursor blink on active elements */
+.console-mode *:focus::after {
+  content: '█';
+  animation: cm-blink 1s step-end infinite;
+  color: var(--cm-bright);
+}
+
+@keyframes cm-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Badge / tag overrides */
+.console-mode .badge,
+.console-mode [class*="badge"] {
+  background: transparent !important;
+  color: var(--cm-green) !important;
+  border-color: var(--cm-green) !important;
+  border-radius: 0 !important;
+  font-family: 'Geist Mono', monospace !important;
+}
+
+/* Chart text */
+.console-mode .recharts-text,
+.console-mode .recharts-cartesian-axis-tick-value {
+  fill: var(--cm-green) !important;
+}
+.console-mode .recharts-cartesian-grid line {
+  stroke: rgba(0,150,0,0.2) !important;
+}
+
+/* Input ranges */
+.console-mode input[type="range"] {
+  accent-color: var(--cm-green) !important;
+}
+
+/* Subtle vignette */
+.console-mode body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+  z-index: 9997;
+}

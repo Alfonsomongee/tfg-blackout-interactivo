@@ -54,6 +54,7 @@ import { CommandPalette } from './components/CommandPalette';
 import { Breadcrumbs } from './components/Breadcrumbs';
 import { ModulesGrid } from './components/ModulesGrid';
 import { SidebarMinimal } from './components/SidebarMinimal';
+import { ConsoleModeButton, useConsoleMode } from './components/ConsoleMode';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
@@ -257,6 +258,8 @@ const Layout: React.FC = () => {
     });
   };
 
+  const consoleMode = useConsoleMode();
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -356,7 +359,8 @@ const Layout: React.FC = () => {
               <span className="text-[9px] text-text-secondary uppercase font-mono block mb-0.5">DOCUMENTO</span>
               <span className="text-[9px] font-mono font-bold text-alert-green bg-alert-green/10 border border-alert-green/30 px-1.5 py-0.5 rounded uppercase">{telemetry.status === 'ESTABLE (NOMINAL)' ? 'APROBADO REE' : 'REVISIÓN forense'}</span>
             </div>
-            <div className="px-3">
+            <div className="px-3 flex items-center gap-2">
+              <ConsoleModeButton enabled={consoleMode.enabled} onToggle={consoleMode.toggle} />
               <button data-presentation-btn className="px-3 py-1 bg-accent/10 border border-accent/40 rounded text-[10px] font-mono font-bold text-accent hover:bg-accent hover:text-white transition-all duration-200 uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
                 🖥 Presentación
               </button>
