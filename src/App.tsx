@@ -53,6 +53,7 @@ const Testimonios = lazy(() => import('./components/Testimonios'));
 import { CommandPalette } from './components/CommandPalette';
 import { Breadcrumbs } from './components/Breadcrumbs';
 import { ModulesGrid } from './components/ModulesGrid';
+import { SidebarMinimal } from './components/SidebarMinimal';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
 import FooterSimple from './components/FooterSimple';
@@ -240,10 +241,21 @@ const Layout: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(() => {
+    try { return localStorage.getItem('sidebar-collapsed') === 'true'; } catch { return false; }
+  });
   const [theme] = useState<'light' | 'dark'>(() => {
     const stored = localStorage.getItem('theme');
     return stored === 'light' ? 'light' : 'dark';
   });
+
+  const handleSidebarToggle = () => {
+    setSidebarCollapsed(prev => {
+      const next = !prev;
+      localStorage.setItem('sidebar-collapsed', String(next));
+      return next;
+    });
+  };
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -300,17 +312,24 @@ const Layout: React.FC = () => {
   }, [zoneVoltages]);
 
   return (
-    <div className="min-h-screen bg-primary text-text-primary font-sans flex flex-col tech-grid relative overflow-x-hidden select-none">
-      <ScrollToTop />
-      <ReadingProgress />
-      <BackToTop />
-      <ModulesGrid />
+    <div className="min-h-screen bg-primary text-text-primary font-sans tech-grid relative select-none" style={{ display: 'flex', flexDirection: 'row' }}>
+      {/* Sidebar — hidden on mobile */}
+      <div className="hidden md:block">
+        <SidebarMinimal collapsed={sidebarCollapsed} onToggle={handleSidebarToggle} />
+      </div>
 
-      <div className="h-1 w-full bg-gradient-to-r from-accent via-accent-cyan to-alert-red fixed top-0 left-0 right-0 z-50"></div>
+      {/* Main content column */}
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <ScrollToTop />
+        <ReadingProgress />
+        <BackToTop />
+        <ModulesGrid />
 
-      <div className="flex-grow flex flex-col min-h-screen pt-14 lg:pt-1">
-        <LoadingSkeleton />
-        <header className="glass-header border-b border-main px-6 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 z-25 relative sticky top-0">
+        <div className="h-1 w-full bg-gradient-to-r from-accent via-accent-cyan to-alert-red fixed top-0 left-0 right-0 z-50"></div>
+
+        <div className="flex-grow flex flex-col min-h-screen pt-1">
+          <LoadingSkeleton />
+          <header className="glass-header border-b border-main px-6 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 z-25 relative sticky top-0">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="text-[9px] font-black font-mono bg-tertiary text-accent border border-main px-2 py-0.5 rounded tracking-wide uppercase">INFORME TÉCNICO OFICIAL</span>
@@ -433,6 +452,7 @@ const Layout: React.FC = () => {
         <CommandPalette isOpen={searchOpen} onClose={() => setSearchOpen(false)} navItems={getAllNavItems(NAV_GROUPS)} />
         <GuidedTour isRunning={tourRunning} setIsRunning={setTourRunning} />
         <GlossaryFloating />
+        </div>
       </div>
     </div>
   );
