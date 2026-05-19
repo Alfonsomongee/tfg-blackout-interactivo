@@ -50,6 +50,7 @@ const GridFollowingViz = lazy(() => import('./components/GridFollowingViz'));
 const TapLagExplainer = lazy(() => import('./components/TapLagExplainer'));
 const Testimonios = lazy(() => import('./components/Testimonios'));
 
+import NotFound from './components/NotFound';
 import GlobalSearch from './components/GlobalSearch';
 import GuidedTour from './components/GuidedTour';
 import PresentationMode from './components/PresentationMode';
@@ -262,7 +263,21 @@ const Layout: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const location = useLocation();
+
+  const toggleGroup = (title: string) => {
+    setExpandedGroups(prev => ({ ...prev, [title]: !prev[title] }));
+  };
+
+  useEffect(() => {
+    const currentGroup = NAV_GROUPS.find(g =>
+      g.items.some(item => item.to === location.pathname)
+    );
+    if (currentGroup) {
+      setExpandedGroups(prev => ({ ...prev, [currentGroup.title]: true }));
+    }
+  }, [location.pathname]);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const stored = localStorage.getItem('theme');
     return stored === 'light' ? 'light' : 'dark';
@@ -294,6 +309,17 @@ const Layout: React.FC = () => {
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const hasSeenTour = localStorage.getItem('tfg-blackout-tour-seen');
+    if (!hasSeenTour) {
+      const t = setTimeout(() => {
+        setTourRunning(true);
+        localStorage.setItem('tfg-blackout-tour-seen', 'true');
+      }, 1800);
+      return () => clearTimeout(t);
+    }
+  }, [setTourRunning]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -347,14 +373,32 @@ const Layout: React.FC = () => {
 
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 top-15 bg-primary/95 z-30 flex flex-col p-6 gap-2 overflow-y-auto">
-          {NAV_GROUPS.map((group, gIdx) => (
-            <div key={gIdx} className="mb-4">
-              <div style={{ padding: '0.5rem 1rem 0.25rem', fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>// {group.title}</div>
-              <div className="flex flex-col gap-0.5">
-                {group.items.map((item, iIdx) => (<SidebarLink key={iIdx} item={item} onClick={() => setMobileMenuOpen(false)} />))}
+          {NAV_GROUPS.map((group) => {
+            const isOpen = expandedGroups[group.title] ?? false;
+            const hasActive = group.items.some(item => item.to === location.pathname);
+            return (
+              <div key={group.title} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                <button
+                  onClick={() => toggleGroup(group.title)}
+                  style={{
+                    width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    padding: '0.625rem 1rem', background: 'transparent', border: 'none',
+                    cursor: 'pointer', textAlign: 'left',
+                    color: hasActive ? 'var(--accent-ice-blue, #3dd5f3)' : 'var(--text-muted)',
+                  }}
+                >
+                  <span style={{ fontSize: '0.55rem', opacity: 0.7 }}>{isOpen ? '▼' : '▶'}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', flex: 1 }}>{group.title}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', opacity: 0.35 }}>{group.items.length}</span>
+                </button>
+                {isOpen && (
+                  <div className="flex flex-col gap-0.5 pb-1">
+                    {group.items.map((item, iIdx) => (<SidebarLink key={iIdx} item={item} onClick={() => setMobileMenuOpen(false)} />))}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
           <button onClick={() => { setSearchOpen(true); setMobileMenuOpen(false); }} className="flex items-center gap-3 w-full px-4 py-3 rounded text-[11px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary uppercase tracking-widest mt-4">
             <span>🔍 BUSCAR... [CTRL+K]</span>
           </button>
@@ -376,15 +420,40 @@ const Layout: React.FC = () => {
               <span className="text-[9px] text-text-secondary font-mono block mt-1">ESTUDIO DE ESTABILIDAD SINCRONA</span>
             </div>
           </div>
-          <nav id="sidebar-nav" className="flex flex-col gap-1 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
-            {NAV_GROUPS.map((group, gIdx) => (
-              <div key={gIdx} className="mb-4">
-                <div style={{ padding: '0.5rem 1rem 0.25rem', fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>// {group.title}</div>
-                <div className="flex flex-col gap-0.5">
-                  {group.items.map((item, iIdx) => (<SidebarLink key={iIdx} item={item} />))}
+          <nav id="sidebar-nav" className="flex flex-col overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
+            {NAV_GROUPS.map((group) => {
+              const isOpen = expandedGroups[group.title] ?? false;
+              const hasActive = group.items.some(item => item.to === location.pathname);
+              return (
+                <div key={group.title} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <button
+                    onClick={() => toggleGroup(group.title)}
+                    style={{
+                      width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem',
+                      padding: '0.625rem 1rem', background: 'transparent', border: 'none',
+                      cursor: 'pointer', textAlign: 'left',
+                      color: hasActive ? 'var(--accent-ice-blue, #3dd5f3)' : 'var(--text-muted)',
+                      transition: 'color 0.15s ease-out',
+                    }}
+                  >
+                    <span style={{ fontSize: '0.55rem', opacity: 0.7, minWidth: '0.75rem' }}>
+                      {isOpen ? '▼' : '▶'}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', flex: 1 }}>
+                      {group.title}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', opacity: 0.35 }}>
+                      {group.items.length}
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="flex flex-col gap-0.5 pb-1">
+                      {group.items.map((item, iIdx) => (<SidebarLink key={iIdx} item={item} />))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <button onClick={() => setSearchOpen(true)} className="flex items-center gap-2.5 px-3.5 py-3 rounded text-[10px] font-mono border border-main bg-tertiary text-text-secondary hover:text-text-primary hover:bg-primary uppercase tracking-widest mt-2 transition-all">
               <svg className="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               <span className="flex-grow text-left">Buscar...</span>
@@ -422,18 +491,24 @@ const Layout: React.FC = () => {
             </div>
             <div className="px-3 border-r border-main/40">
               <span className="text-[9px] text-text-secondary uppercase font-mono block">Frecuencia (f)</span>
-              <span className="text-xs font-mono font-bold text-text-mono tracking-wider">{telemetry.avgFreq.toFixed(3)} Hz</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-mono font-bold text-text-mono tracking-wider">{telemetry.avgFreq.toFixed(3)} Hz</span>
+                <span title="Valor generado por simulación. No son datos en tiempo real." style={{ fontSize: '0.5rem', padding: '0.1rem 0.3rem', background: 'rgba(233,30,99,0.12)', color: 'var(--accent-crimson,#e91e63)', borderRadius: '2px', fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.04em', cursor: 'help' }}>SIM</span>
+              </div>
             </div>
             <div className="px-3 border-r border-main/40">
               <span className="text-[9px] text-text-secondary uppercase font-mono block">Carga Peninsular</span>
-              <span className="text-xs font-mono font-bold text-text-primary tracking-wider">{(telemetry.totalLoad / 1000).toFixed(2)} GW</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-mono font-bold text-text-primary tracking-wider">{(telemetry.totalLoad / 1000).toFixed(2)} GW</span>
+                <span title="Valor generado por simulación. No son datos en tiempo real." style={{ fontSize: '0.5rem', padding: '0.1rem 0.3rem', background: 'rgba(233,30,99,0.12)', color: 'var(--accent-crimson,#e91e63)', borderRadius: '2px', fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.04em', cursor: 'help' }}>SIM</span>
+              </div>
             </div>
             <div className="px-3 border-r border-main/40">
               <span className="text-[9px] text-text-secondary uppercase font-mono block mb-0.5">DOCUMENTO</span>
               <span className="text-[9px] font-mono font-bold text-alert-green bg-alert-green/10 border border-alert-green/30 px-1.5 py-0.5 rounded uppercase">{telemetry.status === 'ESTABLE (NOMINAL)' ? 'APROBADO REE' : 'REVISIÓN forense'}</span>
             </div>
             <div className="px-3">
-              <button data-presentation-btn className="px-3 py-1 bg-accent/10 border border-accent/40 rounded text-[10px] font-mono font-bold text-accent hover:bg-accent hover:text-white transition-all duration-200 uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
+              <button data-presentation-btn title="Activa pantalla completa para defensa ante tribunal" className="px-3 py-1 bg-accent/10 border border-accent/40 rounded text-[10px] font-mono font-bold text-accent hover:bg-accent hover:text-white transition-all duration-200 uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
                 🖥 Presentación
               </button>
             </div>
@@ -489,6 +564,7 @@ const Layout: React.FC = () => {
                 <Route path="/grid-following" element={<PageWrapper><GridFollowingViz /></PageWrapper>} />
                 <Route path="/tap-lag" element={<PageWrapper><TapLagExplainer /></PageWrapper>} />
                 <Route path="/testimonios" element={<PageWrapper><Testimonios /></PageWrapper>} />
+                <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
               </Routes>
             </AnimatePresence>
           </Suspense>

@@ -374,11 +374,11 @@ export default function Hero() {
           gap: '0.75rem',
         }}>
           {[
-            { step: '01', label: '90 Segundos', desc: 'El colapso en tiempo real', path: '/countdown', color: 'var(--alarm)' },
-            { step: '02', label: 'Cadena Causal', desc: 'Las 5 fases del colapso', path: '/causal', color: 'var(--warning)' },
-            { step: '03', label: 'Divergencias', desc: '5 ejes irreconciliables', path: '/divergencias', color: 'var(--accent-blue)' },
-            { step: '04', label: 'Balance Q-V', desc: 'El déficit de −0,6 GVAr', path: '/reactiva', color: 'var(--warning)' },
-            { step: '05', label: 'Trilema', desc: 'La solución estructural', path: '/trilema', color: 'var(--nominal)' },
+            { step: '01', label: '90 Segundos', desc: 'El colapso en tiempo real', path: '/countdown', color: 'var(--accent-ice-blue, #3dd5f3)' },
+            { step: '02', label: 'Cadena Causal', desc: 'Las 5 fases del colapso', path: '/causal', color: 'var(--accent-ice-blue, #3dd5f3)' },
+            { step: '03', label: 'Divergencias', desc: '5 ejes irreconciliables', path: '/divergencias', color: 'var(--accent-ice-blue, #3dd5f3)' },
+            { step: '04', label: 'Balance Q-V', desc: 'El déficit de −0,6 GVAr', path: '/reactiva', color: 'var(--accent-ice-blue, #3dd5f3)' },
+            { step: '05', label: 'Trilema', desc: 'La solución estructural', path: '/trilema', color: 'var(--accent-ice-blue, #3dd5f3)' },
           ].map((item, i) => (
             <button
               key={i}
