@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+/* Console Mode deployment fix */
 import Hero from './components/Hero/Hero';
 import ExecutiveBrief from './components/ExecutiveBrief';
 import PageTransition from './components/PageTransition';
